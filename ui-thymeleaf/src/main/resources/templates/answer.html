@@ -11,19 +11,23 @@
 		
 		<form action="#" th:action="@{/answer}" method="post" id="main" th:object="${answerForm}">
 			<input class="invisible" th:field="*{eventId}"/>
-			<div th:each="question, rowStat: ${questions}" class="form-group container">
-				<label for="${question.questionName}" th:text="${question.questionName}" th:field="*{name}">New event:</label>
-				<div th:switch="${question.questionType}">
+			<div th:each="question, stat: ${answerForm.questions}" class="form-group container"> 
+				<label for="${question.getQuestionName()}" th:text="${question.getQuestionName()}">New event:</label>
+				<div th:switch="${question.getAnswerType()}">
 					<div th:case="'FIVE_SMILEYS'">
-						<div th:replace="fragments/stars :: stars" th:id="'star-' + ${question.id}">...</div>
+						<div th:replace="fragments/stars :: stars" th:id="'star-' + ${question.getId()}">...</div>
 					</div>
 					<div th:case="'YES_NO'">
 						<div th:replace="fragments/yes_no :: yesno">...</div>
 					</div>	
-					<div th:case="'FREETEXT'">
-						<input class="form-control" type="text" required="required" placeholder="Freetext" />
+					<div th:case="'FREETEXT'"> 
+						<input class="form-control" type="text" required="required" placeholder="Freetext" th:field="*{questions[__${stat.index}__].answerFreeText}"/>
 					</div>
 				</div>
+				<input type="hidden" th:field="*{questions[__${stat.index}__].questionName}" th:value="${question.getQuestionName()}"/>
+				<input type="hidden" th:field="*{questions[__${stat.index}__].id}" th:value="${question.getId()}"/>
+				<input type="hidden" th:field="*{questions[__${stat.index}__].eventId}" th:value="${question.getEventId()}"/>
+				<input type="hidden" th:field="*{questions[__${stat.index}__].answerType}" th:value="${question.getAnswerType()}"/>
 			</div>
 			<br>
 			<div class="form-group container">

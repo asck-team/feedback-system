@@ -2,11 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="yesno">
   	<div class="form-group custom-control custom-radio custom-control-inline">
-		<input type="radio" th:id="'customRadioInline1-' + ${question.id}" th:name="'customRadioInline1-' + ${question.id}" class="custom-control-input">
+		<input type="radio" th:id="'customRadioInline1-' + ${question.id}" th:name="'customRadioInline1-' + ${question.id}" class="custom-control-input"
+		th:field="*{questions[__${stat.index}__].answerId}" th:value="1">
 		<label class="custom-control-label" th:for="'customRadioInline1-' + ${question.id}">Yes</label>
 	</div>
 	<div class="form-group custom-control custom-radio custom-control-inline">
-		<input type="radio" th:id="'customRadioInline2-' + ${question.id}" th:name="'customRadioInline1-' + ${question.id}" class="custom-control-input">
+		<input type="radio" th:id="'customRadioInline2-' + ${question.id}" th:name="'customRadioInline1-' + ${question.id}" class="custom-control-input"
+		th:field="*{questions[__${stat.index}__].answerId}" th:value="2">
 		<label class="custom-control-label" th:for="'customRadioInline2-' + ${question.id}">No</label>
 	</div>
 </div>

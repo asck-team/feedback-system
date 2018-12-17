@@ -3,17 +3,16 @@
 
 <div class="form-group" th:fragment="stars" th:id="'star-' + ${question.id}">
     <div class="stars" th:id="'star-' + ${question.id}">
-	    <input class="star star-5" th:id="'star-5-' + ${question.id}" type="radio" th:name="'star-' + ${question.id}"/>
+	    <input class="star star-5" th:id="'star-5-' + ${question.id}" type="radio" th:name="'star-' + ${question.id}" th:field="*{questions[__${stat.index}__].answerId}" th:value="5"/>
 	    <label class="star star-5" th:for="'star-5-' + ${question.id}"></label>
-	    <input class="star star-4" th:id="'star-4-' + ${question.id}" type="radio" th:name="'star-' + ${question.id}"/>
+	    <input class="star star-4" th:id="'star-4-' + ${question.id}" type="radio" th:name="'star-' + ${question.id}" th:field="*{questions[__${stat.index}__].answerId}" th:value="4"/>
 	    <label class="star star-4" th:for="'star-4-' + ${question.id}"></label>
-	    <input class="star star-3" th:id="'star-3-' + ${question.id}" type="radio" th:name="'star-' + ${question.id}"/>
+	    <input class="star star-3" th:id="'star-3-' + ${question.id}" type="radio" th:name="'star-' + ${question.id}" th:field="*{questions[__${stat.index}__].answerId}" th:value="3"/>
 	    <label class="star star-3" th:for="'star-3-' + ${question.id}"></label>
-	    <input class="star star-2" th:id="'star-2-' + ${question.id}" type="radio" th:name="'star-' + ${question.id}"/>
+	    <input class="star star-2" th:id="'star-2-' + ${question.id}" type="radio" th:name="'star-' + ${question.id}" th:field="*{questions[__${stat.index}__].answerId}" th:value="2"/>
 	    <label class="star star-2" th:for="'star-2-' + ${question.id}"></label>
-	    <input class="star star-1" th:id="'star-1-' + ${question.id}" type="radio" th:name="'star-' + ${question.id}"/>
+	    <input class="star star-1" th:id="'star-1-' + ${question.id}" type="radio" th:name="'star-' + ${question.id}" th:field="*{questions[__${stat.index}__].answerId}" th:value="1"/>
 	    <label class="star star-1" th:for="'star-1-' + ${question.id}"></label>
     </div>
 </div>
-
 </html>

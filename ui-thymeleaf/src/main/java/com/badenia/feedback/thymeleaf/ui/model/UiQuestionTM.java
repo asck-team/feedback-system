@@ -18,4 +18,10 @@ public class UiQuestionTM {
 	private Long eventId;
 	
 	private String answerType;
+	
+	private Long answerId;
+	
+	private String answerFreeText;
+	
+	
 }

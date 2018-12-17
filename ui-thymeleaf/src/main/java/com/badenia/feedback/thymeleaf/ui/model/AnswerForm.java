@@ -1,5 +1,8 @@
 package com.badenia.feedback.thymeleaf.ui.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +17,6 @@ import lombok.ToString;
 public class AnswerForm {
 	
 	private long eventId;
-	private String name;
+	List<UiQuestionTM> questions = new ArrayList<UiQuestionTM>(); 
 
 }

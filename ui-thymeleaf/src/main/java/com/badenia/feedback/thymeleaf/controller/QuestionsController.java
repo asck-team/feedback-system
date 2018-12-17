@@ -1,5 +1,6 @@
 package com.badenia.feedback.thymeleaf.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.badenia.feedback.thymeleaf.ui.model.AnswerForm;
+import com.badenia.feedback.thymeleaf.ui.model.UiQuestionTM;
 import com.feedback.service.client.model.Event;
 import com.feedback.service.client.model.Question;
 
@@ -21,6 +23,7 @@ public class QuestionsController extends AbstractController {
 	private static final String MODEL_ATTR_EVENTID = "eventId";
 	private static final String MODEL_ATTR_QUESTIONS = "questions";
 	private static final String UI_TEMPLATE_QUESTIONS = "questions";
+	private static final String MODEL_ATTR_ANSWER_FORM = "answerForm";
 	private static final Logger LOGGER = LogManager.getLogger(QuestionsController.class);
 
 	@GetMapping(path = {"/questions"}, params = MODEL_ATTR_EVENTID)
@@ -38,13 +41,29 @@ public class QuestionsController extends AbstractController {
 		model.addAttribute(MODEL_ATTR_QUESTIONS, allQuestionsToEvent);
 		model.addAttribute(MODEL_ATTR_EVENTID, eventId);
 		model.addAttribute("eventName", eventById.getName());
-		model.addAttribute("answerForm", new AnswerForm(eventId, ""));
+		
+		AnswerForm answerForm = new AnswerForm();
+		answerForm.setEventId(eventId);
+		List<UiQuestionTM> questionsUi = new ArrayList<>();
+		for (Question question : allQuestionsToEvent) {
+			questionsUi.add(new UiQuestionTM(question.getId(), question.getQuestionName(), eventId, question.getQuestionType(), null, null));
+		}
+		answerForm.setQuestions(questionsUi);
+		model.addAttribute(MODEL_ATTR_ANSWER_FORM, answerForm);
 		return "answer";
 	}
 	
 	@PostMapping(path = {"/answer"})
-	public String answerPost(@ModelAttribute(value="answerForm") AnswerForm answer) {
+	public String answerPost(@ModelAttribute(value=MODEL_ATTR_ANSWER_FORM) AnswerForm answer) {
 		LOGGER.info("Answer obj: {}", answer.toString());
+		for (UiQuestionTM q : answer.getQuestions()) {
+			LOGGER.info("{}", q.getId());
+			LOGGER.info("{}", q.getEventId());
+			LOGGER.info("{}", q.getQuestionName());
+			LOGGER.info("{}", q.getAnswerType());
+			LOGGER.info("{}", q.getAnswerId());
+			LOGGER.info("{}", q.getAnswerFreeText());
+		}
 		LOGGER.info("AnswerForm submitted!");
 		return "redirect:/";
 	}
