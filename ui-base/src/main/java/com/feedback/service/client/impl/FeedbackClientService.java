@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import com.feedback.service.client.IFeedbackClientService;
+import com.feedback.service.client.model.Answer;
 import com.feedback.service.client.model.Event;
 import com.feedback.service.client.model.Option;
 import com.feedback.service.client.model.Question;
@@ -32,6 +33,8 @@ public class FeedbackClientService implements IFeedbackClientService {
 	private static final String PATH_ELEMENT_QUESTIONS = "questions";
 
 	private static final String PATH_ELEMENT_EVENTS = "events";
+	
+	private static final String PATH_ELEMENT_ANSWERS = "answers";
 
 	private static final Logger LOGGER = LogManager.getLogger(FeedbackClientService.class);
 
@@ -140,5 +143,13 @@ public class FeedbackClientService implements IFeedbackClientService {
 		LOGGER.traceEntry("with Parameters {} and {}", eventId, questionId);
 		new RestTemplate().delete(createUrlPath(PATH_ELEMENT_EVENTS, eventId.toString(), PATH_ELEMENT_QUESTIONS, questionId.toString()));
 		LOGGER.traceExit();
+	}
+
+
+	@Override
+	public Answer saveAnswer(Answer answer) {
+		URI uri4CreatedAnswer = new RestTemplate().postForLocation(createUrlPath(PATH_ELEMENT_ANSWERS), answer);
+		LOGGER.info("created Answer: {}", uri4CreatedAnswer);
+		return answer;
 	}
 }

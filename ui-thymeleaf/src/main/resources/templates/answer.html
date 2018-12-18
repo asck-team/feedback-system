@@ -21,6 +21,7 @@
 						<div th:replace="fragments/yes_no :: yesno">...</div>
 					</div>	
 					<div th:case="'FREETEXT'"> 
+						<input type="hidden" th:field="*{questions[__${stat.index}__].answerId}" th:value="6"/>
 						<input class="form-control" type="text" required="required" placeholder="Freetext" th:field="*{questions[__${stat.index}__].answerFreeText}"/>
 					</div>
 				</div>

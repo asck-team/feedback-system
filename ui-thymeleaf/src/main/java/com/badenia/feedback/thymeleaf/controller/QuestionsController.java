@@ -1,10 +1,13 @@
 package com.badenia.feedback.thymeleaf.controller;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.tomcat.jni.Time;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.badenia.feedback.thymeleaf.ui.model.AnswerForm;
 import com.badenia.feedback.thymeleaf.ui.model.UiQuestionTM;
+import com.feedback.service.client.model.Answer;
 import com.feedback.service.client.model.Event;
 import com.feedback.service.client.model.Question;
 
@@ -63,6 +67,16 @@ public class QuestionsController extends AbstractController {
 			LOGGER.info("{}", q.getAnswerType());
 			LOGGER.info("{}", q.getAnswerId());
 			LOGGER.info("{}", q.getAnswerFreeText());
+			
+			//FIXME AS 18.12.2018 Id auf UI setzen ... geht nicht. Muss weiter untersucht werden
+			if (q.getAnswerFreeText()!=null) {
+				q.setAnswerId(6L);
+			}
+			
+			Answer answerToSave = new Answer(q.getId(), q.getAnswerId(), q.getAnswerFreeText(), LocalDateTime.now());
+			System.out.println(answerToSave.toString());
+			getFeedbackService().saveAnswer(answerToSave);
+			
 		}
 		LOGGER.info("AnswerForm submitted!");
 		return "redirect:/";
