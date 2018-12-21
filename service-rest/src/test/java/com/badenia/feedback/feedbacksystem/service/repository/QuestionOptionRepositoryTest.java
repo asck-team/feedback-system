@@ -25,7 +25,7 @@ public class QuestionOptionRepositoryTest {
 	public void testFindAll() {
 		List<QuestionOptionTableModel> list = underTest.findAll();
 		assertNotNull(list);
-		assertEquals(10, list.size());
+		assertEquals(11, list.size());
 	}
 
 }
