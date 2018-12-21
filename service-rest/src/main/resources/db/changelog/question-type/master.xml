@@ -11,7 +11,7 @@
 				<constraints nullable="false" primaryKey="true" primaryKeyName="PK_QUESTION_TYPE"/>
 			</column>
 			<column name="description" type="varchar(40)" remarks="Bezeichnung des Fragetyps">
-				<constraints foreignKeyName="PK_EVENT"/>
+				<constraints nullable="false" />
 			</column>
 		</createTable>
 	</changeSet>
