@@ -93,5 +93,14 @@
 			<column name="question_type_id" value="4" />
 		</insert>
 	</changeSet>
+	
+	<changeSet  id="insertOptions4QuestionTypeFreeText" author="constantinkrueger">
+		<insert tableName="Question_Option">
+			<column name="id" value="11" />
+			<column name="order" value="1" />
+			<column name="optionial_description" value="" />
+			<column name="question_type_id" value="1" />
+		</insert>
+	</changeSet>
 
 </databaseChangeLog>

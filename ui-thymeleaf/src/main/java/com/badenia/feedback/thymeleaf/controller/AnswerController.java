@@ -70,6 +70,6 @@ public class AnswerController extends AbstractController {
 			
 		}
 		LOGGER.info("AnswerForm submitted!");
-		return "redirect:/";
+		return "danke";
 	}
 }
