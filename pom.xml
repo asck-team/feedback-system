@@ -47,7 +47,7 @@
 		<asciidoctorj.version>1.5.7</asciidoctorj.version>
 		<asciidoctorj.diagram.version>1.5.9</asciidoctorj.diagram.version>
 		<jruby.version>9.1.17.0</jruby.version>
-		<arc42.base.directory>${basedir}/src/doc/arc42</arc42.base.directory>
+		<arc42.base.directory>${basedir}/src/docs/arc42</arc42.base.directory>
 	</properties>
 
 	<modules>
@@ -94,11 +94,10 @@
 							<goal>process-asciidoc</goal>
 						</goals>
 						<configuration>
-							<imagesDir>${arc42.base.directory}/images</imagesDir>
+							<imagesDir>./images</imagesDir>
 							<sourceDirectory>${arc42.base.directory}/DE</sourceDirectory>
 							<sourceDocumentName>arc42_de.adoc</sourceDocumentName>
 							<attributes>
-								<data-uri />
 								<toc>left</toc>
 								<toc-title>Inhaltsverzeichnis</toc-title>
 								<caution-caption>Achtung</caution-caption>

@@ -3,5 +3,5 @@
 ==== Fachliches Datenmodell
 [plantuml, diagram-classes, png]
 ....
-include::./../plantuml/08_domain_model.puml[]
+include::plantuml/08_domain_model.puml[]
 ....
