@@ -2,8 +2,6 @@ package com.badenia.feedback.thymeleaf.controller;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
 import java.util.Base64;
 
 import org.apache.logging.log4j.LogManager;
