@@ -108,6 +108,12 @@
 	        <groupId>com.google.zxing</groupId>
 	        <artifactId>javase</artifactId>
 	        <version>3.3.0</version>
+	        <exclusions>
+	        	<exclusion>
+	        		<groupId>com.github.jai-imageio</groupId>
+	        		<artifactId>jai-imageio-core</artifactId>
+	        	</exclusion>
+	        </exclusions>
 	    </dependency>
 	    <!-- generate QrCode -->
 
