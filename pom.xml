@@ -43,8 +43,11 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<generatedUmlImagesPath>${project.build.directory}/generated-docs/images/uml</generatedUmlImagesPath>
-		<asciidoctor.maven.plugin.version>1.5.3</asciidoctor.maven.plugin.version>
+		<asciidoctor.maven.plugin.version>1.5.7.1</asciidoctor.maven.plugin.version>
+		<asciidoctorj.version>1.5.7</asciidoctorj.version>
+		<asciidoctorj.diagram.version>1.5.9</asciidoctorj.diagram.version>
+		<jruby.version>9.1.17.0</jruby.version>
+		<arc42.base.directory>${basedir}/src/doc/arc42</arc42.base.directory>
 	</properties>
 
 	<modules>
@@ -55,65 +58,47 @@
 	</modules>
 
 	<build>
+
 		<plugins>
-			<plugin>
-				<groupId>com.github.jeluard</groupId>
-				<artifactId>plantuml-maven-plugin</artifactId>
-				<version>1.1</version>
-				<inherited>false</inherited>
-				<configuration>
-					<sourceFiles>
-						<directory>${basedir}/src/doc/plantuml</directory>
-						<includes>
-							<include>**/*.puml</include>
-						</includes>
-					</sourceFiles>
-					<outputDirectory>${generatedUmlImagesPath}</outputDirectory>
-				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>net.sourceforge.plantuml</groupId>
-						<artifactId>plantuml</artifactId>
-						<version>8019</version>
-					</dependency>
-				</dependencies>
-				<executions>
-					<execution>
-						<inherited>false</inherited>
-						<id>generate-uml-model-site</id>
-						<phase>generate-resources</phase>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-					</execution>
-					<execution>
-						<inherited>false</inherited>
-						<id>generate-uml-model-package</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 			<plugin>
 				<groupId>org.asciidoctor</groupId>
 				<artifactId>asciidoctor-maven-plugin</artifactId>
 				<version>${asciidoctor.maven.plugin.version}</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.jruby</groupId>
+						<artifactId>jruby-complete</artifactId>
+						<version>${jruby.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.asciidoctor</groupId>
+						<artifactId>asciidoctorj</artifactId>
+						<version>${asciidoctorj.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.asciidoctor</groupId>
+						<artifactId>asciidoctorj-diagram</artifactId>
+						<version>${asciidoctorj.diagram.version}</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<backend>html5</backend>
+					<sourceHighlighter>coderay</sourceHighlighter>
+				</configuration>
 				<executions>
 					<execution>
 						<inherited>false</inherited>
-						<id>asciidoc-to-html</id>
+						<id>de-asciidoc-to-html</id>
 						<phase>generate-resources</phase>
 						<goals>
 							<goal>process-asciidoc</goal>
 						</goals>
 						<configuration>
-							<sourceDirectory>${basedir}/src/doc/asciidoc</sourceDirectory>
-							<sourceDocumentName>archdoc.adoc</sourceDocumentName>
-							<backend>html5</backend>
-							<sourceHighlighter>coderay</sourceHighlighter>
+							<imagesDir>${arc42.base.directory}/images</imagesDir>
+							<sourceDirectory>${arc42.base.directory}/DE</sourceDirectory>
+							<sourceDocumentName>arc42_de.adoc</sourceDocumentName>
 							<attributes>
+								<data-uri />
 								<toc>left</toc>
 								<toc-title>Inhaltsverzeichnis</toc-title>
 								<caution-caption>Achtung</caution-caption>
@@ -126,6 +111,9 @@
 								<figure-caption>Abbildung</figure-caption>
 								<table-caption>Tabelle</table-caption>
 							</attributes>
+							<requires>
+								<require>asciidoctor-diagram</require>
+							</requires>
 						</configuration>
 					</execution>
 				</executions>
