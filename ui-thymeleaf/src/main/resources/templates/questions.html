@@ -27,8 +27,10 @@
 					<tbody>
 						<tr></tr>
 						<tr th:each="question, rowStat: ${questions}"
-							th:style="${rowStat.odd} ? 'color: black' : 'color: black;'">
-							<td th:text="${question.questionName}">QuestionName</td>
+							th:style="${rowStat.odd} ? 'color: black' : 'color: black;'"
+							th:id="${question.id}"
+							th:attr="eventId=${eventId}">
+							<td th:text="${question.questionName}" >QuestionName</td>
 							<td th:text="${question.order}">Order</td>
 							<td th:text="${question.questionType}">Type</td>
 							<td> <button type="button" class="btn btn-dark" th:onclick="|window.location.href='@{/newQuestion(eventId=${eventId}, questionId=${question.id})}'|"><i class="fa fa-edit"></i></button> </td>
@@ -50,6 +52,7 @@
                 axis: 'y',
                 dropOnEmpty: false,
                 start: function (e, ui) {
+                	$(ui.item).data("startindex", ui.item.index());
                     ui.item.addClass("selected");
                 },
                 stop: function (e, ui) {
@@ -59,9 +62,20 @@
                             $(this).find("td").eq(1).html(index);
                         }
                     });
+                    self.sendUpdatedIndex(ui.item);
                 }
             });
+            
+            self.sendUpdatedIndex = function ($item) {
+                var startIndex = $item.data("startindex");
+                var newIndex = $item.index();
+                var id = $item.attr("id");
+                var eventID = $item.attr("eventId");
+                location.href = "/updateOrderQuestion?eventId=" + eventID + "&questionId="+ id + "&order=" + newIndex;
+            };
         });
+        
+        
     </script>
     <!-- 	Skript for drag and drop Table -->
 </body>
