@@ -20,4 +20,6 @@ public class Question {
 	
 	private String questionType;
 	
+	private int order;
+	
 }

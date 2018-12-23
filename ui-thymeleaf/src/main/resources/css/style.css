@@ -160,4 +160,10 @@ label.star:before {
 
 /* radio */
 
+/* drag and drop Table */
 
+.selected {
+	background-color: #666;
+	color: #fff;
+}
+/* drag and drop Table */

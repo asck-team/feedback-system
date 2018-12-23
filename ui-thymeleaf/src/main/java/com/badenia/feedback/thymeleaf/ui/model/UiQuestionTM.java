@@ -29,5 +29,7 @@ public class UiQuestionTM {
 	
 	private List<Option> options;
 	
+	private int order;
+	
 	
 }

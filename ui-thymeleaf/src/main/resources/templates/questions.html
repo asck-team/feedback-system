@@ -13,26 +13,57 @@
 			<button type="button" class="btn btn-dark"
 				th:onclick="|window.location.href='@{/newQuestion(eventId=${eventId})}'|">New</button>
 		</h1>
-		<div class="row col-md-7 table-responsive">
-			<table id="questionsTable" class="table">
-				<thead>
-					<tr>
-						<th>Question</th>
-						<th>Edit</th>
-						<th>Delete</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="question, rowStat: ${questions}"
-						th:style="${rowStat.odd} ? 'color: black' : 'color: black;'">
-						<td th:text="${question.questionName}" th:onclick="|window.location.href='@{/newQuestion(eventId=${eventId}, questionId=${question.id})}'|">Jack</td>
-						<td> <button type="button" class="btn btn-dark" th:onclick="|window.location.href='@{/newQuestion(eventId=${eventId}, questionId=${question.id})}'|"><i class="fa fa-edit"></i></button> </td>
-                        <td> <button type="button" class="btn btn-dark" th:onclick="|window.location.href='@{/deleteQuestion(eventId=${eventId},questionId=${question.id})}'|"><i class="fa fa-trash"></i></button> </td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
+			<div class="row col-md-10 table-responsive">
+				<table id="questionsTable" class="table">
+					<thead>
+						<tr>
+							<th>Question</th>
+							<th>Order</th>
+							<th>Type</th>
+							<th>Edit</th>
+							<th>Delete</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr></tr>
+						<tr th:each="question, rowStat: ${questions}"
+							th:style="${rowStat.odd} ? 'color: black' : 'color: black;'">
+							<td th:text="${question.questionName}">QuestionName</td>
+							<td th:text="${question.order}">Order</td>
+							<td th:text="${question.questionType}">Type</td>
+							<td> <button type="button" class="btn btn-dark" th:onclick="|window.location.href='@{/newQuestion(eventId=${eventId}, questionId=${question.id})}'|"><i class="fa fa-edit"></i></button> </td>
+	                        <td> <button type="button" class="btn btn-dark" th:onclick="|window.location.href='@{/deleteQuestion(eventId=${eventId},questionId=${question.id})}'|"><i class="fa fa-trash"></i></button> </td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 	</div>
+	
+	<!-- 	Skript for drag and drop Table -->
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/jquery-ui.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#questionsTable").sortable({
+                items: 'tr:not(tr:first-child)',
+                cursor: 'pointer',
+                axis: 'y',
+                dropOnEmpty: false,
+                start: function (e, ui) {
+                    ui.item.addClass("selected");
+                },
+                stop: function (e, ui) {
+                    ui.item.removeClass("selected");
+                    $(this).find("tr").each(function (index) {
+                        if (index > 0) {
+                            $(this).find("td").eq(1).html(index);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+    <!-- 	Skript for drag and drop Table -->
 </body>
 
 </html>
