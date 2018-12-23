@@ -41,7 +41,7 @@ public class AnswerController extends AbstractController {
 		List<UiQuestionTM> questionsUi = new ArrayList<>();
 		for (Question question : allQuestionsToEvent) {
 			List<Option> options = getFeedbackService().leseAlleOptionenZuEinerFrage(eventId, question.getId());
-			questionsUi.add(new UiQuestionTM(question.getId(), question.getQuestionName(), eventId, question.getQuestionType(), null, null, options));
+			questionsUi.add(new UiQuestionTM(question.getId(), question.getQuestionName(), eventId, question.getQuestionType(), null, null, options, 0));
 		}
 		answerForm.setQuestions(questionsUi);
 		model.addAttribute(MODEL_ATTR_ANSWER_FORM, answerForm);
