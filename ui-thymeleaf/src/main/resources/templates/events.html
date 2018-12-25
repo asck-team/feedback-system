@@ -12,24 +12,16 @@
         <h1>Events
             <button type="button" class="btn btn-dark" th:onclick="|window.location.href='@{/newEvent}'|">New</button>
         </h1>
-        <div class="row col-md-7 table-responsive">
+        <div class="col-md-8 table-responsive">
             <table id="eventsTable" class="table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
-                        <th>QrCode</th>
-                    </tr>
-                </thead>
-                <tbody >
-                        <tr th:style="${rowStat.odd} ? 'color: black' : 'color: black;'"
-                        th:each="event, rowStat: ${events}"
-                        >
+                <tbody>
+                        <tr class="col" th:style="${rowStat.odd} ? 'color: black' : 'color: black;'"
+                        th:each="event, rowStat: ${events}">
                             <td th:text="${event.name}" th:onclick="|window.location.href='@{/questions(eventId=${event.id})}'|">EventName</td>
-                            <td> <button type="button" class="btn btn-dark" th:onclick="|window.location.href='@{/newEvent(eventId=${event.id})}'|"><i class="fa fa-edit"></i></button> </td>
-                            <td> <button type="button" class="btn btn-dark" th:onclick="|window.location.href='@{/deleteEvent(eventId=${event.id})}'|"><i class="fa fa-trash"></i></button> </td>
-                            <td> <button type="button" class="btn btn-dark" th:onclick="|window.location.href='@{/qrCode(eventId=${event.id})}'|"><i class="fa fa-qrcode"></i></button> </td>
+                            <td class="float-right"> <button type="button" class="btn btn-dark" th:onclick="|window.location.href='@{/newEvent(eventId=${event.id})}'|"><i class="fa fa-edit"></i></button> 
+                            	 <button type="button" class="btn btn-dark" th:onclick="|window.location.href='@{/deleteEvent(eventId=${event.id})}'|"><i class="fa fa-trash"></i></button> 
+                            	 <button type="button" class="btn btn-dark" th:onclick="|window.location.href='@{/qrCode(eventId=${event.id})}'|"><i class="fa fa-qrcode"></i></button> 
+                            	 <button type="button" class="btn btn-dark" th:onclick="|window.location.href='@{/answer(eventId=${event.id})}'|"><i class="fa fa-check"></i></button> </td>
                         </tr>
                 </tbody>
             </table>
