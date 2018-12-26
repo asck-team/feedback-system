@@ -11,7 +11,7 @@
 		<h1 class="col-md-10">
 			Questions
 			<button type="button" class="btn btn-dark float-right"
-				th:onclick="|window.location.href='@{/newQuestion(eventId=${eventId})}'|">New</button>
+				th:onclick="|window.location.href='@{/newQuestion(eventId=${eventId})}'|" data-toggle="tooltip" data-placement="bottom" title="create new question">New</button>
 		</h1>
 			<div class="row col-md-10 table-responsive">
 				<table id="questionsTable" class="table">
@@ -30,11 +30,11 @@
 							th:style="${rowStat.odd} ? 'color: black' : 'color: black;'"
 							th:id="${question.id}"
 							th:attr="eventId=${eventId}">
-							<td th:text="${question.questionName}" >QuestionName</td>
-							<td th:text="${question.order}">Order</td>
-							<td th:text="${question.questionType}">Type</td>
-							<td> <button type="button" class="btn btn-dark" th:onclick="|window.location.href='@{/newQuestion(eventId=${eventId}, questionId=${question.id})}'|"><i class="fa fa-edit"></i></button> </td>
-	                        <td> <button type="button" class="btn btn-dark" th:onclick="|window.location.href='@{/deleteQuestion(eventId=${eventId},questionId=${question.id})}'|"><i class="fa fa-trash"></i></button> </td>
+							<td class="col-md-8" th:text="${question.questionName}" >QuestionName</td>
+							<td class="col-md-1" th:text="${question.order}">Order</td>
+							<td class="col-md-2" th:text="${question.questionType}">Type</td>
+							<td class="col-md-1"> <button type="button" class="btn btn-dark" th:onclick="|window.location.href='@{/newQuestion(eventId=${eventId}, questionId=${question.id})}'|" data-toggle="tooltip" data-placement="bottom" title="edit"><i class="fa fa-edit"></i></button> </td>
+	                        <td class="col-md-1"> <button type="button" class="btn btn-dark" th:onclick="|window.location.href='@{/deleteQuestion(eventId=${eventId},questionId=${question.id})}'|" data-toggle="tooltip" data-placement="bottom" title="delete"><i class="fa fa-trash"></i></button> </td>
 						</tr>
 					</tbody>
 				</table>
