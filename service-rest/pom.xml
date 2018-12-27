@@ -122,69 +122,79 @@
 				</executions>
 			</plugin>
 
-			<plugin>
-				<groupId>io.fabric8</groupId>
-				<artifactId>docker-maven-plugin</artifactId>
-				<version>0.22.1</version>
-				<configuration>
-					<images>
-						<image>
-							<name>uniqueck/${project.artifactId}:${project.version}</name>
-							<build>
-								<from>openjdk:10</from>
-								<assembly>
-									<descriptorRef>artifact</descriptorRef>
-								</assembly>
-								<tags>${project.version}</tags>
-								<labels>
-									<maven.project.groupId>${project.groupId}</maven.project.groupId>
-									<maven.project.artifactId>${project.artifactId}</maven.project.artifactId>
-									<maven.project.version>${project.version}</maven.project.version>
-								</labels>
-								<ports>
-									<port>8080</port>
-								</ports>
-							</build>
-							<run>
-								<ports>
-									<port>8080:8080</port>
-								</ports>
-
-								<cmd>java -jar /maven/app.jar</cmd>
-							</run>
-						</image>
-					</images>
-				</configuration>
-				<executions>
-					<execution>
-						<id>docker-clean</id>
-						<phase>clean</phase>
-						<goals>
-							<goal>remove</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>docker-build</id>
-						<goals>
-							<goal>build</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>docker-source</id>
-						<goals>
-							<goal>source</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>docker-push</id>
-						<goals>
-							<goal>push</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>docker-build</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>io.fabric8</groupId>
+						<artifactId>docker-maven-plugin</artifactId>
+						<version>0.22.1</version>
+						<configuration>
+							<images>
+								<image>
+									<name>uniqueck/${project.artifactId}:${project.version}</name>
+									<build>
+										<from>openjdk:10</from>
+										<assembly>
+											<descriptorRef>artifact</descriptorRef>
+										</assembly>
+										<tags>${project.version}</tags>
+										<labels>
+											<maven.project.groupId>${project.groupId}</maven.project.groupId>
+											<maven.project.artifactId>${project.artifactId}</maven.project.artifactId>
+											<maven.project.version>${project.version}</maven.project.version>
+										</labels>
+										<ports>
+											<port>8080</port>
+										</ports>
+									</build>
+									<run>
+										<ports>
+											<port>8080:8080</port>
+										</ports>
+
+										<cmd>java -jar /maven/app.jar</cmd>
+									</run>
+								</image>
+							</images>
+						</configuration>
+						<executions>
+							<execution>
+								<id>docker-clean</id>
+								<phase>clean</phase>
+								<goals>
+									<goal>remove</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>docker-build</id>
+								<goals>
+									<goal>build</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>docker-source</id>
+								<goals>
+									<goal>source</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>docker-push</id>
+								<goals>
+									<goal>push</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>
