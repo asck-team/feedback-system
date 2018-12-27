@@ -6,7 +6,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>com.badenia.feedback</groupId>
+		<groupId>org.asck</groupId>
 		<artifactId>feedback-system</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
@@ -55,7 +55,7 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.badenia.feedback</groupId>
+			<groupId>org.asck</groupId>
 			<artifactId>ui-base</artifactId>
 			<version>${project.version}</version>
 		</dependency>
