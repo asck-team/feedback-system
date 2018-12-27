@@ -1,5 +1,4 @@
-# asck - a little survey system 
-
+= image:./asck-logo.png[asck] AS(C)K - a little survey system 
 
 image:https://travis-ci.org/uniqueck/feedback-system.svg?branch=develop[link="https://travis-ci.org/uniqueck/feedback-system"]
 image:https://sonarcloud.io/api/project_badges/measure?project=uniqueck_feedback-system&metric=alert_status[link="https://sonarcloud.io/dashboard?id=uniqueck_feedback-system"]
