@@ -1,5 +1,7 @@
 package org.asck.controller;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.asck.service.client.model.Event;
 import org.asck.ui.model.UIEventTM;
 import org.springframework.stereotype.Controller;
@@ -12,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class NewEventController extends AbstractController {
 
-//	private static final Logger LOGGER = LogManager.getLogger(NewEventController.class);
+	private static final Logger LOGGER = LogManager.getLogger(NewEventController.class);
 	
 	
 	@GetMapping(path = {"/newEvent"})
@@ -38,7 +40,7 @@ public class NewEventController extends AbstractController {
 
 	@PostMapping("/newEvent")
 	public String post(@ModelAttribute UIEventTM eventTM) {
-//		LOGGER.info("Save Obj from Ui {}", eventTM);
+		LOGGER.info("Save Obj from Ui {}", eventTM);
 		Event event = new Event(eventTM.getId(), eventTM.getEventName());
 		getFeedbackService().saveEvent(event);
 		return "redirect:/events";

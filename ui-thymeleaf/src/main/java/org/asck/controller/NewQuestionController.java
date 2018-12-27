@@ -1,5 +1,7 @@
 package org.asck.controller;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.asck.service.client.model.Question;
 import org.asck.ui.model.UiQuestionTM;
 import org.springframework.stereotype.Controller;
@@ -12,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class NewQuestionController extends AbstractController {
 	
-//	private static final Logger LOGGER = LogManager.getLogger(NewQuestionController.class);
+	private static final Logger LOGGER = LogManager.getLogger(NewQuestionController.class);
 	
 	@GetMapping(path = {"/newQuestion"}, params = {"eventId"})
 	public String get(Model model, @RequestParam(required = true, name = "eventId") Long eventId) {
@@ -21,7 +23,7 @@ public class NewQuestionController extends AbstractController {
 		
 		questionTM.setEventId(eventId);
 		
-//		LOGGER.debug("eventID: {}, questionID {}", eventId);
+		LOGGER.debug("eventID: {}, questionID {}", eventId);
 
 		model.addAttribute("questionTM", questionTM);
 		model.addAttribute("answerTypes", getFeedbackService().readAllSupportedQuestionTypes());
@@ -43,7 +45,7 @@ public class NewQuestionController extends AbstractController {
 			questionTM.setAnswerType(question.getQuestionType());
 		}
 		
-//		LOGGER.info("eventID: {}, questionID {}", eventId, questionId);
+		LOGGER.info("eventID: {}, questionID {}", eventId, questionId);
 
 		model.addAttribute("questionTM", questionTM);
 		model.addAttribute("answerTypes", getFeedbackService().readAllSupportedQuestionTypes());
@@ -52,10 +54,10 @@ public class NewQuestionController extends AbstractController {
 
 	@PostMapping("/newQuestion")
     public String post(@ModelAttribute UiQuestionTM questionTM) {
-//		LOGGER.info("QuestionId: {}, QuestionName: {}, eventId: {}, AnswerTypeId: {}", questionTM.getId(), questionTM.getQuestionName(), questionTM.getEventId(), questionTM.getAnswerType());
+		LOGGER.info("QuestionId: {}, QuestionName: {}, eventId: {}, AnswerTypeId: {}", questionTM.getId(), questionTM.getQuestionName(), questionTM.getEventId(), questionTM.getAnswerType());
 		Question questionToSave = new Question(questionTM.getId(), questionTM.getQuestionName(), questionTM.getAnswerType(), questionTM.getOrder());
 		getFeedbackService().saveQuestion(questionTM.getEventId(), questionToSave);
-//		LOGGER.info("Question to Save: {}", questionToSave);
+		LOGGER.info("Question to Save: {}", questionToSave);
 		return "redirect:/questions?eventId=" + questionTM.getEventId();
     }
 
