@@ -4,8 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Base64;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +18,7 @@ import com.google.zxing.qrcode.QRCodeWriter;
 @Controller
 public class QrCodeController extends AbstractController {
 	
-	private static final Logger LOGGER = LogManager.getLogger(NewEventController.class);
+//	private static final Logger LOGGER = LogManager.getLogger(NewEventController.class);
 
 	@GetMapping("/qrCode")
 	public String generateQrCode(@RequestParam("eventId") Long eventId, Model model) {
@@ -34,9 +32,9 @@ public class QrCodeController extends AbstractController {
 		try {
 			return getQRCodeImage(link, 350, 350);
         } catch (WriterException e) {
-            LOGGER.error("Could not generate QR Code, WriterException :: " + e.getMessage());
+//            LOGGER.error("Could not generate QR Code, WriterException :: " + e.getMessage());
         } catch (IOException e) {
-        	LOGGER.error("Could not generate QR Code, IOException :: " + e.getMessage());
+//        	LOGGER.error("Could not generate QR Code, IOException :: " + e.getMessage());
         }
 		return null;
 	}

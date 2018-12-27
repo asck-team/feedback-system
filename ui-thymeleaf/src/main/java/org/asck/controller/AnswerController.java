@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.asck.service.client.model.Answer;
 import org.asck.service.client.model.Event;
 import org.asck.service.client.model.Option;
@@ -25,7 +23,7 @@ public class AnswerController extends AbstractController {
 	private static final String MODEL_ATTR_EVENTID = "eventId";
 	private static final String MODEL_ATTR_QUESTIONS = "questions";
 	private static final String MODEL_ATTR_ANSWER_FORM = "answerForm";
-	private static final Logger LOGGER = LogManager.getLogger(AnswerController.class);
+//	private static final Logger LOGGER = LogManager.getLogger(AnswerController.class);
 
 	@GetMapping(path = {"/answer"}, params = {MODEL_ATTR_EVENTID})
 	public String answer(Model model, @RequestParam(required = true, name = MODEL_ATTR_EVENTID) Long eventId) {
@@ -49,14 +47,14 @@ public class AnswerController extends AbstractController {
 	
 	@PostMapping(path = {"/answer"})
 	public String answerPost(@ModelAttribute(value=MODEL_ATTR_ANSWER_FORM) AnswerForm answer) {
-		LOGGER.info("Answer obj: {}", answer.toString());
+//		LOGGER.info("Answer obj: {}", answer.toString());
 		for (UiQuestionTM q : answer.getQuestions()) {
-			LOGGER.info("{}", q.getId());
-			LOGGER.info("{}", q.getEventId());
-			LOGGER.info("{}", q.getQuestionName());
-			LOGGER.info("{}", q.getAnswerType());
-			LOGGER.info("{}", q.getAnswerId());
-			LOGGER.info("{}", q.getAnswerFreeText());
+//			LOGGER.info("{}", q.getId());
+//			LOGGER.info("{}", q.getEventId());
+//			LOGGER.info("{}", q.getQuestionName());
+//			LOGGER.info("{}", q.getAnswerType());
+//			LOGGER.info("{}", q.getAnswerId());
+//			LOGGER.info("{}", q.getAnswerFreeText());
 			
 			//FIXME AS 18.12.2018 Id auf UI setzen ... geht nicht. Muss weiter untersucht werden
 			if (q.getAnswerFreeText()!=null) {
@@ -68,7 +66,7 @@ public class AnswerController extends AbstractController {
 			getFeedbackService().saveAnswer(answerToSave);
 			
 		}
-		LOGGER.info("AnswerForm submitted!");
+//		LOGGER.info("AnswerForm submitted!");
 		return "danke";
 	}
 }
