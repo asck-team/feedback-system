@@ -1,0 +1,7 @@
+= image:./asck-logo.png[asck] a little survey system 
+
+image:https://travis-ci.org/uniqueck/feedback-system.svg?branch=develop[link="https://travis-ci.org/uniqueck/feedback-system"]
+image:https://sonarcloud.io/api/project_badges/measure?project=uniqueck_feedback-system&metric=alert_status[link="https://sonarcloud.io/dashboard?id=uniqueck_feedback-system"]
+image:https://sonarcloud.io/api/project_badges/measure?project=uniqueck_feedback-system&metric=bugs[link="https://sonarcloud.io/component_measures?id=uniqueck_feedback-system&metric=Reliability"]
+image:https://sonarcloud.io/api/project_badges/measure?project=uniqueck_feedback-system&metric=coverage[link="https://sonarcloud.io/component_measures?id=uniqueck_feedback-system&metric=Coverage"]
+image:https://img.shields.io/badge/Telegram-Group-blue.svg[link="https://telegram.me/CoBoDt"]
