@@ -68,7 +68,7 @@ class FeedbackServiceImpl implements IFeedbackService {
 		List<QuestionOptionTableModel> questionOptions = getQuestionOptionRepository()
 				.findAllByQuestionTypeId(question.getQuestionTypeId());
 		return Question.builder().id(question.getId()).questionName(question.getQuestionTitle())
-				.questionType(QuestionType.getForDBId(question.getQuestionTypeId()))
+				.questionType(QuestionType.getForDBId(question.getQuestionTypeId())).order(question.getOrder())
 				.options(questionOptions.stream().map(this::map).collect(Collectors.toList())).build();
 	}
 
