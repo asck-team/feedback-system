@@ -49,7 +49,6 @@
 
 	<modules>
 		<module>service-rest</module>
-		<module>ui-vaadin</module>
 		<module>ui-thymeleaf</module>
 		<module>ui-base</module>
 	</modules>
