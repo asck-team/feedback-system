@@ -6,6 +6,7 @@ import java.util.Base64;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,11 +21,15 @@ import com.google.zxing.qrcode.QRCodeWriter;
 @Controller
 public class QrCodeController extends AbstractController {
 	
+	@Value("${ip.adress.qr.code:127.0.0.1}") 
+	private String IP_ADRESS; 
+	
 	private static final Logger LOGGER = LogManager.getLogger(NewEventController.class);
 
 	@GetMapping("/qrCode")
 	public String generateQrCode(@RequestParam("eventId") Long eventId, Model model) {
-		byte[] qrCore = createAsByteArray("http://192.168.0.88:8081/answer?eventId=" + eventId);
+		LOGGER.info("IP Adress: {}", IP_ADRESS);
+		byte[] qrCore = createAsByteArray("http://"+ IP_ADRESS + ":8081/answer?eventId=" + eventId);
 		String qrCodeString = Base64.getEncoder().encodeToString(qrCore); 
 		model.addAttribute("qrCode", qrCodeString);
 		return "qrCode";
