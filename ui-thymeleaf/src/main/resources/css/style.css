@@ -167,3 +167,11 @@ label.star:before {
 	color: #fff;
 }
 /* drag and drop Table */
+.navbar-brand {
+  padding: 0px;
+}
+.navbar-brand>img {
+  height: 0%;
+  padding: 0%;
+  width: 65px;
+}
