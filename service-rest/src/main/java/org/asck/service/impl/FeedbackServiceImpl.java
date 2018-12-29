@@ -123,21 +123,21 @@ class FeedbackServiceImpl implements IFeedbackService {
 		} else {
 			Optional<QuestionTableModel> questionAlreadyExist = allQuestion.stream()
 					.filter(q -> q.getId() == question2Insert.getId()).findFirst();
-			if (!questionAlreadyExist.isPresent()) {
-				if (question2Insert.getOrder() < 1 || question2Insert.getOrder() > allQuestion.size() + 1) {
-					question2Insert.setOrder(allQuestion.size() + 1);
-				}
+			if (!questionAlreadyExist.isPresent()
+					&& (question2Insert.getOrder() < 1 || question2Insert.getOrder() > allQuestion.size() + 1)) {
+				question2Insert.setOrder(allQuestion.size() + 1);
 			}
 			allQuestion.sort((a, b) -> Integer.compare(a.getOrder(), b.getOrder()));
-			List<QuestionTableModel> questions2UpdateOnDb = allQuestion.stream().filter(q -> q.getOrder() >= question2Insert.getOrder()).collect(Collectors.toList());
-			questions2UpdateOnDb.forEach(q -> updateOrderAndSaveOnDatabase(q));
+			List<QuestionTableModel> questions2UpdateOnDb = allQuestion.stream()
+					.filter(q -> q.getOrder() >= question2Insert.getOrder()).collect(Collectors.toList());
+			questions2UpdateOnDb.forEach(this::updateOrderAndSaveOnDatabase);
 		}
 		QuestionTableModel savedQuestion = getQuestionRepository().save(question2Insert);
 		return savedQuestion.getId();
 	}
 
 	protected void updateOrderAndSaveOnDatabase(QuestionTableModel q) {
-		q.setOrder(q.getOrder() +1);
+		q.setOrder(q.getOrder() + 1);
 		getQuestionRepository().save(q);
 	}
 
