@@ -115,53 +115,54 @@ class FeedbackServiceImpl implements IFeedbackService {
 				.getId();
 	}
 
+	protected void shiftOrderDown(QuestionTableModel question) {
+		question.setOrder(question.getOrder() - 1);
+	}
+	
+	protected void shiftOrderUp(QuestionTableModel question) {
+		question.setOrder(question.getOrder() + 1);
+	}
+
 	@Override
 	public Long saveQuestion(@NotNull Long eventId, @Valid Question question) throws EntityNotFoundException {
+		LOGGER.traceEntry("with parameters {} and {}", eventId, question);
 		Long id = question.getId();
 		List<QuestionTableModel> allQuestion = getQuestionRepository().findAllByEventIdOrderByOrder(eventId);
 		if (question.isIdSpecified()) {
 			Optional<QuestionTableModel> existQuestionWithIdOnDatabase = allQuestion.stream()
 					.filter(q -> q.getId() == question.getId()).findAny();
 			if (existQuestionWithIdOnDatabase.isPresent()) {
+				if (question.getOrder() > existQuestionWithIdOnDatabase.get().getOrder()) {
+					allQuestion.stream().filter(q -> q.getOrder() <= question.getOrder()).forEach(this::shiftOrderDown);
+					allQuestion.stream().filter(q -> q.getOrder() > question.getOrder()).forEach(this::shiftOrderUp);
+				} else {
+					allQuestion.stream().filter(q -> q.getOrder() > question.getOrder()).forEach(this::shiftOrderDown);
+					allQuestion.stream().filter(q -> q.getOrder() <= question.getOrder()).forEach(this::shiftOrderUp);
+				}
 				QuestionTableModel question2Insert = existQuestionWithIdOnDatabase.get();
 				question2Insert.setOrder(question.getOrder());
 				question2Insert.setQuestionTitle(question.getQuestionName());
 				question2Insert.setQuestionTypeId(question.getQuestionType().getDbId());
-				if (allQuestion.size() == 1) {
-					question2Insert.setOrder(0);
-				} else {
-					if (question.isOrderSpecified()) {
-						if (question2Insert.getOrder() > allQuestion.size() + 1) {
-							question2Insert.setOrder(allQuestion.size() + 1);
-						}
-					} else {
-						question2Insert.setOrder(allQuestion.size() + 1);
-					}
+				allQuestion.sort((a,b) -> Integer.compare(a.getOrder(), b.getOrder()));
+				for (int i = 0; i < allQuestion.size(); i++) {
+					allQuestion.get(i).setOrder(i + 1);
 				}
-				allQuestion.sort((q1, q2) -> Integer.compare(q1.getOrder(), q2.getOrder()));
-				allQuestion.stream().filter(q -> q.getOrder() >= question2Insert.getOrder())
-						.forEach(this::updateOrderAndSaveOnDatabase);
+				
+				allQuestion.forEach(this::updateQuestionOnDatabase);
 			} else {
 				throw new EntityNotFoundException(QuestionTableModel.class, "id", question.getId().toString());
 			}
 		} else {
-			int order = question.getOrder();
-			if (!question.isOrderSpecified() || question.getOrder() > allQuestion.size() + 1) {
-				order = allQuestion.size() + 1;
-			}
+			int order = allQuestion.size() + 1;
 			QuestionTableModel question2Insert = QuestionTableModel.builder().id(-1L).eventId(eventId)
 					.questionTitle(question.getQuestionName()).questionTypeId(question.getQuestionType().getDbId())
 					.order(order).build();
 			id = getQuestionRepository().save(question2Insert).getId();
-			allQuestion.stream().filter(q -> q.getOrder() >= question2Insert.getOrder())
-					.forEach(this::updateOrderAndSaveOnDatabase);
-
 		}
 		return LOGGER.traceExit(id);
 	}
 
-	protected void updateOrderAndSaveOnDatabase(QuestionTableModel q) {
-		q.setOrder(q.getOrder() + 1);
+	protected void updateQuestionOnDatabase(QuestionTableModel q) {
 		getQuestionRepository().save(q);
 	}
 
