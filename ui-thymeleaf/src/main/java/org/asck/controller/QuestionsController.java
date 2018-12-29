@@ -21,6 +21,7 @@ public class QuestionsController extends AbstractController {
 
 	@GetMapping(path = {"/questions"}, params = MODEL_ATTR_EVENTID)
 	public String index(Model model, @RequestParam(required = true, name = MODEL_ATTR_EVENTID) Long eventId) {
+		LOGGER.traceEntry("with parameter {}", eventId);
 		List<Question> allQuestionsToEvent = getFeedbackService().leseAlleFragenZuEvent(eventId);
 		model.addAttribute(MODEL_ATTR_QUESTIONS, allQuestionsToEvent);
 		model.addAttribute(MODEL_ATTR_EVENTID, eventId);

@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.asck.exceptions.EntityNotFoundException;
 import org.asck.service.IFeedbackService;
 import org.asck.service.model.Event;
@@ -31,11 +33,14 @@ import lombok.Getter;
 @Getter(AccessLevel.PROTECTED)
 public class EventController {
 
+	private static final Logger LOGGER = LogManager.getLogger(EventController.class);
+	
 	@Autowired
 	private IFeedbackService feedbackService;
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<List<Event>> getEvents() {
+		LOGGER.traceEntry();
 		List<Event> events = getFeedbackService().findEvents();
 		if (events.isEmpty()) {
 			return ResponseEntity.noContent().build();
