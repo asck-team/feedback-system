@@ -54,8 +54,8 @@ public class QuestionController {
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Object> createQuestion(@PathVariable("eventId") Long eventId,
 			@Valid @RequestBody Question question) {
-		Long questionId = getFeedbackService().save(eventId, Question.builder().id(-1L)
-				.questionName(question.getQuestionName()).questionType(question.getQuestionType()).build());
+		Long questionId = getFeedbackService().saveQuestion(eventId, Question.builder().id(-1L)
+				.questionName(question.getQuestionName()).questionType(question.getQuestionType()).order(question.getOrder()).build());
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(questionId).toUri();
 		return ResponseEntity.created(uri).build();
 
@@ -64,8 +64,8 @@ public class QuestionController {
 	@PutMapping(path = "/{questionId}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Object> updateQuestion(@PathVariable("eventId") Long eventId,
 			@PathVariable("questionId") Long questionId, @Valid @RequestBody Question question) {
-		getFeedbackService().save(eventId, Question.builder().id(questionId).questionName(question.getQuestionName())
-				.questionType(question.getQuestionType()).build());
+		getFeedbackService().saveQuestion(eventId, Question.builder().id(questionId).questionName(question.getQuestionName())
+				.questionType(question.getQuestionType()).order(question.getOrder()).build());
 		return ResponseEntity.noContent().build();
 
 	}

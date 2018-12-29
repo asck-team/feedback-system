@@ -22,7 +22,7 @@ public interface IFeedbackService {
 
 	Long saveEvent(@Valid Event event);
 
-	Long save(@NotNull Long eventId, @Valid Question question);
+	Long saveQuestion(@NotNull Long eventId, @Valid Question question);
 
 	void deleteEvent(@NotNull Long eventId) throws EntityNotFoundException;
 
