@@ -43,6 +43,7 @@ public class NewQuestionController extends AbstractController {
 			questionTM.setId(questionId);
 			questionTM.setQuestionName(question.getQuestionName());
 			questionTM.setAnswerType(question.getQuestionType());
+			questionTM.setOrder(question.getOrder());
 		}
 		
 		LOGGER.info("eventID: {}, questionID {}", eventId, questionId);
@@ -54,7 +55,7 @@ public class NewQuestionController extends AbstractController {
 
 	@PostMapping("/newQuestion")
     public String post(@ModelAttribute UiQuestionTM questionTM) {
-		LOGGER.info("QuestionId: {}, QuestionName: {}, eventId: {}, AnswerTypeId: {}", questionTM.getId(), questionTM.getQuestionName(), questionTM.getEventId(), questionTM.getAnswerType());
+		LOGGER.info("QuestionId: {}, QuestionName: {}, eventId: {}, AnswerTypeId: {}, Order: {}", questionTM.getId(), questionTM.getQuestionName(), questionTM.getEventId(), questionTM.getAnswerType(), questionTM.getOrder());
 		Question questionToSave = new Question(questionTM.getId(), questionTM.getQuestionName(), questionTM.getAnswerType(), questionTM.getOrder());
 		getFeedbackService().saveQuestion(questionTM.getEventId(), questionToSave);
 		LOGGER.info("Question to Save: {}", questionToSave);
