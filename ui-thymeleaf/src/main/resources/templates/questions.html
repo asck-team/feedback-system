@@ -29,7 +29,7 @@
 						<tr th:each="question, rowStat: ${questions}"
 							th:style="${rowStat.odd} ? 'color: black' : 'color: black;'"
 							th:id="${question.id}"
-							th:attr="eventId=${eventId}">
+							th:attr="eventId=${eventId}, questionName=${question.questionName}, questionType=${question.questionType}">
 							<td class="col-md-8" th:text="${question.questionName}" >QuestionName</td>
 							<td class="col-md-1" th:text="${question.order}">Order</td>
 							<td class="col-md-2" th:text="${question.questionType}">Type</td>
@@ -71,7 +71,9 @@
                 var newIndex = $item.index();
                 var id = $item.attr("id");
                 var eventID = $item.attr("eventId");
-                location.href = "/updateOrderQuestion?eventId=" + eventID + "&questionId="+ id + "&order=" + newIndex;
+                var qName = $item.attr("questionName");
+                var qType = $item.attr("questionType");
+                location.href = "/updateOrderQuestion?eventId=" + eventID + "&questionId="+ id + "&order=" + newIndex + "&qType=" + qType + "&qName=" + qName;
             };
         });
         

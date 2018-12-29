@@ -167,3 +167,7 @@ label.star:before {
 	color: #fff;
 }
 /* drag and drop Table */
+
+.hide-radio {
+    display : none;
+}
