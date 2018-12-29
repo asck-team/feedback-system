@@ -10,6 +10,8 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.asck.exceptions.EntityNotFoundException;
 import org.asck.repository.AnswerRepository;
 import org.asck.repository.EventRepository;
@@ -36,6 +38,8 @@ import lombok.Getter;
 @Service
 @Getter(value = AccessLevel.PROTECTED)
 class FeedbackServiceImpl implements IFeedbackService {
+
+	private static final Logger LOGGER = LogManager.getLogger(FeedbackServiceImpl.class);
 
 	@Autowired
 	EventRepository eventRepository;
@@ -112,28 +116,48 @@ class FeedbackServiceImpl implements IFeedbackService {
 	}
 
 	@Override
-	public Long saveQuestion(@NotNull Long eventId, @Valid Question question) {
-		// lese aller Fragen
-		QuestionTableModel question2Insert = QuestionTableModel.builder().id(question.getId()).eventId(eventId)
-				.questionTitle(question.getQuestionName()).questionTypeId(question.getQuestionType().getDbId())
-				.order(question.getOrder()).build();
+	public Long saveQuestion(@NotNull Long eventId, @Valid Question question) throws EntityNotFoundException {
+		Long id = question.getId();
 		List<QuestionTableModel> allQuestion = getQuestionRepository().findAllByEventIdOrderByOrder(eventId);
-		if (allQuestion.isEmpty()) {
-			question2Insert.setOrder(1);
-		} else {
-			Optional<QuestionTableModel> questionAlreadyExist = allQuestion.stream()
-					.filter(q -> q.getId() == question2Insert.getId()).findFirst();
-			if (!questionAlreadyExist.isPresent()
-					&& (question2Insert.getOrder() < 1 || question2Insert.getOrder() > allQuestion.size() + 1)) {
-				question2Insert.setOrder(allQuestion.size() + 1);
+		if (question.isIdSpecified()) {
+			Optional<QuestionTableModel> existQuestionWithIdOnDatabase = allQuestion.stream()
+					.filter(q -> q.getId() == question.getId()).findAny();
+			if (existQuestionWithIdOnDatabase.isPresent()) {
+				QuestionTableModel question2Insert = existQuestionWithIdOnDatabase.get();
+				question2Insert.setOrder(question.getOrder());
+				question2Insert.setQuestionTitle(question.getQuestionName());
+				question2Insert.setQuestionTypeId(question.getQuestionType().getDbId());
+				if (allQuestion.size() == 1) {
+					question2Insert.setOrder(0);
+				} else {
+					if (question.isOrderSpecified()) {
+						if (question2Insert.getOrder() > allQuestion.size() + 1) {
+							question2Insert.setOrder(allQuestion.size() + 1);
+						}
+					} else {
+						question2Insert.setOrder(allQuestion.size() + 1);
+					}
+				}
+				allQuestion.sort((q1, q2) -> Integer.compare(q1.getOrder(), q2.getOrder()));
+				allQuestion.stream().filter(q -> q.getOrder() >= question2Insert.getOrder())
+						.forEach(this::updateOrderAndSaveOnDatabase);
+			} else {
+				throw new EntityNotFoundException(QuestionTableModel.class, "id", question.getId().toString());
 			}
-			allQuestion.sort((a, b) -> Integer.compare(a.getOrder(), b.getOrder()));
-			List<QuestionTableModel> questions2UpdateOnDb = allQuestion.stream()
-					.filter(q -> q.getOrder() >= question2Insert.getOrder()).collect(Collectors.toList());
-			questions2UpdateOnDb.forEach(this::updateOrderAndSaveOnDatabase);
+		} else {
+			int order = question.getOrder();
+			if (!question.isOrderSpecified() || question.getOrder() > allQuestion.size() + 1) {
+				order = allQuestion.size() + 1;
+			}
+			QuestionTableModel question2Insert = QuestionTableModel.builder().id(-1L).eventId(eventId)
+					.questionTitle(question.getQuestionName()).questionTypeId(question.getQuestionType().getDbId())
+					.order(order).build();
+			id = getQuestionRepository().save(question2Insert).getId();
+			allQuestion.stream().filter(q -> q.getOrder() >= question2Insert.getOrder())
+					.forEach(this::updateOrderAndSaveOnDatabase);
+
 		}
-		QuestionTableModel savedQuestion = getQuestionRepository().save(question2Insert);
-		return savedQuestion.getId();
+		return LOGGER.traceExit(id);
 	}
 
 	protected void updateOrderAndSaveOnDatabase(QuestionTableModel q) {
