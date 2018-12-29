@@ -3,11 +3,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.badenia.feedback</groupId>
+		<groupId>org.asck</groupId>
 		<artifactId>feedback-system</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>service-rest</artifactId>
+
+	<name>service-rest</name>
 
 	<properties>
 		<java.version>8</java.version>
@@ -56,10 +58,10 @@
 			<version>1.4.0</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
-			<groupId>org.hsqldb</groupId>
-			<artifactId>hsqldb</artifactId>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 
@@ -68,6 +70,32 @@
 			<artifactId>lombok</artifactId>
 			<scope>provided</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.8.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.8.0</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.tngtech.archunit</groupId>
+			<artifactId>archunit-junit4</artifactId>
+			<version>0.9.3</version>
+			<scope>test</scope>
+		</dependency>
+
 
 
 	</dependencies>
@@ -93,7 +121,80 @@
 					</execution>
 				</executions>
 			</plugin>
+
+
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>docker-build</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>io.fabric8</groupId>
+						<artifactId>docker-maven-plugin</artifactId>
+						<version>0.22.1</version>
+						<configuration>
+							<images>
+								<image>
+									<name>uniqueck/${project.artifactId}:${project.version}</name>
+									<build>
+										<from>openjdk:10</from>
+										<assembly>
+											<descriptorRef>artifact</descriptorRef>
+										</assembly>
+										<tags>${project.version}</tags>
+										<labels>
+											<maven.project.groupId>${project.groupId}</maven.project.groupId>
+											<maven.project.artifactId>${project.artifactId}</maven.project.artifactId>
+											<maven.project.version>${project.version}</maven.project.version>
+										</labels>
+										<ports>
+											<port>8080</port>
+										</ports>
+									</build>
+									<run>
+										<ports>
+											<port>8080:8080</port>
+										</ports>
+
+										<cmd>java -jar /maven/app.jar</cmd>
+									</run>
+								</image>
+							</images>
+						</configuration>
+						<executions>
+							<execution>
+								<id>docker-clean</id>
+								<phase>clean</phase>
+								<goals>
+									<goal>remove</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>docker-build</id>
+								<goals>
+									<goal>build</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>docker-source</id>
+								<goals>
+									<goal>source</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>docker-push</id>
+								<goals>
+									<goal>push</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog
-	xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
-         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
 	<changeSet id="1" author="constantinkrueger">
 		<comment>create event table</comment>
@@ -19,7 +19,13 @@
 		</createTable>
 	</changeSet>
 
-	<changeSet id="2" author="constantinkrueger" context="test-data">
+	<changeSet id="2" author="constantinkrueger">
+		<comment>create sequence for event table</comment>
+		<createSequence sequenceName="SEQ_EVENT" cycle="false" incrementBy="50" startValue="5"/>
+	</changeSet>
+
+	<changeSet id="3" author="constantinkrueger"
+		context="test-data">
 		<loadData tableName="Event" file="test-data/events.csv" />
 	</changeSet>
 </databaseChangeLog>

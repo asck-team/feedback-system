@@ -1,4 +1,4 @@
-id,order,question,optional_remark,question_type_id,event_id
+id,order_nr,question,optional_remark,question_type_id,event_id
 1,1,Wie hat Ihnen heute das Essen geschmeckt?,null,2,1
 2,1,Wie fanden Sie generell den Ablauf des "Free Space" (Freitag "Teamfindung" / Montag "Free Space und Review")?,null,3,2
 3,2,Wie fanden Sie die Information im Vorfeld (E-Mail und Vorstellung in Gruppenrunden)?,null,3,2

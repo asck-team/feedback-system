@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="fragments/headerHead :: head">...</div>
+
+<div th:replace="fragments/headerNavBar :: header">...</div>
+
+<body class="bg-light text-dark bgsecond">
+    <br>
+    <form action="#" th:action="@{/newQuestion}" th:object="${questionTM}" method="post">
+        <div class="form-group container">
+            <input type="hidden" th:field="*{eventId}"/><br/>
+            <input type="hidden" th:field="*{id}"/><br/>
+            <label for="question">New question:</label>
+            <div class="input-group">
+                <input class="form-control" type="text" th:field="*{questionName}" required="required" placeholder="Enter question"/>
+                <div class="input-group-append">
+                    <select class="custom-select" id="inputGroupSelect01" th:field="*{answerType}" required="required">
+                        <option selected value="">Answer type...</option>
+                        <option th:each="answerType : ${answerTypes}" th:text="${answerType}" th:value="${answerType}"></option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group container">
+            <p><input type="submit" value="Save" class="btn btn-dark"/></p>
+        </div>
+    </form>
+</body>
+</html>

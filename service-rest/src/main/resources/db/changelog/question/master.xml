@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog
-	xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
-         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
 	<changeSet id="1" author="constantinkrueger">
 		<createTable tableName="Question" remarks="Fragen zu einer Veranstaltung">
 			<column name="id" type="numeric">
 				<constraints nullable="false" primaryKey="true" primaryKeyName="PK_QUESTION"/>
 			</column>
-			<column name="order" type="numeric" remarks="Reihenfolge der Fragen zu einer Umfrage">
+			<column name="order_nr" type="numeric" remarks="Reihenfolge der Fragen zu einer Umfrage">
 				<constraints nullable="false"/>
 			</column>
 			<column name="question" type="varchar(255)" remarks="Frage">
@@ -28,7 +28,12 @@
 		</createTable>
 	</changeSet>
 	
-	<changeSet  id="2" author="constantinkrueger" context="test-data">
+	<changeSet id="2" author="constantinkrueger">
+		<comment>create sequence for question table</comment>
+		<createSequence sequenceName="SEQ_QUESTION" cycle="false" incrementBy="50" startValue="50"/>
+	</changeSet>
+	
+	<changeSet  id="3" author="constantinkrueger" context="test-data">
 		<loadData tableName="Question" file="test-data/questions.csv" />
 	</changeSet>
 </databaseChangeLog>

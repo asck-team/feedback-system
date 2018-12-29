@@ -1,33 +1,124 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.badenia.feedback</groupId>
+	<groupId>org.asck</groupId>
 	<artifactId>feedback-system</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>feedback-system</name>
-	<description>Demo project for Spring Boot</description>
+	<description>a litte feedback system to evaluate ui frameworks</description>
+	<inceptionYear>2018</inceptionYear>
+
+	<scm>
+		<connection>scm:git:git@github.com:uniqueck/feedback-system.git</connection>
+		<developerConnection>scm:git:git@github.com:uniqueck/feedback-system.git</developerConnection>
+	</scm>
+
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.1.0.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
+
+	<developers>
+		<developer>
+			<id>ckrueger</id>
+			<name>Constantin Krüger</name>
+			<roles>
+				<role>architect</role>
+				<role>developer</role>
+			</roles>
+			<email>bikerconstantin@gmail.com</email>
+		</developer>
+	</developers>
+
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
+		<asciidoctor.maven.plugin.version>1.5.7.1</asciidoctor.maven.plugin.version>
+		<asciidoctorj.version>1.5.7</asciidoctorj.version>
+		<asciidoctorj.diagram.version>1.5.9</asciidoctorj.diagram.version>
+		<jruby.version>9.1.17.0</jruby.version>
+		<arc42.base.directory>${basedir}/src/docs/arc42</arc42.base.directory>
 	</properties>
 
 	<modules>
 		<module>service-rest</module>
-		<module>ui-vaadin</module>
-    <module>ui-vaadin-andrei</module>
-  </modules>
+		<module>ui-thymeleaf</module>
+		<module>ui-base</module>
+	</modules>
+
+	<build>
+
+		<plugins>
+			<plugin>
+				<groupId>org.asciidoctor</groupId>
+				<artifactId>asciidoctor-maven-plugin</artifactId>
+				<version>${asciidoctor.maven.plugin.version}</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.jruby</groupId>
+						<artifactId>jruby-complete</artifactId>
+						<version>${jruby.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.asciidoctor</groupId>
+						<artifactId>asciidoctorj</artifactId>
+						<version>${asciidoctorj.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.asciidoctor</groupId>
+						<artifactId>asciidoctorj-diagram</artifactId>
+						<version>${asciidoctorj.diagram.version}</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<backend>html5</backend>
+					<sourceHighlighter>coderay</sourceHighlighter>
+				</configuration>
+				<executions>
+					<execution>
+						<inherited>false</inherited>
+						<id>de-asciidoc-to-html</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>process-asciidoc</goal>
+						</goals>
+						<configuration>
+							<imagesDir>./images</imagesDir>
+							<sourceDirectory>${arc42.base.directory}/DE</sourceDirectory>
+							<sourceDocumentName>arc42_de.adoc</sourceDocumentName>
+							<attributes>
+								<toc>left</toc>
+								<toc-title>Inhaltsverzeichnis</toc-title>
+								<caution-caption>Achtung</caution-caption>
+								<important-caption>Wichtig</important-caption>
+								<note-caption>Hinweis</note-caption>
+								<tip-caption>Tip</tip-caption>
+								<warning-caption>Warnung</warning-caption>
+								<appendix-caption>Anhang</appendix-caption>
+								<example-caption>Beispiel</example-caption>
+								<figure-caption>Abbildung</figure-caption>
+								<table-caption>Tabelle</table-caption>
+							</attributes>
+							<requires>
+								<require>asciidoctor-diagram</require>
+							</requires>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 
 
-	</project>
+
+</project>

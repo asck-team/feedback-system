@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="fragments/headerHead :: head">...</div>
+
+<div th:replace="fragments/headerNavBar :: header">...</div>
+
+<body class="bg-light text-dark bgsecond">
+    <br>
+    <form action="#" th:action="@{/newEvent}" th:object="${eventTM}" method="post">
+    	<input class="invisible" th:field="*{id}"/><br/>
+        <div class="form-group container">
+            <label for="event">New event:</label>
+            <input class="form-control" type="text" th:field="*{eventName}" required="required" placeholder="Enter event name"/>
+        </div>
+        <div class="form-group container">
+            <p><input type="submit" value="Save" class="btn btn-dark"/></p>
+        </div>
+    </form>
+</body>
+</html>

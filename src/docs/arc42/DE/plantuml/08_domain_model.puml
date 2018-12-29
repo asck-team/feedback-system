@@ -1,0 +1,53 @@
+@startuml
+!define Table(name,desc) class name as "desc" << (T,#FFAAAA) >>
+!define primary_key(x) <b>x</b>
+!define unique(x) <color:green>x</color>
+!define not_null(x) <u>x</u>
+hide methods
+hide stereotypes
+
+' entities
+Table(Event, 'Event') {
+	primary_key(id) INTEGER
+	not_null(unique(name)) VARCHAR[40]
+}
+
+Table(Question, 'Question') {
+	primary_key(id) INTEGER
+	not_null(order_nr) INTEGER
+	not_null(question) VARCHAR[255]
+	optional_remark VARCHAR[255]
+	question_type_id INTEGER
+	event_id INTEGER
+}
+
+Table(Question_Type,'Question_Type\n(type of a question)') {
+	primary_key(id) INTEGER
+	not_null(description) VARCHAR[40]
+}
+
+Table(Question_Option,'Question_Option\n(option for a question)') {
+	primary_key(id) INTEGER
+	not_null(optional_description) VARCHAR[100]
+	not_null(order) INTEGER
+	icon_path VARCHAR[250]
+	question_type_id INTEGER
+}
+
+Table(Answer, 'Answer\n(an answer for a question)') {
+	primary_key(id) INTEGER
+	not_null(answered_at) DATE
+	question_option_id INTEGER
+	remark VARCHAR[255]
+	question_id INTEGER
+}
+
+
+' relationships
+Event "1" --> "*" Question : "an event may have questions" 
+Question --> Question_Type : "a question is of type"
+Question_Option --> Question_Type : "an option is for a specific question type" 
+Answer --> Question_Option : "an answer is about one option of a question"
+Answer --> Question : "an answer is for one question"
+
+@enduml
