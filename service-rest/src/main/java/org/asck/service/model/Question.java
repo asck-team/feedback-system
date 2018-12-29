@@ -39,5 +39,15 @@ public class Question {
 	private List<Option> options;
 	
 	private int order;
+	
+	@JsonIgnore
+	public boolean isIdSpecified() {
+		return id != null && id != -1L;
+	}
+	
+	@JsonIgnore
+	public boolean isOrderSpecified() {
+		return order > 0;
+	}
 
 }
