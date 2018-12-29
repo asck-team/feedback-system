@@ -1,7 +1,6 @@
 package org.asck.service.impl;
 
 import java.time.ZoneId;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -59,7 +58,7 @@ class FeedbackServiceImpl implements IFeedbackService {
 	}
 
 	protected Event loadEvent(EventTableModel event) {
-		List<QuestionTableModel> questions = getQuestionRepository().findAllByEventId(event.getId());
+		List<QuestionTableModel> questions = getQuestionRepository().findAllByEventIdOrderByOrder(event.getId());
 		return Event.builder().id(event.getId()).name(event.getName())
 				.questions(questions.stream().map(this::map).collect(Collectors.toList())).build();
 	}
@@ -113,37 +112,52 @@ class FeedbackServiceImpl implements IFeedbackService {
 	}
 
 	@Override
-	public Long save(@NotNull Long eventId, @Valid Question question) {
+	public Long saveQuestion(@NotNull Long eventId, @Valid Question question) {
 		// lese aller Fragen
-		List<QuestionTableModel> allQuestion = getQuestionRepository().findAllByEventId(eventId);
-		Optional<Integer> max = allQuestion.stream().map(QuestionTableModel::getOrder)
-				.max(Comparator.comparingInt(Integer::valueOf));
-		int order = 1;
-		if (max.isPresent()) {
-			order = max.get() + 1;
-		}
-		return getQuestionRepository().save(QuestionTableModel.builder().id(question.getId()).eventId(eventId)
+		QuestionTableModel question2Insert = QuestionTableModel.builder().id(question.getId()).eventId(eventId)
 				.questionTitle(question.getQuestionName()).questionTypeId(question.getQuestionType().getDbId())
-				.order(order).build()).getId();
+				.order(question.getOrder()).build();
+		List<QuestionTableModel> allQuestion = getQuestionRepository().findAllByEventIdOrderByOrder(eventId);
+		if (allQuestion.isEmpty()) {
+			question2Insert.setOrder(1);
+		} else {
+			Optional<QuestionTableModel> questionAlreadyExist = allQuestion.stream()
+					.filter(q -> q.getId() == question2Insert.getId()).findFirst();
+			if (!questionAlreadyExist.isPresent()) {
+				if (question2Insert.getOrder() < 1 || question2Insert.getOrder() > allQuestion.size() + 1) {
+					question2Insert.setOrder(allQuestion.size() + 1);
+				}
+			}
+			allQuestion.sort((a, b) -> Integer.compare(a.getOrder(), b.getOrder()));
+			List<QuestionTableModel> questions2UpdateOnDb = allQuestion.stream().filter(q -> q.getOrder() >= question2Insert.getOrder()).collect(Collectors.toList());
+			questions2UpdateOnDb.forEach(q -> updateOrderAndSaveOnDatabase(q));
+		}
+		QuestionTableModel savedQuestion = getQuestionRepository().save(question2Insert);
+		return savedQuestion.getId();
 	}
-	
+
+	protected void updateOrderAndSaveOnDatabase(QuestionTableModel q) {
+		q.setOrder(q.getOrder() +1);
+		getQuestionRepository().save(q);
+	}
+
 	@Override
 	public void deleteEvent(@NotNull Long eventId) throws EntityNotFoundException {
 		if (getEventRepository().existsById(eventId)) {
-			List<QuestionTableModel> allQuestions = getQuestionRepository().findAllByEventId(eventId);
+			List<QuestionTableModel> allQuestions = getQuestionRepository().findAllByEventIdOrderByOrder(eventId);
 			if (!allQuestions.isEmpty()) {
 				for (QuestionTableModel eachQuestion : allQuestions) {
 					List<AnswerTableModel> allAnswers = getAnswerRepository().findAllByQuestionId(eachQuestion.getId());
 					getAnswerRepository().deleteAll(allAnswers);
 				}
-				getQuestionRepository().deleteAll(allQuestions);				
+				getQuestionRepository().deleteAll(allQuestions);
 			}
 			getEventRepository().deleteById(eventId);
 		} else {
 			throw new EntityNotFoundException(Event.class, "id", eventId.toString());
 		}
 	}
-	
+
 	@Override
 	public void deleteQuestion(@NotNull Long eventId, @NotNull Long questionId) throws EntityNotFoundException {
 		if (getEventRepository().existsById(eventId)) {
@@ -153,7 +167,7 @@ class FeedbackServiceImpl implements IFeedbackService {
 				getQuestionRepository().deleteById(questionId);
 			} else {
 				throw new EntityNotFoundException(Question.class, "id", questionId.toString());
-			}			
+			}
 		} else {
 			throw new EntityNotFoundException(Event.class, "id", eventId.toString());
 		}
