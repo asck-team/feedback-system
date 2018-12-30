@@ -28,4 +28,6 @@ public interface IFeedbackService {
 
 	void deleteQuestion(@NotNull Long eventId, @NotNull Long questionId) throws EntityNotFoundException;
 
+	List<Answer> getAllAnswersToQuestion(long questionId) throws EntityNotFoundException;
+
 }
