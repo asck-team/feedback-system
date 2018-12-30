@@ -1,6 +1,5 @@
 package org.asck.view;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -14,27 +13,24 @@ import org.supercsv.prefs.CsvPreference;
 
 public class CsvView extends AbstractCsvView {
 
-	
+	@SuppressWarnings("unchecked")
 	@Override
-    protected void buildCsvDocument(Map<String, Object> model, HttpServletRequest request, HttpServletResponse
-            response) throws Exception {
+	protected void buildCsvDocument(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 
-        response.setHeader("Content-Disposition", "attachment; filename=\"my-csv-file.csv\"");
-        
-        @SuppressWarnings("unchecked")
-        List<Answer> answers = (List<Answer>) model.get("answers");
-        String[] header = {"questionId", "optionId", "remark", "answeredAt"};
-        
-        ICsvBeanWriter csvWriter = new CsvBeanWriter(response.getWriter(),
-                CsvPreference.STANDARD_PREFERENCE);
+		response.setHeader("Content-Disposition", "attachment; filename=\"AnswersReport.csv\"");
 
-        csvWriter.writeHeader(header);
+		List<Answer> answers = (List<Answer>) model.get("answers");
+		String[] header = { "questionId", "optionId", "remark", "answeredAt" };
 
-        for (Answer answer : answers) {
-            csvWriter.write(answer, header);
-        }
-        csvWriter.close();
+		ICsvBeanWriter csvWriter = new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
 
-    }
+		csvWriter.writeHeader(header);
+
+		for (Answer answer : answers) {
+			csvWriter.write(answer, header);
+		}
+		csvWriter.close();
+	}
 
 }
