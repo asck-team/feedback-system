@@ -177,3 +177,8 @@ label.star:before {
   width: 65px;
 }
 /* logo */
+/* hide radio button for freetext */
+.hide-radio {
+    display : none;
+} 
+/* hide radio button for freetext */
