@@ -40,7 +40,7 @@ public class AnswerController extends AbstractController {
 		List<UiQuestionTM> questionsUi = new ArrayList<>();
 		for (Question question : allQuestionsToEvent) {
 			List<Option> options = getFeedbackService().leseAlleOptionenZuEinerFrage(eventId, question.getId());
-			System.out.println(options.toString());
+			LOGGER.info("{}",options);
 			questionsUi.add(new UiQuestionTM(question.getId(), question.getQuestionName(), eventId, question.getQuestionType(), 0L, null, options, 0));
 		}
 		answerForm.setQuestions(questionsUi);
@@ -65,7 +65,7 @@ public class AnswerController extends AbstractController {
 			}
 			
 			Answer answerToSave = new Answer(q.getId(), q.getAnswerId(), q.getAnswerFreeText(), LocalDateTime.now());
-			System.out.println(answerToSave.toString());
+			LOGGER.info("{}", answerToSave);
 			getFeedbackService().saveAnswer(answerToSave);
 			
 		}
