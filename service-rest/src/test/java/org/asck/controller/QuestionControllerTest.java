@@ -79,7 +79,7 @@ public class QuestionControllerTest {
 	 */
 	@Test
 	public void testCreateQuestion() throws Exception {
-		when(feedbackServiceMock.save(20L,
+		when(feedbackServiceMock.saveQuestion(20L,
 				Question.builder().id(-1L).questionName("Name").questionType(QuestionType.FIVE_SMILEYS).build()))
 						.thenReturn(21L);
 
@@ -91,7 +91,7 @@ public class QuestionControllerTest {
 				.content(jsonValue)).andDo(print()).andExpect(status().isCreated())
 				.andExpect(header().string("location", "http://localhost/v1/feedback/events/20/questions/21"));
 
-		verify(feedbackServiceMock).save(20L,
+		verify(feedbackServiceMock).saveQuestion(20L,
 				Question.builder().id(-1L).questionName("Name").questionType(QuestionType.FIVE_SMILEYS).build());
 	}
 
@@ -101,7 +101,7 @@ public class QuestionControllerTest {
 	 */
 	@Test
 	public void testUpdateQuestion() throws Exception {
-		when(feedbackServiceMock.save(20L,
+		when(feedbackServiceMock.saveQuestion(20L,
 				Question.builder().id(21L).questionName("Name").questionType(QuestionType.FIVE_SMILEYS).build()))
 						.thenReturn(21L);
 
@@ -112,7 +112,7 @@ public class QuestionControllerTest {
 		mockMvc.perform(put("/v1/feedback/events/20/questions/21").contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
 				.content(jsonValue)).andDo(print()).andExpect(status().isNoContent());
 
-		verify(feedbackServiceMock).save(20L,
+		verify(feedbackServiceMock).saveQuestion(20L,
 				Question.builder().id(21L).questionName("Name").questionType(QuestionType.FIVE_SMILEYS).build());
 
 	}

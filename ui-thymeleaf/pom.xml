@@ -61,13 +61,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.asck</groupId>
-			<artifactId>ui-base</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-
-
-		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<scope>provided</scope>
@@ -122,6 +115,13 @@
 	        </exclusions>
 	    </dependency>
 	    <!-- generate QrCode -->
+
+		<dependency>
+			<groupId>com.tngtech.archunit</groupId>
+			<artifactId>archunit-junit4</artifactId>
+			<version>0.9.3</version>
+			<scope>test</scope>
+		</dependency>
 
 	</dependencies>
 
