@@ -1,6 +1,7 @@
 package org.asck.service.client.impl;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -150,5 +151,13 @@ public class FeedbackClientService implements IFeedbackClientService {
 		URI uri4CreatedAnswer = new RestTemplate().postForLocation(createUrlPath(PATH_ELEMENT_ANSWERS), answer);
 		LOGGER.info("created Answer: {}", uri4CreatedAnswer);
 		return answer;
+	}
+	
+	@Override
+	public List<Answer> getAllAnswersToEventId(Long eventId) {
+		List<Answer> answers = new ArrayList<>();
+		answers.add(new Answer(1L, 2L, "remark1", LocalDateTime.now()));
+		answers.add(new Answer(2L, 3L, "remark2", LocalDateTime.now()));
+		return null;
 	}
 }

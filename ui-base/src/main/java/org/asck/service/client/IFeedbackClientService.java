@@ -31,6 +31,6 @@ public interface IFeedbackClientService {
 	
 	Answer saveAnswer(Answer answer);
 	
-	
+	List<Answer> getAllAnswersToEventId(Long eventId);
 
 }
