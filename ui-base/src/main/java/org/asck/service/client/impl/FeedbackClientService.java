@@ -158,6 +158,6 @@ public class FeedbackClientService implements IFeedbackClientService {
 		List<Answer> answers = new ArrayList<>();
 		answers.add(new Answer(1L, 2L, "remark1", LocalDateTime.now()));
 		answers.add(new Answer(2L, 3L, "remark2", LocalDateTime.now()));
-		return null;
+		return answers;
 	}
 }

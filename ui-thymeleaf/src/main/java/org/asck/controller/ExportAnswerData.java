@@ -12,8 +12,9 @@ public class ExportAnswerData extends AbstractController{
 	private static final String MODEL_ATTR_EVENTID = "eventId";
 	
 	@RequestMapping(value = "/download", method = RequestMethod.GET)
-	public String download(Model model, @RequestParam(required = true, name = MODEL_ATTR_EVENTID) Long eventId) {
-	    model.addAttribute("answers", getFeedbackService().getAllAnswersToEventId(eventId));
+	public String download(Model model) {
+	    Long eventId = 1L;
+		model.addAttribute("answers", getFeedbackService().getAllAnswersToEventId(eventId));
 	    return "";
 	}
 

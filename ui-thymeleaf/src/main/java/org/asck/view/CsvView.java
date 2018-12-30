@@ -1,5 +1,6 @@
 package org.asck.view;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -22,8 +23,8 @@ public class CsvView extends AbstractCsvView {
         
         @SuppressWarnings("unchecked")
         List<Answer> answers = (List<Answer>) model.get("answers");
-        String[] header = {"FirstName", "LastName", "LastName", "JobTitle", "Company", "Address", "City", "Country",
-                "PhoneNumber"};
+        String[] header = {"questionId", "optionId", "remark", "answeredAt"};
+        
         ICsvBeanWriter csvWriter = new CsvBeanWriter(response.getWriter(),
                 CsvPreference.STANDARD_PREFERENCE);
 
