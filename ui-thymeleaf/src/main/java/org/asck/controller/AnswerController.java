@@ -40,7 +40,8 @@ public class AnswerController extends AbstractController {
 		List<UiQuestionTM> questionsUi = new ArrayList<>();
 		for (Question question : allQuestionsToEvent) {
 			List<Option> options = getFeedbackService().leseAlleOptionenZuEinerFrage(eventId, question.getId());
-			questionsUi.add(new UiQuestionTM(question.getId(), question.getQuestionName(), eventId, question.getQuestionType(), null, null, options, 0));
+			LOGGER.info("{}",options);
+			questionsUi.add(new UiQuestionTM(question.getId(), question.getQuestionName(), eventId, question.getQuestionType(), 0L, null, options, 0));
 		}
 		answerForm.setQuestions(questionsUi);
 		model.addAttribute(MODEL_ATTR_ANSWER_FORM, answerForm);
@@ -60,15 +61,15 @@ public class AnswerController extends AbstractController {
 			
 			//FIXME AS 18.12.2018 Id auf UI setzen ... geht nicht. Muss weiter untersucht werden
 			if (q.getAnswerFreeText()!=null) {
-				q.setAnswerId(6L);
+				q.setAnswerId(11L);
 			}
 			
 			Answer answerToSave = new Answer(q.getId(), q.getAnswerId(), q.getAnswerFreeText(), LocalDateTime.now());
-			System.out.println(answerToSave.toString());
+			LOGGER.info("{}", answerToSave);
 			getFeedbackService().saveAnswer(answerToSave);
 			
 		}
 		LOGGER.info("AnswerForm submitted!");
-		return "danke";
+		return "thanks";
 	}
 }

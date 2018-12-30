@@ -21,6 +21,7 @@ public class QuestionsController extends AbstractController {
 
 	@GetMapping(path = {"/questions"}, params = MODEL_ATTR_EVENTID)
 	public String index(Model model, @RequestParam(required = true, name = MODEL_ATTR_EVENTID) Long eventId) {
+		LOGGER.traceEntry("with parameter {}", eventId);
 		List<Question> allQuestionsToEvent = getFeedbackService().leseAlleFragenZuEvent(eventId);
 		model.addAttribute(MODEL_ATTR_QUESTIONS, allQuestionsToEvent);
 		model.addAttribute(MODEL_ATTR_EVENTID, eventId);
@@ -34,10 +35,11 @@ public class QuestionsController extends AbstractController {
 	}
 	
 	@GetMapping("/updateOrderQuestion")
-	public String updateOrderQuestion(@RequestParam(MODEL_ATTR_EVENTID) Long eventId, @RequestParam("questionId") Long questionId, @RequestParam("order") int order, Model model) {
+	public String updateOrderQuestion(@RequestParam(MODEL_ATTR_EVENTID) Long eventId, @RequestParam("questionId") Long questionId, @RequestParam("order") int order, @RequestParam("qType") String qType,@RequestParam("qName") String qName, Model model) {
 		LOGGER.info("Order aktualisieren!!!!!!!!");
-		LOGGER.info("Eventid: {}, QuestionID: {}, Order: {}", eventId, questionId, order);
-		//TODO Call ServiceMethod updateOrderToQuestion
+		LOGGER.info("Eventid: {}, QuestionID: {}, Order: {}, QuestionType: {}, QuestionName: {}", eventId, questionId, order, qType, qName);
+		Question questionToSave = new Question(questionId, qName, qType, order);
+		getFeedbackService().saveQuestion(eventId, questionToSave);
 		return "redirect:/questions?" + MODEL_ATTR_EVENTID + "=" + eventId;
 	}
 	
