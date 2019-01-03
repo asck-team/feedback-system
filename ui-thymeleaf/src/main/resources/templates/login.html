@@ -5,8 +5,8 @@
 
 <div th:replace="fragments/headerNavBar :: header">...</div>
 
-<body>
-     <form >
+<body class="bg-light text-black bgsecond">
+     <form id="frame"  style=" width:400px; margin:auto;">
 
   <div class="container" >
   <h3>Log in</h3>
@@ -17,11 +17,9 @@
     <label for="psw"><b>Password</b></label>
     <input type="password" style="width:200px;" placeholder="Enter Password" name="psw" required><br>
 
-    <button type="submit" style="width:300px;">Login</button>
+    <button id= "logInButton" type="submit" style="width:300px;">Login</button>
   </div>
 
-  <div class="container" style="background-color:#f1f1f1">
-  </div>
 </form>   
 
 

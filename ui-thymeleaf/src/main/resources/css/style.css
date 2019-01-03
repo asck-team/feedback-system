@@ -183,11 +183,18 @@ label.star:before {
 
 
   /* Bordered form */
-/* form {
-  border: 4px solid #f1f1f1;
-  width:400px;
+#frame{
+ /* border: 5px solid #c0c0c0; */
+  width:500px;
+padding-top: 40px;
+padding-bottom: 40px;
+padding-left: 35px;
 }
-*/
+
+#logInButton{
+	margin-top: 30px;
+	background-color: #00bbbb;
+}
 
 
 Add a hover effect for buttons 
@@ -209,11 +216,6 @@ button:hover {
 
 }
 
-/* The "Forgot password" text */
-span.psw {
-  float: right;
-  padding-top: 16px;
-}
 
 /* Change styles for span and cancel button on extra small screens */
 @media screen and (max-width: 300px) {
