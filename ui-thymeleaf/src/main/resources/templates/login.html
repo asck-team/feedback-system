@@ -17,7 +17,7 @@
 			<input type="password" style="width: 200px;" placeholder="Enter Password" name="password" required>
 			<br />
 			<button id="logInButton" type="submit" style="width: 300px;" th:text="#{label.form.submit}">Login</button>
-    		<p><a id= "CreateAccButton" href="$">Create Account</a></p>
+    		<p><a id= "CreateAccButton" th:href="@{/signup}">Create Account</a></p>
 		</div>
 	</form>
 </body>
