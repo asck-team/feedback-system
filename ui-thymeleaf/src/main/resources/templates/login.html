@@ -6,8 +6,7 @@
 <div th:replace="fragments/headerNavBar :: header">...</div>
 
 <body class="bg-light text-black bgsecond">
-	<form id="frame" style="width: 400px; margin: auto;" method="post"
-		th:action="@{/login}">
+	<form id="frame" style="width: 400px; margin: auto;" method="post" th:action="@{/login}">
 
 		<div class="container">
 			<h3>Log in</h3>
@@ -18,11 +17,8 @@
 			<input type="password" style="width: 200px;" placeholder="Enter Password" name="password" required>
 			<br />
 			<button id="logInButton" type="submit" style="width: 300px;" th:text="#{label.form.submit}">Login</button>
+    		<p><a id= "CreateAccButton" href="$">Create Account</a></p>
 		</div>
-
 	</form>
-
-
-
 </body>
 </html>
