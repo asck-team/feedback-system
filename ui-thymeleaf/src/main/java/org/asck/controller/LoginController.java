@@ -12,4 +12,9 @@ public class LoginController extends AbstractController {
 		return "login";
 	}
 	
+	@GetMapping("/signup")
+	public String signup(Model model) {
+		return "registration";
+	}
+	
 }
