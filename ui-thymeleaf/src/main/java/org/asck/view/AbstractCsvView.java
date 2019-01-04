@@ -5,7 +5,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.asck.exceptions.CreateCSVException;
 import org.springframework.web.servlet.view.AbstractView;
 
 public abstract class AbstractCsvView extends AbstractView{
@@ -31,5 +30,5 @@ public abstract class AbstractCsvView extends AbstractView{
 
     protected abstract void buildCsvDocument(
             Map<String, Object> model, HttpServletRequest request, HttpServletResponse response)
-            throws CreateCSVException;
+            throws Exception;
 }

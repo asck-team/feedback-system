@@ -23,7 +23,7 @@ public class ExcelView extends AbstractXlsView {
 			HttpServletResponse response) throws Exception {
 		
 		// change the file name
-        response.setHeader("Content-Disposition", "attachment; filename=\"my-xls-file.xls\"");
+        response.setHeader("Content-Disposition", "attachment; filename=\"AnswersReport.xls\"");
 
         @SuppressWarnings("unchecked")
         List<Answer> answers = (List<Answer>) model.get("answers");
