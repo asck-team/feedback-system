@@ -14,6 +14,10 @@ public class ExportAnswerData extends AbstractController{
 	
 	@RequestMapping(value = "/download", method = RequestMethod.GET)
 	public ExcelView download(Model model, @RequestParam(required = true, name = MODEL_ATTR_EVENTID) Long eventId) {
+<<<<<<< HEAD
+=======
+		model.addAttribute("answers", getFeedbackService().getAllAnswersToEventId(eventId));
+>>>>>>> branch 'feature/addRestControllerGetAlleAnswerToQuestion' of https://github.com/uniqueck/feedback-system.git
 		return new ExcelView();
 	}
 
