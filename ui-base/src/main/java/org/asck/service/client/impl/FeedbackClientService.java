@@ -10,6 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.asck.service.client.IFeedbackClientService;
 import org.asck.service.client.model.Answer;
+import org.asck.service.client.model.AnswerReport;
 import org.asck.service.client.model.Event;
 import org.asck.service.client.model.Option;
 import org.asck.service.client.model.Question;
@@ -17,6 +18,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -153,11 +155,50 @@ public class FeedbackClientService implements IFeedbackClientService {
 		return answer;
 	}
 	
-	@Override
-	public List<Answer> getAllAnswersToEventId(Long eventId) {
-		List<Answer> answers = new ArrayList<>();
-		answers.add(new Answer(1L, 2L, "remark1", LocalDateTime.now()));
-		answers.add(new Answer(2L, 3L, "remark2", LocalDateTime.now()));
-		return answers;
+	protected List<Answer> getAllAnswersToQuestion(Long questionId) {
+		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(createUrlPath(PATH_ELEMENT_ANSWERS)).queryParam("questionId", questionId);
+		ResponseEntity<List<Answer>> response = new RestTemplate().exchange(builder.toUriString(), HttpMethod.GET, null,
+				new ParameterizedTypeReference<List<Answer>>() {
+				});
+		return response.getBody();
 	}
+	
+	private Option getOptionById(Long optionId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public List<AnswerReport> getAllAnswersToEventId(Long eventId) {
+		List<AnswerReport> answersReport = new ArrayList<>();
+		
+//		List<Question> allQuestionsToEvent = leseAlleFragenZuEvent(eventId);
+//		
+//		for (Question question : allQuestionsToEvent) {
+//			List<Answer> allAnswersToQuestion = getAllAnswersToQuestion(question.getId());
+//			for (Answer answer : allAnswersToQuestion) {
+//				AnswerReport answerReport = new AnswerReport();
+//				answerReport.setQuestion(question);
+//				answerReport.setOption(getOptionById(answer.getOptionId()));
+//				answerReport.setRemark(answer.getRemark());
+//				answerReport.setAnsweredAt(answer.getAnsweredAt());
+//				answersReport.add(answerReport);
+//			}
+//		}
+		
+		AnswerReport answerReport = new AnswerReport();
+		answerReport.setQuestion(new Question(1L, "questionName", "questionType", 1));
+		answerReport.setOption(new Option(1L, "optionalDescription", "iconPath"));
+		answerReport.setRemark("remark");
+		answerReport.setAnsweredAt(LocalDateTime.now());
+		answersReport.add(answerReport);
+		
+		return answersReport;
+	}
+
+
+	
+
+
+	
 }
