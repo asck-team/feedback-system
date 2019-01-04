@@ -32,5 +32,4 @@ public class CsvView extends AbstractCsvView {
 		}
 		csvWriter.close();
 	}
-
 }

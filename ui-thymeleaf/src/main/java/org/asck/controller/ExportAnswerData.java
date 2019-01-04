@@ -14,7 +14,6 @@ public class ExportAnswerData extends AbstractController{
 	
 	@RequestMapping(value = "/download", method = RequestMethod.GET)
 	public ExcelView download(Model model, @RequestParam(required = true, name = MODEL_ATTR_EVENTID) Long eventId) {
-		model.addAttribute("answers", getFeedbackService().getAllAnswersToEventId(eventId));
 		return new ExcelView();
 	}
 
