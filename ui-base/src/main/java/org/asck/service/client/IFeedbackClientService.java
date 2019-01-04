@@ -3,6 +3,7 @@ package org.asck.service.client;
 import java.util.List;
 
 import org.asck.service.client.model.Answer;
+import org.asck.service.client.model.AnswerReport;
 import org.asck.service.client.model.Event;
 import org.asck.service.client.model.Option;
 import org.asck.service.client.model.Question;
@@ -31,6 +32,6 @@ public interface IFeedbackClientService {
 	
 	Answer saveAnswer(Answer answer);
 	
-	
+	List<AnswerReport> getAllAnswersToEventId(Long eventId);
 
 }

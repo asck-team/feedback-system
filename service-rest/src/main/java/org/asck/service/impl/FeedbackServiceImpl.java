@@ -1,5 +1,6 @@
 package org.asck.service.impl;
 
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
@@ -196,6 +197,20 @@ class FeedbackServiceImpl implements IFeedbackService {
 		} else {
 			throw new EntityNotFoundException(Event.class, "id", eventId.toString());
 		}
+	}
+	
+	@Override
+	public List<Answer> getAllAnswersToQuestion(long questionId) throws EntityNotFoundException {
+		if (!getQuestionRepository().existsById(questionId)) {
+			throw new EntityNotFoundException(QuestionTableModel.class, "id", "" + questionId);
+		} else {
+			List<AnswerTableModel> allAnswers = getAnswerRepository().findAllByQuestionId(questionId);
+			return allAnswers.stream().map(this::map).collect(Collectors.toList());
+		}
+	}
+	
+	protected Answer map(AnswerTableModel toMap) {
+		return Answer.builder().answeredAt(LocalDateTime.from(toMap.getAnsweredAt().toInstant().atZone(ZoneId.systemDefault()))).questionId(toMap.getQuestionId()).optionId(toMap.getQuestionOptionId()).remark(toMap.getRemark()).build();
 	}
 
 }

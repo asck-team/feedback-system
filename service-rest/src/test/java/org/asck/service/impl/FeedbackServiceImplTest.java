@@ -5,8 +5,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.asck.exceptions.EntityNotFoundException;
@@ -15,8 +18,10 @@ import org.asck.repository.EventRepository;
 import org.asck.repository.QuestionOptionRepository;
 import org.asck.repository.QuestionRepository;
 import org.asck.repository.QuestionTypeRepository;
+import org.asck.repository.model.AnswerTableModel;
 import org.asck.repository.model.EventTableModel;
 import org.asck.repository.model.QuestionTableModel;
+import org.asck.service.model.Answer;
 import org.asck.service.model.Event;
 import org.asck.service.model.Question;
 import org.asck.service.model.QuestionType;
@@ -265,7 +270,7 @@ public class FeedbackServiceImplTest {
 		verify(getQuestionRepository()).save(question1WithNewOrder);
 		verify(getQuestionRepository()).save(question3WithNewOrder);
 	}
-	
+
 	@Test
 	public void testSaveQuestion_ThreeQuestionsExistsAndThirdQuestionShouldHaveNewOrderBeforeQuestionTwo_SaveQuestion1WithNewOrder1Question2WithOrder3AndQuestionWithOrder2()
 			throws Exception {
@@ -323,43 +328,86 @@ public class FeedbackServiceImplTest {
 	}
 
 	/**
-	 * Test method for {@link org.asck.service.impl.FeedbackServiceImpl#findEvents()}.
+	 * Test method for
+	 * {@link org.asck.service.impl.FeedbackServiceImpl#findEvents()}.
 	 */
 	@Test
 	public void testFindEvents_NoEvents_ReturnsEmptyList() throws Exception {
 		when(getEventRepository().findAll()).thenReturn(new ArrayList<>());
 		assertEquals(new ArrayList<>(), underTest.findEvents());
 		verify(getEventRepository()).findAll();
-	
+
 	}
-	
+
 	/**
-	 * Test method for {@link org.asck.service.impl.FeedbackServiceImpl#findEvents()}.
+	 * Test method for
+	 * {@link org.asck.service.impl.FeedbackServiceImpl#findEvents()}.
 	 */
 	@Test
 	public void testFindEvents_OneEventsWithoutQuestions_ReturnsListWithOneEvent() throws Exception {
-		when(getEventRepository().findAll()).thenReturn(Arrays.asList(EventTableModel.builder().id(1L).name("Event").build()));
-		
+		when(getEventRepository().findAll())
+				.thenReturn(Arrays.asList(EventTableModel.builder().id(1L).name("Event").build()));
+
 		when(getQuestionRepository().findAllByEventIdOrderByOrder(1L)).thenReturn(new ArrayList<>());
-		
+
 		List<Event> events = underTest.findEvents();
 		assertEquals(1, events.size());
 		assertEquals(Event.builder().id(1L).name("Event").questions(new ArrayList<>()).build(), events.get(0));
 		verify(getEventRepository()).findAll();
 		verify(getQuestionRepository()).findAllByEventIdOrderByOrder(1L);
-	
+
 	}
 
 	/**
-	 * Test method for {@link org.asck.service.impl.FeedbackServiceImpl#saveEvent(org.asck.service.model.Event)}.
+	 * Test method for
+	 * {@link org.asck.service.impl.FeedbackServiceImpl#saveEvent(org.asck.service.model.Event)}.
 	 */
 	@Test
 	public void testSaveEvent() throws Exception {
-		when(getEventRepository().save(EventTableModel.builder().id(-1L).name("Event").build())).thenReturn(EventTableModel.builder().id(1L).name("Event").build());
-		underTest.saveEvent(Event.builder().id(-1L).name("Event").build());		
+		when(getEventRepository().save(EventTableModel.builder().id(-1L).name("Event").build()))
+				.thenReturn(EventTableModel.builder().id(1L).name("Event").build());
+		underTest.saveEvent(Event.builder().id(-1L).name("Event").build());
 		verify(getEventRepository()).save(EventTableModel.builder().id(-1L).name("Event").build());
 	}
 
-	
+	/**
+	 * Test method for
+	 * {@link org.asck.service.impl.FeedbackServiceImpl#getAllAnswersToQuestion(long)}.
+	 */
+	@Test
+	public void testGetAllAnswersToQuestion_QuestionWithIdDoesntExist_ThrowsException() throws Exception {
+		try {
+			thrown.expect(EntityNotFoundException.class);
+			thrown.expectMessage(
+					new EntityNotFoundException(QuestionTableModel.class, "id", "1").getLocalizedMessage());
+
+			when(getQuestionRepository().existsById(1L)).thenReturn(false);
+			underTest.getAllAnswersToQuestion(1L);
+		} finally {
+			verify(getQuestionRepository()).existsById(1L);
+		}
+	}
+
+	/**
+	 * Test method for
+	 * {@link org.asck.service.impl.FeedbackServiceImpl#getAllAnswersToQuestion(long)}.
+	 */
+	@Test
+	public void testGetAllAnswersToQuestion_QuestionWithIdExistAndOneAnswerExist_ReturnListWithOneAnswer()
+			throws Exception {
+
+		when(getQuestionRepository().existsById(1L)).thenReturn(true);
+		AnswerTableModel answerTableModel = AnswerTableModel.builder().answeredAt(new Date()).questionId(1L)
+				.questionOptionId(2L).remark("Remark").build();
+		when(getAnswerRepository().findAllByQuestionId(1L)).thenReturn(Arrays.asList(answerTableModel));
+		List<Answer> allAnswersToQuestion = underTest.getAllAnswersToQuestion(1L);
+		verify(getQuestionRepository()).existsById(1L);
+		verify(getAnswerRepository()).findAllByQuestionId(1L);
+		
+		assertEquals(1, allAnswersToQuestion.size());
+		assertEquals(Answer.builder().answeredAt(LocalDateTime.from(answerTableModel.getAnsweredAt().toInstant().atZone(ZoneId.systemDefault())))
+				.questionId(answerTableModel.getQuestionId()).optionId(answerTableModel.getQuestionOptionId())
+				.remark(answerTableModel.getRemark()).build(), allAnswersToQuestion.get(0));
+	}
 
 }
