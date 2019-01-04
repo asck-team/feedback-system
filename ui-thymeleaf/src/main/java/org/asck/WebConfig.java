@@ -24,8 +24,4 @@ public class WebConfig implements WebMvcConfigurer {
                 .defaultContentType(MediaType.APPLICATION_JSON)
                 .favorPathExtension(true);
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> branch 'feature/addRestControllerGetAlleAnswerToQuestion' of https://github.com/uniqueck/feedback-system.git

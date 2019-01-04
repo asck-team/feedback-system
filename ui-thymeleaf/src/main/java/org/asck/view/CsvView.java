@@ -32,9 +32,4 @@ public class CsvView extends AbstractCsvView {
 		}
 		csvWriter.close();
 	}
-
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> branch 'feature/addRestControllerGetAlleAnswerToQuestion' of https://github.com/uniqueck/feedback-system.git
