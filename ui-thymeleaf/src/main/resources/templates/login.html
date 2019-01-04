@@ -6,7 +6,7 @@
 <div th:replace="fragments/headerNavBar :: header">...</div>
 
 <body class="bg-light text-black bgsecond">
-     <form id="frame"  style=" width:400px; margin:auto;">
+     <form id="frame"  style=" width:400px; margin:auto;" th:action="@{/login}" method="post">
 		<div class="container">
 			<h3>Log in</h3>
 			<label for="username" th:text="#{label.form.loginEmail}"></label>
