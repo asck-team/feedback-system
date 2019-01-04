@@ -1,12 +1,25 @@
+%TEMPLATE_MODE HTML5
+# ------------ separator comment -----------
+%CONTEXT
+event = new org.asck.ui.model.UIEventTM()
+event.id = 1
+event.eventName = 'Apricot'
+# ------------------------------------------
+%MESSAGES
+one.msg = Crisis
+# ------------------------------------------
+%INPUT (file:src/main/resources/templates/events.html)
+# ------------------------------------------
+%OUTPUT 
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 
 <head>
 	<meta charset="utf-8" />
     <title>Feedbacksystem</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-	<link 	rel="stylesheet" th:href="@{/css/style.css}" />
+	<link 	rel="stylesheet" href="/testing/css/style.css" />
 	<!-- additional libs -->
     <link   rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css" />
     <link 	rel="stylesheet" href="/webjars/font-awesome/css/font-awesome.min.css"></link>
@@ -49,20 +62,12 @@
     <div class="container">
         <br><br>
         <h1 class="col-md-10">Events
-            <button type="button" class="btn btn-dark float-right" th:onclick="|window.location.href='@{/newEvent}'|" data-toggle="tooltip" data-placement="bottom" title="create new event">New</button>
+            <button type="button" class="btn btn-dark float-right" onclick="window.location.href=&#39;/testing/newEvent&#39;" data-toggle="tooltip" data-placement="bottom" title="create new event">New</button>
         </h1>
         <div class="row col-md-10 table-responsive">
             <table id="eventsTable" class="table">
                 <tbody>
-                        <tr th:style="${rowStat.odd} ? 'color: black' : 'color: black;'"
-                        th:each="event, rowStat: ${events}">
-                            <td class="col-md-8" th:text="${event.name}" th:onclick="|window.location.href='@{/questions(eventId=${event.id})}'|" data-toggle="tooltip" data-placement="bottom" title="show questions to event">EventName</td>
-                            <td class="col-md-1"> <button type="button" class="btn btn-dark float-right" th:onclick="|window.location.href='@{/newEvent(eventId=${event.id})}'|" data-toggle="tooltip" data-placement="bottom" title="edit"><i class="fa fa-edit"></i></button> </td>
-                            <td class="col-md-1"> <button type="button" class="btn btn-dark float-right" th:onclick="|window.location.href='@{/deleteEvent(eventId=${event.id})}'|" data-toggle="tooltip" data-placement="bottom" title="delete"><i class="fa fa-trash"></i></button> </td>
-                            <td class="col-md-1"> <button type="button" class="btn btn-dark float-right" th:onclick="|window.location.href='@{/qrCode(eventId=${event.id})}'|" data-toggle="tooltip" data-placement="bottom" title="generate qrcode"><i class="fa fa-qrcode"></i></button></td> 
-                            <td class="col-md-1"> <button type="button" class="btn btn-dark float-right" th:onclick="|window.location.href='@{/answer(eventId=${event.id})}'|" data-toggle="tooltip" data-placement="bottom" title="preview"><i class="fa fa-check"></i></button> 
-                            </td>
-                        </tr>
+                
                 </tbody>
             </table>
         </div>

@@ -198,7 +198,7 @@ padding-left: 35px;
 }
 
 
-Add a hover effect for buttons 
+/* Add a hover effect for buttons */ 
 button:hover {
   opacity: 0.8;
 }
@@ -303,3 +303,4 @@ button:hover {
     width: 100%;
 margin-left:150px;
   }
+}
