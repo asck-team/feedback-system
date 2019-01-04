@@ -21,7 +21,7 @@
 	</properties>
 
 	<dependencies>
-	
+
 		<dependency>
 			<groupId>org.asck</groupId>
 			<artifactId>ui-base</artifactId>
@@ -97,33 +97,59 @@
 			</exclusions>
 		</dependency>
 		
-		<!-- generate QrCode -->
-	    <dependency>
-	        <groupId>com.google.zxing</groupId>
-	        <artifactId>core</artifactId>
-	        <version>3.3.0</version>
-	    </dependency>
-	    <dependency>
-	        <groupId>com.google.zxing</groupId>
-	        <artifactId>javase</artifactId>
-	        <version>3.3.0</version>
-	        <exclusions>
-	        	<exclusion>
-	        		<groupId>com.github.jai-imageio</groupId>
-	        		<artifactId>jai-imageio-core</artifactId>
-	        	</exclusion>
-	        </exclusions>
-	    </dependency>
-	    <!-- generate QrCode -->
-
 		<dependency>
 			<groupId>com.tngtech.archunit</groupId>
 			<artifactId>archunit-junit4</artifactId>
 			<version>0.9.3</version>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- generate QrCode -->
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>core</artifactId>
+			<version>3.3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>javase</artifactId>
+			<version>3.3.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.github.jai-imageio</groupId>
+					<artifactId>jai-imageio-core</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- generate QrCode -->
 		
-<!-- 		exportData as Excel, csv, pdf -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+		</dependency>
+
+		<!-- thymeleaf testing - start -->
+		<dependency>
+			<groupId>org.thymeleaf</groupId>
+			<artifactId>thymeleaf-testing</artifactId>
+			<version>3.0.4.RELEASE</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>3.12.1.GA</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- thymeleaf testing - end -->
+		
+		<!-- 		exportData as Excel, csv, pdf -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
