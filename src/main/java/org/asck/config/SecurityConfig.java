@@ -1,4 +1,4 @@
-package org.asck.web.config;
+package org.asck.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,14 +16,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication().withUser(
-				User.withDefaultPasswordEncoder().username("user").password("password").roles("USER").build());
+		if (securityEnabled) {
+			auth.inMemoryAuthentication().withUser(
+					User.withDefaultPasswordEncoder().username("user").password("password").roles("USER").build());
+		}
 	}
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		if (securityEnabled) {
-			http.authorizeRequests().antMatchers("/img/**", "/css/**", "/webjars/**", "/signup").permitAll().anyRequest().authenticated().and().formLogin().loginPage("/login").permitAll().and().logout().permitAll();
+			http.authorizeRequests().antMatchers("/img/**", "/css/**", "/webjars/**", "/signup", "swagger-ui.html" ,"/v1/feedback/**").permitAll().anyRequest().authenticated().and().formLogin().loginPage("/login").permitAll().and().logout().permitAll();
+		} else {
+			http.authorizeRequests().antMatchers("/**").permitAll().and().csrf().disable();
 		}
 	}
 

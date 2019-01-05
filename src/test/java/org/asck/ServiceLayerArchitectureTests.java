@@ -11,18 +11,18 @@ public class ServiceLayerArchitectureTests {
 
 	@ArchTest
 	public static final ArchRule classesThatResidesInServicePackageShouldEndWithService = classes().that()
-			.resideInAPackage("..service").should()
-			.haveSimpleNameEndingWith("Service");
+			.resideInAPackage("..service").should().haveSimpleNameEndingWith("Service");
 
 	@ArchTest
 	public static final ArchRule serviceClassesShouldHaveSpringServiceAnnotation = classes().that()
-			.resideInAPackage("..service.impl").should()
+			.resideInAPackage("..service.impl").and().haveSimpleNameEndingWith("ServiceImpl").should()
 			.beAnnotatedWith(Service.class);
-	
+
+	@ArchTest
+	public static final ArchRule serviceClassesShouldBePackagePrivate = classes().that()
+			.resideInAPackage("..service.impl").and().areAnnotatedWith(Service.class).should().bePackagePrivate();
 	@ArchTest
 	public static final ArchRule classesThatAnnotatedWithSpringServiceAnnotationShouldResideInPackageXService = classes()
-			.that().areAnnotatedWith(Service.class).should()
-			.resideInAPackage("..service..");
-
+			.that().areAnnotatedWith(Service.class).should().resideInAPackage("..service.impl");
 
 }

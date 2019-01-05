@@ -1,4 +1,4 @@
-package org.asck.web.config;
+package org.asck.config;
 
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 

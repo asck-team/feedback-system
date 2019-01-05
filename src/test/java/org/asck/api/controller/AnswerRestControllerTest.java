@@ -40,7 +40,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
-@SpringBootTest
+@SpringBootTest(properties = "security.enabled=false")
 @AutoConfigureJsonTesters
 public class AnswerRestControllerTest {
 

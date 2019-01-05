@@ -31,7 +31,7 @@ import lombok.Getter;
  * @author constantin
  *
  */
-@SpringBootTest
+@SpringBootTest(properties = "security.enabled=false")
 @AutoConfigureMockMvc
 @AutoConfigureJsonTesters
 @RunWith(SpringRunner.class)

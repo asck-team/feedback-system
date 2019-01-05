@@ -14,17 +14,20 @@ import org.asck.web.service.model.AnswerReport;
 import org.asck.web.service.model.Event;
 import org.asck.web.service.model.Option;
 import org.asck.web.service.model.Question;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 
+@Service
 @Getter(AccessLevel.PROTECTED)
-public class FeedbackClientService implements IFeedbackClientService {
+class FeedbackClientServiceImpl implements IFeedbackClientService {
 
 	private static final String PATH_ELEMENT_ADMIN = "admin";
 
@@ -38,12 +41,12 @@ public class FeedbackClientService implements IFeedbackClientService {
 	
 	private static final String PATH_ELEMENT_ANSWERS = "answers";
 
-	private static final Logger LOGGER = LogManager.getLogger(FeedbackClientService.class);
+	private static final Logger LOGGER = LogManager.getLogger(FeedbackClientServiceImpl.class);
 
+	@Value("${service.base.path:http://localhost:8080/v1/feedback}")
 	private String basePath;
 
-	public FeedbackClientService(String basePath) {
-		this.basePath = basePath;
+	public FeedbackClientServiceImpl() {
 	}
 	
 
@@ -161,11 +164,6 @@ public class FeedbackClientService implements IFeedbackClientService {
 				new ParameterizedTypeReference<List<Answer>>() {
 				});
 		return response.getBody();
-	}
-	
-	private Option getOptionById(Long optionId) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 	@Override

@@ -1,7 +1,7 @@
 %TEMPLATE_MODE HTML5
 # ------------ separator comment -----------
 %CONTEXT
-event = new org.asck.ui.model.UIEventTM()
+event = new org.asck.web.ui.model.UIEventTM()
 event.id = 1
 event.eventName = 'Apricot'
 # ------------------------------------------

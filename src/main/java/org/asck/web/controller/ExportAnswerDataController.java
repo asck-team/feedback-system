@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class ExportAnswerData extends AbstractController{
+public class ExportAnswerDataController extends AbstractController{
 	
 	private static final String MODEL_ATTR_EVENTID = "eventId";
 	

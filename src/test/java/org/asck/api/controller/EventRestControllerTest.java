@@ -37,7 +37,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(properties = "security.enabled=false")
 @AutoConfigureMockMvc
 @Getter(AccessLevel.PROTECTED)
 @AutoConfigureJsonTesters
