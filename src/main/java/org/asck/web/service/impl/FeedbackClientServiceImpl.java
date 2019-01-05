@@ -1,7 +1,6 @@
 package org.asck.web.service.impl;
 
 import java.net.URI;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -170,28 +169,26 @@ class FeedbackClientServiceImpl implements IFeedbackClientService {
 	public List<AnswerReport> getAllAnswersToEventId(Long eventId) {
 		List<AnswerReport> answersReport = new ArrayList<>();
 		
-//		List<Question> allQuestionsToEvent = leseAlleFragenZuEvent(eventId);
-//		
-//		for (Question question : allQuestionsToEvent) {
-//			List<Answer> allAnswersToQuestion = getAllAnswersToQuestion(question.getId());
-//			for (Answer answer : allAnswersToQuestion) {
-//				AnswerReport answerReport = new AnswerReport();
-//				answerReport.setQuestion(question);
-//				answerReport.setOption(getOptionById(answer.getOptionId()));
-//				answerReport.setRemark(answer.getRemark());
-//				answerReport.setAnsweredAt(answer.getAnsweredAt());
-//				answersReport.add(answerReport);
-//			}
-//		}
+		List<Question> allQuestionsToEvent = leseAlleFragenZuEvent(eventId);
 		
-		AnswerReport answerReport = new AnswerReport();
-		answerReport.setQuestion(new Question(1L, "questionName", "questionType", 1));
-		answerReport.setOption(new Option(1L, "optionalDescription", "iconPath"));
-		answerReport.setRemark("remark");
-		answerReport.setAnsweredAt(LocalDateTime.now());
-		answersReport.add(answerReport);
-		
+		for (Question question : allQuestionsToEvent) {
+			List<Answer> allAnswersToQuestion = getAllAnswersToQuestion(question.getId());
+			for (Answer answer : allAnswersToQuestion) {
+				AnswerReport answerReport = new AnswerReport();
+				answerReport.setQuestion(question);
+				answerReport.setOption(getOptionById(answer.getOptionId()));
+				answerReport.setRemark(answer.getRemark());
+				answerReport.setAnsweredAt(answer.getAnsweredAt());
+				answersReport.add(answerReport);
+			}
+		}
 		return answersReport;
+	}
+
+
+	private Option getOptionById(Long optionId) {
+		// TODO New RestController
+		return new Option(optionId, "optionalDescription", "iconPath");
 	}
 
 
