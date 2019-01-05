@@ -41,7 +41,7 @@ import lombok.Getter;
 @AutoConfigureMockMvc
 @Getter(AccessLevel.PROTECTED)
 @AutoConfigureJsonTesters
-public class EventControllerTest {
+public class EventRestControllerTest {
 
 	@MockBean
 	IFeedbackService feedbackServiceMock;
@@ -67,7 +67,7 @@ public class EventControllerTest {
 
 	/**
 	 * Test method for
-	 * {@link org.asck.controller.EventController#createEvent(org.asck.service.model.Event)}.
+	 * {@link org.asck.EventRestController.EventController#createEvent(org.asck.service.model.Event)}.
 	 */
 	@Test
 	public void testCreateEvent() throws Exception {
@@ -105,7 +105,7 @@ public class EventControllerTest {
 
 	/**
 	 * Test method for
-	 * {@link org.asck.controller.EventController#getEvent(long)}.
+	 * {@link org.asck.EventRestController.EventController#getEvent(long)}.
 	 */
 	@Test
 	public void testGetEvent() throws Exception {
@@ -120,7 +120,7 @@ public class EventControllerTest {
 	}
 
 	/**
-	 * Test method for {@link org.asck.controller.EventController#updateEvent(java.lang.Long, org.asck.service.model.Event)}.
+	 * Test method for {@link org.asck.EventRestController.EventController#updateEvent(java.lang.Long, org.asck.service.model.Event)}.
 	 */
 	@Test
 	public void testUpdateEvent() throws Exception {
@@ -137,7 +137,7 @@ public class EventControllerTest {
 	}
 
 	/**
-	 * Test method for {@link org.asck.controller.EventController#deleteEvent(java.lang.Long)}.
+	 * Test method for {@link org.asck.EventRestController.EventController#deleteEvent(java.lang.Long)}.
 	 */
 	@Test
 	public void testDeleteEvent_EventDoesntExist_ReturnsNotFound() throws Exception {
@@ -151,7 +151,7 @@ public class EventControllerTest {
 	}
 	
 	/**
-	 * Test method for {@link org.asck.controller.EventController#deleteEvent(java.lang.Long)}.
+	 * Test method for {@link org.asck.EventRestController.EventController#deleteEvent(java.lang.Long)}.
 	 */
 	@Test
 	public void testDeleteEvent_EventExistAndDeleted_ReturnsNoContent() throws Exception {

@@ -17,7 +17,7 @@ import lombok.Getter;
 @RestController
 @RequestMapping("/v1/feedback/admin")
 @Getter(value = AccessLevel.PROTECTED)
-public class AdminController {
+public class AdminRestController {
 
 	@GetMapping(path = { "/questionTypes" }, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<String>> readQuestionTypes() {

@@ -20,7 +20,7 @@ import lombok.Getter;
 @RestController
 @RequestMapping("/v1/feedback/events/{eventId}/questions/{questionId}/options")
 @Getter(value = AccessLevel.PROTECTED)
-public class QuestionOptionController {
+public class QuestionOptionRestController {
 
 	@Autowired
 	private IFeedbackService feedbackService;

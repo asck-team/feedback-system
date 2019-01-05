@@ -31,9 +31,9 @@ import lombok.Getter;
 @CrossOrigin(origins = "*")
 @RequestMapping("/v1/feedback/events")
 @Getter(AccessLevel.PROTECTED)
-public class EventController {
+public class EventRestController {
 
-	private static final Logger LOGGER = LogManager.getLogger(EventController.class);
+	private static final Logger LOGGER = LogManager.getLogger(EventRestController.class);
 	
 	@Autowired
 	private IFeedbackService feedbackService;

@@ -25,7 +25,7 @@ import lombok.Getter;
 @RestController
 @RequestMapping("/v1/feedback/answers")
 @Getter(value = AccessLevel.PROTECTED)
-public class AnswerController {
+public class AnswerRestController {
 
 	@Autowired
 	private IFeedbackService feedbackService;

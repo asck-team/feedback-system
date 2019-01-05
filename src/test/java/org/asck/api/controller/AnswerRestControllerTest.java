@@ -42,7 +42,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 @SpringBootTest
 @AutoConfigureJsonTesters
-public class AnswerControllerTest {
+public class AnswerRestControllerTest {
 
 	@Autowired
 	MockMvc mockMvc;
@@ -58,7 +58,7 @@ public class AnswerControllerTest {
 
 	/**
 	 * Test method for
-	 * {@link org.asck.controller.AnswerController#saveAnswer(org.asck.service.model.Answer)}.
+	 * {@link org.asck.AnswerRestController.AnswerController#saveAnswer(org.asck.service.model.Answer)}.
 	 */
 	@Test
 	public void testSaveAnswer_DateNotSpecified_ReturnBadRequest() throws Exception {
@@ -77,7 +77,7 @@ public class AnswerControllerTest {
 	}
 
 	/**
-	 * Test method for {@link org.asck.controller.AnswerController#getAllAnswersToQuestion(java.lang.Long)}.
+	 * Test method for {@link org.asck.AnswerRestController.AnswerController#getAllAnswersToQuestion(java.lang.Long)}.
 	 */
 	@Test
 	public void testGetAllAnswersToQuestion_QuestionIdIsMissing_ReturnBadRequest() throws Exception {
@@ -89,7 +89,7 @@ public class AnswerControllerTest {
 	}
 	
 	/**
-	 * Test method for {@link org.asck.controller.AnswerController#getAllAnswersToQuestion(java.lang.Long)}.
+	 * Test method for {@link org.asck.AnswerRestController.AnswerController#getAllAnswersToQuestion(java.lang.Long)}.
 	 */
 	@Test
 	public void testGetAllAnswersToQuestion_QuestionIdIsEmpty_ReturnBadRequest() throws Exception {
@@ -101,7 +101,7 @@ public class AnswerControllerTest {
 	}
 	
 	/**
-	 * Test method for {@link org.asck.controller.AnswerController#getAllAnswersToQuestion(java.lang.Long)}.
+	 * Test method for {@link org.asck.AnswerRestController.AnswerController#getAllAnswersToQuestion(java.lang.Long)}.
 	 */
 	@Test
 	public void testGetAllAnswersToQuestion_QuestionIdHasWrongContent_ReturnBadRequest() throws Exception {
@@ -113,7 +113,7 @@ public class AnswerControllerTest {
 	}
 	
 	/**
-	 * Test method for {@link org.asck.controller.AnswerController#getAllAnswersToQuestion(java.lang.Long)}.
+	 * Test method for {@link org.asck.AnswerRestController.AnswerController#getAllAnswersToQuestion(java.lang.Long)}.
 	 */
 	@Test
 	public void testGetAllAnswersToQuestion_QuestionIdDoesntExist_ReturnBadRequest() throws Exception {
@@ -129,7 +129,7 @@ public class AnswerControllerTest {
 	}
 	
 	/**
-	 * Test method for {@link org.asck.controller.AnswerController#getAllAnswersToQuestion(java.lang.Long)}.
+	 * Test method for {@link org.asck.AnswerRestController.AnswerController#getAllAnswersToQuestion(java.lang.Long)}.
 	 */
 	@Test
 	public void testGetAllAnswersToQuestion_QuestionIdSpecifiedButNotAnswersFound_ReturnsStatusNoContent() throws Exception {
@@ -143,7 +143,7 @@ public class AnswerControllerTest {
 	}
 	
 	/**
-	 * Test method for {@link org.asck.controller.AnswerController#getAllAnswersToQuestion(java.lang.Long)}.
+	 * Test method for {@link org.asck.AnswerRestController.AnswerController#getAllAnswersToQuestion(java.lang.Long)}.
 	 */
 	@Test
 	@Ignore("check why jsonListTester doesnt work")

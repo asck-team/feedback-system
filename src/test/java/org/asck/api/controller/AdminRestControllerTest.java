@@ -36,7 +36,7 @@ import lombok.Getter;
 @AutoConfigureJsonTesters
 @RunWith(SpringRunner.class)
 @Getter(AccessLevel.PROTECTED)
-public class AdminControllerTest {
+public class AdminRestControllerTest {
 
 	@MockBean
 	IFeedbackService feedbackServiceMock;
@@ -49,7 +49,7 @@ public class AdminControllerTest {
 
 	/**
 	 * Test method for
-	 * {@link org.asck.controller.AdminController#readQuestionTypes()}.
+	 * {@link org.asck.AdminRestController.AdminController#readQuestionTypes()}.
 	 */
 	@Test
 	public void testReadQuestionTypes() throws Exception {

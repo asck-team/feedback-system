@@ -37,9 +37,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
-@SpringBootTest
+@SpringBootTest(properties = "security.enabled=false")
 @AutoConfigureJsonTesters
-public class QuestionControllerTest {
+public class QuestionRestControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -75,7 +75,7 @@ public class QuestionControllerTest {
 
 	/**
 	 * Test method for
-	 * {@link org.asck.controller.QuestionController#createQuestion(java.lang.Long, org.asck.service.model.Question)}.
+	 * {@link org.asck.QuestionRestController.QuestionController#createQuestion(java.lang.Long, org.asck.service.model.Question)}.
 	 */
 	@Test
 	public void testCreateQuestion() throws Exception {
@@ -97,7 +97,7 @@ public class QuestionControllerTest {
 
 	/**
 	 * Test method for
-	 * {@link org.asck.controller.QuestionController#updateQuestion(java.lang.Long, java.lang.Long, org.asck.service.model.Question)}.
+	 * {@link org.asck.QuestionRestController.QuestionController#updateQuestion(java.lang.Long, java.lang.Long, org.asck.service.model.Question)}.
 	 */
 	@Test
 	public void testUpdateQuestion() throws Exception {
@@ -119,7 +119,7 @@ public class QuestionControllerTest {
 
 	/**
 	 * Test method for
-	 * {@link org.asck.controller.QuestionController#deleteQuestion(java.lang.Long, java.lang.Long)}.
+	 * {@link org.asck.QuestionRestController.QuestionController#deleteQuestion(java.lang.Long, java.lang.Long)}.
 	 */
 	@Test
 	public void testDeleteQuestion_EventWithIdDoesntExists_ReturnsNotFoundAndApiError() throws Exception {
@@ -138,7 +138,7 @@ public class QuestionControllerTest {
 
 	/**
 	 * Test method for
-	 * {@link org.asck.controller.QuestionController#deleteQuestion(java.lang.Long, java.lang.Long)}.
+	 * {@link org.asck.QuestionRestController.QuestionController#deleteQuestion(java.lang.Long, java.lang.Long)}.
 	 */
 	@Test
 	public void testDeleteQuestion_QuestionWithIdDoesntExists_ReturnsNotFoundAndApiError() throws Exception {
@@ -156,7 +156,7 @@ public class QuestionControllerTest {
 	}
 
 	/**
-	 * Test method for {@link org.asck.controller.QuestionController#deleteQuestion(java.lang.Long, java.lang.Long)}.
+	 * Test method for {@link org.asck.QuestionRestController.QuestionController#deleteQuestion(java.lang.Long, java.lang.Long)}.
 	 */
 	@Test
 	public void testDeleteQuestion_EventWithIdExistAndQuestionWithIdExistsAndDeleted_ReturnsNoContent() throws Exception {
