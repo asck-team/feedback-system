@@ -72,7 +72,7 @@ public class AnswerRestControllerTest {
 				.andExpect(jsonPath("$.apierror.subErrors[0].object", is("answer")))
 				.andExpect(jsonPath("$.apierror.subErrors[0].field", is("answeredAt")))
 				.andExpect(jsonPath("$.apierror.subErrors[0].rejectedValue", nullValue()))
-				.andExpect(jsonPath("$.apierror.subErrors[0].message", is("must not be null")));
+				.andExpect(jsonPath("$.apierror.subErrors[0].message", is("javax.validation.constraints.NotNull.message")));
 
 	}
 
