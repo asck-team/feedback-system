@@ -154,7 +154,7 @@
 			<version>0.9.3</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-log4j2</artifactId>
@@ -165,12 +165,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.webjars</groupId>
 			<artifactId>bootstrap</artifactId>
@@ -195,7 +195,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 		<!-- generate QrCode -->
 		<dependency>
 			<groupId>com.google.zxing</groupId>
@@ -214,7 +214,7 @@
 			</exclusions>
 		</dependency>
 		<!-- generate QrCode -->
-		
+
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
@@ -240,8 +240,8 @@
 			<scope>test</scope>
 		</dependency>
 		<!-- thymeleaf testing - end -->
-		
-		<!-- 		exportData as Excel, csv, pdf -->
+
+		<!-- exportData as Excel, csv, pdf -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
@@ -259,8 +259,8 @@
 			<artifactId>super-csv</artifactId>
 			<version>2.4.0</version>
 		</dependency>
-<!-- 		exportData as Excel, csv, pdf -->	
-		
+		<!-- exportData as Excel, csv, pdf -->
+
 
 	</dependencies>
 
@@ -321,6 +321,18 @@
 								<require>asciidoctor-diagram</require>
 							</requires>
 						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>
