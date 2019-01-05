@@ -14,25 +14,36 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageConfig;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+
 @Controller
+@Getter(value = AccessLevel.PROTECTED)
 public class QrCodeController extends AbstractController {
 	
-	@Value("${ip.adress.qr.code:127.0.0.1}") 
-	private String ipAdress; 
+	@Value("${qr.code.host:127.0.0.1}") 
+	private String ipAdress;
+	@Value("${qr.code.port:8080}")
+	private String port;
 	
 	private static final Logger LOGGER = LogManager.getLogger(NewEventController.class);
 
 	@GetMapping("/qrCode")
 	public String generateQrCode(@RequestParam("eventId") Long eventId, Model model) {
-		LOGGER.info("IP Adress: {}", ipAdress);
-		byte[] qrCore = createAsByteArray("http://"+ ipAdress + ":8081/answer?eventId=" + eventId);
-		String qrCodeString = Base64.getEncoder().encodeToString(qrCore); 
+		byte[] qrCodeContent = createAsByteArray(createURLForQRCode(eventId));
+		String qrCodeString = Base64.getEncoder().encodeToString(qrCodeContent); 
 		model.addAttribute("qrCode", qrCodeString);
 		return "qrCode";
+	}
+
+	protected String createURLForQRCode(Long eventId) {
+		LOGGER.info("Host {} and port {} as content for qr code", ipAdress, port);
+		return String.format("http://%s:%s/answer?eventId=%s", getIpAdress(), getPort(), eventId);
 	}
 	
 	private byte[] createAsByteArray(String link) {
@@ -51,7 +62,8 @@ public class QrCodeController extends AbstractController {
 	    BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height);
 	    
 	    ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
-	    MatrixToImageWriter.writeToStream(bitMatrix, "PNG", pngOutputStream);
+	    MatrixToImageConfig config =  new MatrixToImageConfig(MatrixToImageConfig.BLACK, 0xffffff);
+		MatrixToImageWriter.writeToStream(bitMatrix, "PNG", pngOutputStream, config);
 	    byte[] pngData = pngOutputStream.toByteArray(); 
 	    return pngData;
 	}

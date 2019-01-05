@@ -2,6 +2,9 @@ language: java
 sudo: false
 install: true
 
+services:
+  - docker
+
 jdk:
   - openjdk11
 
@@ -16,6 +19,8 @@ addons:
 
 script:
  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar -Dsonar.projectKey=uniqueck_feedback-system
+ - docker build  --build-arg JAR_FILE=./target/asck-survey-*.jar --tag uniqueck/asck-survey .
+ - docker push uniqueck/asck-survey:latest
  
 cache:
   directories:
