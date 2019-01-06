@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import org.asck.api.exceptions.EntityNotFoundException;
 import org.asck.api.service.model.Answer;
 import org.asck.api.service.model.Event;
+import org.asck.api.service.model.Option;
 import org.asck.api.service.model.Question;
 
 public interface IFeedbackService {
@@ -29,5 +30,7 @@ public interface IFeedbackService {
 	void deleteQuestion(@NotNull Long eventId, @NotNull Long questionId) throws EntityNotFoundException;
 
 	List<Answer> getAllAnswersToQuestion(long questionId) throws EntityNotFoundException;
+	
+	Option getOptionById(Long optionID) throws EntityNotFoundException;
 
 }

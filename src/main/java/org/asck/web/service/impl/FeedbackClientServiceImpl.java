@@ -166,6 +166,14 @@ class FeedbackClientServiceImpl implements IFeedbackClientService {
 	}
 	
 	@Override
+	public Option findOptionById(Long optionId) {
+		ResponseEntity<Option> response = new RestTemplate().exchange(createUrlPath(PATH_ELEMENT_OPTIONS, optionId.toString()), HttpMethod.GET,
+				null, new ParameterizedTypeReference<Option>() {
+		});
+		return response.getBody();
+	}
+	
+	@Override
 	public List<AnswerReport> getAllAnswersToEventId(Long eventId) {
 		List<AnswerReport> answersReport = new ArrayList<>();
 		
@@ -176,7 +184,7 @@ class FeedbackClientServiceImpl implements IFeedbackClientService {
 			for (Answer answer : allAnswersToQuestion) {
 				AnswerReport answerReport = new AnswerReport();
 				answerReport.setQuestion(question);
-				answerReport.setOption(getOptionById(answer.getOptionId()));
+				answerReport.setOption(findOptionById(answer.getOptionId()));
 				answerReport.setRemark(answer.getRemark());
 				answerReport.setAnsweredAt(answer.getAnsweredAt());
 				answersReport.add(answerReport);
@@ -185,11 +193,6 @@ class FeedbackClientServiceImpl implements IFeedbackClientService {
 		return answersReport;
 	}
 
-
-	private Option getOptionById(Long optionId) {
-		// TODO New RestController
-		return new Option(optionId, "optionalDescription", "iconPath");
-	}
 
 
 	
