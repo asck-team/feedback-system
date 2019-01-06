@@ -4,6 +4,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.asck.web.service.model.Event;
 import org.asck.web.ui.model.UIEventTM;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,8 +44,19 @@ public class NewEventController extends AbstractController {
 	@PostMapping("/newEvent")
 	public String post(@ModelAttribute UIEventTM eventTM) {
 		LOGGER.info("Save Obj from Ui {}", eventTM);
+		LOGGER.info("Save Event for User {}", getLoggedUser());
 		Event event = new Event(eventTM.getId(), eventTM.getEventName());
 		getFeedbackService().saveEvent(event);
 		return "redirect:/events";
+	}
+
+	private String getLoggedUser() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Object pricipal = auth.getPrincipal();
+		String loggedUser="";
+		if (pricipal instanceof User) {
+		       loggedUser = ((User) pricipal).getUsername();
+		}
+		return loggedUser;
 	}
 }
