@@ -46,21 +46,27 @@ public class ExcelView extends AbstractXlsView {
         Row header = sheet.createRow(0);
         header.createCell(0).setCellValue("Question");
         header.getCell(0).setCellStyle(style);
-        header.createCell(1).setCellValue("Option");
+        header.createCell(1).setCellValue("OptionId");
         header.getCell(1).setCellStyle(style);
-        header.createCell(2).setCellValue("Remark");
+        header.createCell(2).setCellValue("OptionOptionalDescription");
         header.getCell(2).setCellStyle(style);
-        header.createCell(3).setCellValue("Answered At");
+        header.createCell(3).setCellValue("OptionIconPath");
         header.getCell(3).setCellStyle(style);
+        header.createCell(4).setCellValue("Remark");
+        header.getCell(4).setCellStyle(style);
+        header.createCell(5).setCellValue("Answered At");
+        header.getCell(5).setCellStyle(style);
         
         int rowCount = 1;
 
         for(AnswerReport answer : answers){
             Row userRow =  sheet.createRow(rowCount++);
             userRow.createCell(0).setCellValue(answer.getQuestion().getQuestionName());
-            userRow.createCell(1).setCellValue(answer.getOption().getOptionalDescription());
-            userRow.createCell(2).setCellValue(answer.getRemark());
-            userRow.createCell(3).setCellValue(answer.getAnsweredAt().toString());
+            userRow.createCell(1).setCellValue(answer.getOption().getId());
+            userRow.createCell(2).setCellValue(answer.getOption().getOptionalDescription());
+            userRow.createCell(3).setCellValue(answer.getOption().getIconPath());
+            userRow.createCell(4).setCellValue(answer.getRemark());
+            userRow.createCell(5).setCellValue(answer.getAnsweredAt().toString());
             }
 
 	}

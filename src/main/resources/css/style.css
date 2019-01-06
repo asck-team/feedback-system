@@ -212,10 +212,10 @@ button:hover {
 
 
 /* Add padding to containers */
-.container {
-  padding: 16px;
+/* .container { */
+/*   padding: 16px; */
 
-}
+/* } */
 
 
 /* Change styles for span and cancel button on extra small screens */
@@ -284,11 +284,11 @@ button:hover {
 }
 
 
-/* Add padding to container elements */
-.container {
-  padding: 16px;
+/* /* Add padding to container elements */ */
+/* .container { */
+/*   padding: 16px; */
   
-}
+/* } */
 
 /* Clear floats */
 .clearfix::after {

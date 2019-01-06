@@ -213,4 +213,14 @@ class FeedbackServiceImpl implements IFeedbackService {
 		return Answer.builder().answeredAt(LocalDateTime.from(toMap.getAnsweredAt().toInstant().atZone(ZoneId.systemDefault()))).questionId(toMap.getQuestionId()).optionId(toMap.getQuestionOptionId()).remark(toMap.getRemark()).build();
 	}
 
+	@Override
+	public Option getOptionById(Long optionId) throws EntityNotFoundException {
+		Optional<QuestionOptionTableModel> option = getQuestionOptionRepository().findById(optionId);
+		if (option.isPresent()) {
+			return map(option.get());
+		} else {
+			throw new EntityNotFoundException(Option.class, "id", optionId.toString());
+		}
+	}
+
 }

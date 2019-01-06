@@ -33,5 +33,7 @@ public interface IFeedbackClientService {
 	Answer saveAnswer(Answer answer);
 	
 	List<AnswerReport> getAllAnswersToEventId(Long eventId);
+	
+	Option findOptionById(Long optionId);
 
 }

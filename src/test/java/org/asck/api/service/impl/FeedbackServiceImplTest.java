@@ -1,6 +1,7 @@
 package org.asck.api.service.impl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
@@ -20,9 +21,11 @@ import org.asck.api.repository.QuestionRepository;
 import org.asck.api.repository.QuestionTypeRepository;
 import org.asck.api.repository.model.AnswerTableModel;
 import org.asck.api.repository.model.EventTableModel;
+import org.asck.api.repository.model.QuestionOptionTableModel;
 import org.asck.api.repository.model.QuestionTableModel;
 import org.asck.api.service.model.Answer;
 import org.asck.api.service.model.Event;
+import org.asck.api.service.model.Option;
 import org.asck.api.service.model.Question;
 import org.asck.api.service.model.QuestionType;
 import org.hamcrest.Matchers;
@@ -403,11 +406,31 @@ public class FeedbackServiceImplTest {
 		List<Answer> allAnswersToQuestion = underTest.getAllAnswersToQuestion(1L);
 		verify(getQuestionRepository()).existsById(1L);
 		verify(getAnswerRepository()).findAllByQuestionId(1L);
-		
+
 		assertEquals(1, allAnswersToQuestion.size());
-		assertEquals(Answer.builder().answeredAt(LocalDateTime.from(answerTableModel.getAnsweredAt().toInstant().atZone(ZoneId.systemDefault())))
+		assertEquals(Answer.builder()
+				.answeredAt(
+						LocalDateTime.from(answerTableModel.getAnsweredAt().toInstant().atZone(ZoneId.systemDefault())))
 				.questionId(answerTableModel.getQuestionId()).optionId(answerTableModel.getQuestionOptionId())
 				.remark(answerTableModel.getRemark()).build(), allAnswersToQuestion.get(0));
+	}
+
+	/**
+	 * Test method for
+	 * {@link org.asck.service.impl.FeedbackServiceImpl#getOptionById()}.
+	 */
+	@Test
+	public void testGetOptionById() throws Exception {
+		when(getQuestionOptionRepository().findById(1L))
+				.thenReturn(java.util.Optional.of(QuestionOptionTableModel.builder().id(1L).optionalDescription("optionalDescription").questionTypeId(2L).iconPath("iconPath").build()));
+
+
+		Option option = underTest.getOptionById(1L);
+		
+		assertNotNull(option);
+		assertEquals("optionalDescription", option.getOptionalDescription());
+		
+		verify(getQuestionOptionRepository()).findById(1L);
 	}
 
 }
