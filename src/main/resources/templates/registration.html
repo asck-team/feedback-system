@@ -5,25 +5,61 @@
 
 <div th:replace="fragments/headerNavBar :: header">...</div>
 <body class="bg-light text-black bgsecond">
+  
   <form id="frame"  style=" width:400px; margin:auto;">
-  <div class="container">
-    <h3>Sign Up</h3>
-    <label for="email"><b>Email</b></label>
-    <input type="text" style="width:200px;" placeholder="Enter Email" name="email" required><br>
-    
-    <label for="email"><b>Username</b></label>
-    <input type="text" style="width:200px;" placeholder="Enter Username" name="username" required><br>
+  
+                 <div id="box" class="card border-primary rounded-0">
+                            <div class="card-header p-0">
+                                <div class="bg-info text-white text-center py-3">
+                                    <h3>Sign Up</h3>
+                                </div>
+                            </div>
 
-    <label for="psw" ><b>Password</b></label>
-    <input type="password" style="width:200px;" placeholder="Enter Password" name="psw"  required><br>
+                                <!--Body-->
+                                <div class="form-group">
+                                    <div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                        </div>
+                                        <label for="username" th:text="#{label.form.loginEmail}"></label>
+			<input type="text" placeholder="Enter Email" name="username" required>
+			<br /> 
+                                        
+                                    </div>
+                                </div>
 
-    
-    <div class="clearfix">
-      <button type="submit" style="width:300px;" class="signupbtn">Sign Up</button>
-      <button type="button" style="width:300px;" class="cancelbtn">Cancel</button>
+                                <div class="form-group">
+                                    <div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                       
+                                        </div>
+                                         <label for="email" th:text="Username"></label>
+			<input type="text" placeholder="Enter Username" name="username" required>
+			<br /> 
+                                    </div>
+                                </div>
+ 							<div class="form-group">
+                                    <div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                       
+                                        </div>
+
+<label for="password" th:text="#{label.form.loginPass}"></label> 
+			<input type="password" placeholder="Enter Password" name="password" required>
+			<br />
+</div> 
+</div>
+ 
+                                 <div class="clearfix">
+                                  <button id="logInButton" type="submit" style="width: 360px;" th:text="#{label.form.submit}">Login</button>
+      <p><a  id="cancelButton" th:href="@{/login}">Cancel</a></p>
     </div>
-  </div>
-</form>       
-
+                        </div>
+                    </form>
 </body>
 </html>
