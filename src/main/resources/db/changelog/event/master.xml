@@ -28,4 +28,14 @@
 		context="test-data">
 		<loadData tableName="Event" file="test-data/events.csv" />
 	</changeSet>
+	
+	<changeSet id="4" author="constantinkrueger">
+		<comment>add new column to link events and user</comment>
+		<addColumn tableName="Event">
+			<column name="owned_by" remarks="event is created from user" type="numeric">
+				<constraints foreignKeyName="PK_USER"/>
+			</column>
+		</addColumn>
+	</changeSet>
+	
 </databaseChangeLog>

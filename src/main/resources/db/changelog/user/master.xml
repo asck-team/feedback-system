@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+	<changeSet id="1" author="constantinkrueger">
+		<comment>create user table</comment>
+		<createTable tableName="User">
+			<column name="id" type="numeric">
+				<constraints primaryKey="true" primaryKeyName="PK_USER"
+					nullable="false" />
+			</column>
+			<column name="email" type="varchar(40)">
+				<constraints nullable="false" unique="true"
+					uniqueConstraintName="UC_USER_EMAIL" />
+			</column>
+			<column name="password" type="varchar(50)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
+
+	<changeSet id="2" author="constantinkrueger">
+		<comment>create sequence for event table</comment>
+		<createSequence sequenceName="SEQ_USER" cycle="false" incrementBy="50" startValue="5"/>
+	</changeSet>
+
+</databaseChangeLog>
