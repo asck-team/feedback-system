@@ -1,0 +1,7 @@
+=== Laufzeitszenario
+
+==== BigPicture des Systems
+[plantuml, diagram-classes, png]
+....
+include::plantuml/06_runtime_bigPicture.puml[]
+....

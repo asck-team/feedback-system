@@ -2,12 +2,7 @@
 == Laufzeitsicht
 
 
-
-
-=== _<Bezeichnung Laufzeitszenario 1>_
-
-*  <hier Laufzeitdiagramm oder Ablaufbeschreibung einfügen>
-*  <hier Besonderheiten bei dem Zusammenspiel der Bausteine in diesem Szenario erläutern>
+include::06-01-laufzeitszenario-bigpicture.adoc[]
 
 === _<Bezeichnung Laufzeitszenario 2>_
 
