@@ -10,16 +10,36 @@ node "Raspberry" as Raspi{
 	} 
 }
 
+note right of Docker
+    Stellt Die Infrasttruktur für
+    die Anwendung dar
+end note
+
+
 cloud Wlan{
 }
+
+note left of Wlan
+    Wlan Netz kann die Anwendung erreichen ohne 
+    ins Internet zu gehen
+end note
 
 node "[[xref:06_runtime_view.adoc# Awendung]]" as Anw{
 }
 
+note right of Anw
+    Die Anwendung wird mit Maven gebaut
+end note
+
 actor User
 
-User -down-> Wlan 
-Wlan -down-> Docker
+note right of User
+    User nutzt die Anwendung im
+    Browser auf dem Mobile Gerät oder Desktop
+end note
+
+User -down-> Wlan : Web:Htpp 
+Wlan -down-> Docker : Web:Http
 Anw -up-> Docker : .jar
 
 @enduml
