@@ -1,5 +1,23 @@
 [[section-solution-strategy]]
 == Lösungsstrategie
 
+Aufbau des Systems mit Hilfe einer Serverbasierte Web Anwendung.
+
+=== Benutzte Programiersprache
+
+Java und HTML5 mit Hilfe des Frameworks Spring Boot und Thymleaf
+
+=== Build System
+
+Maven
+
+=== Deployment
+
+Docker Container
+
+=== Architektur
+
+Spring Boot + Thymleaf mit ModelViewController Architektur 
+
 
 

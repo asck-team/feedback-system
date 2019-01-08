@@ -4,11 +4,6 @@
 
 === Laufzeitszenario
 
-==== BigPicture des Systems
-[plantuml, "06_runtime_bigPicture", png]
-....
-include::plantuml/06_runtime_bigPicture.puml[]
-....
 
 === _<Bezeichnung Laufzeitszenario 2>_
 

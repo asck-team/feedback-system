@@ -14,7 +14,9 @@ include::plantuml/07_deployment_Ziel_Infrastruktur.puml[]
 
 Begründung::
 
-_<Erläuternder Text>_
+Das Deployment erfolgt mittels Docker Container. Die mit Maven gebaute Anwendung wird in dem Container gepackt. 
+Das Container wird auf dem Ziel Server(z.B. Raspberry) gestartet. Mit dem Start des Containers wird die Anwendung auf dem Ziel Server deployed und installiert.
+Mit der Installation wird die Anwendung auf dem Server gehostet. Die Anwendung kann nun über HTTP (LocalHost oder Internet) erreicht werden. 
 
 Qualitäts- und/oder Leistungsmerkmale::
 

@@ -9,23 +9,32 @@
 
 
 
-_**<Übersichtsdiagramm>**_
+==== BigPicture des Systems
+[plantuml, "05_bigPicture", png]
+....
+include::plantuml/05_bigPicture.puml[]
+....
 
 Begründung::
 
-_<Erläuternder Text>_
+Aufbau des System nach Schichten Model
 
 
 Enthaltene Bausteine::
-_<Beschreibung der enthaltenen Bausteine (Blackboxen)>_
+
+- Datenbank - SQL
+- Data Acces Schicht - CRUD Repository
+- Bussiness Logic 
+- Frontend - Server basierte Anwendung die im Web(HTML5) gerendert wird
 
 Wichtige Schnittstellen::
-_<Beschreibung wichtiger Schnittstellen>_
+
+- Rest API 
 
 
 
 
-==== <Name Blackbox 1>
+==== Spring Boot
 
 
 
@@ -44,11 +53,15 @@ _<(optional) Offene Punkte/Probleme/Risiken>_
 
 
 
-==== <Name Blackbox 2>
+==== Thymleaf
+
+Rendering der Anwendung in Web(HTML5)
 
 _<Blackbox-Template>_
 
-==== <Name Blackbox n>
+==== Bootstrap und CSS
+
+Formatierung der Oberfläsche
 
 _<Blackbox-Template>_
 

@@ -6,11 +6,21 @@
 
 === Aufgabenstellung
 
+===== Fachlich
 
+Survey System um beliebiege Umfragen erstellen zu können. 
+Die Umfragen sollen anonym sein. Das heisst die Personenbezogene Daten dürfen nicht gespeichert werden. 
+Es sollen keine Daten über Herkunft des Geräts des Anwenders, IP Adresse oder ähnliches nachvollzogen werden können.
+Das Projekt soll als OpenSource Projekt betrieben und angeboten werden.
+
+===== Technisch
+
+Erstellung eines System, das eine Web basierte Anwendung beinhaltet. Die Web Anwendung soll mit allen gängigen Geräte
+kompatibel sein. Das System soll die Möglichkeit anbieten, Offline betrieben zu werden. 
 
 === Qualitätsziele
 
-
+Erfüllung der Datensschutz relevante Regularien.
 
 === Stakeholder
 
@@ -21,6 +31,7 @@
 [cols="1,1,2" options="header"]
 |===
 |Rolle |Kontakt |Erwartungshaltung
-| _<Rolle-1>_ | _<Kontakt-1>_ | _<Erwartung-1>_
-| _<Rolle-2>_ | _<Kontakt-2>_ | _<Erwartung-2>_ 
+| Architekt, Entwickler | Andrei Sava | Anforderungen stellen und Weiterentwicklung
+| Architekt, Entwickler | Constantin Krüger | Anforderungen stellen und Weiterentwicklung
+| Comunity | Comunity | Anforderungen stellen und Weiterentwicklung
 |===
