@@ -1,4 +1,5 @@
 @startuml
+!pragma graphviz_dot jdot
 !define Table(name,desc) class name as "desc" << (T,#FFAAAA) >>
 !define primary_key(x) <b>x</b>
 !define unique(x) <color:green>x</color>

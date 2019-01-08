@@ -2,7 +2,13 @@
 == Laufzeitsicht
 
 
-include::06-01-laufzeitszenario-bigpicture.adoc[]
+=== Laufzeitszenario
+
+==== BigPicture des Systems
+[plantuml, "06_runtime_bigPicture", png]
+....
+include::plantuml/06_runtime_bigPicture.puml[]
+....
 
 === _<Bezeichnung Laufzeitszenario 2>_
 

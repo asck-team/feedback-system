@@ -6,37 +6,42 @@ skinparam componentStyle uml2
 title Packages - Component Diagram
 
 package "Front End" {
-    component [Graphic User\nInterface] as GUI
+    component [Graphic User\nInterface\nHTML5 Thymleaf Framework] as GUI
 }
 
-cloud Localhost {
+cloud Localhost{
 }
  
-node "Middle Tier" {
+node "Server Anwendung \nSpringboot" as SA {
     [Business Logic]
-    [Data Access] as DA  
-    interface IMath as Math
-    note left of Math : This is a web\nService Interface
-    note right of Math : Notice the\nlabel below
-    interface "IItems" as Items
+    [Data Access] as DA
+    [MVC \nServer basierte WebAnwendung] as MVC  
+    interface RestAPI as API
+'    note left of Math : This is a web\nService Interface
+'    note right of Math : Notice the\nlabel below
+    interface "IData" as IData
     
     note left of [Business Logic]
-        A note can also
-        be on several lines
-        like this one
+        Java
+    end note
+    
+    note left of [DA]
+    	Data acces 
+    	über CRUD 
+    	Repository
     end note
     
 } 
 
-database "PostgreSQL\n" {
-    [Stored Procs]
+database "SQL_DB\n" {
+    [Stored Data]
 }
 
 GUI -down-> Localhost
-Localhost -down-( Math
-[Business Logic] -up- Math : Web Services
-DA -up- Items  : .Net
-[Business Logic] --( Items
-DA .. [Stored Procs]
-
+Localhost -down-(MVC
+MVC -down- API
+[Business Logic] -up- API : Web Services
+DA -up- IData  : .JPA
+[Business Logic] --( IData
+DA .. [Stored Data]
 @enduml

@@ -7,10 +7,10 @@
 
 === Infrastruktur Ebene 1
 
-
-
-
-_**<Übersichtsdiagramm>**_
+[plantuml, "07_deployment_Ziel_Infrastruktur", svg, %interactive]
+....
+include::plantuml/07_deployment_Ziel_Infrastruktur.puml[]
+....
 
 Begründung::
 

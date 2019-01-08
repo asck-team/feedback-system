@@ -1,0 +1,25 @@
+@startuml
+!pragma graphviz_dot jdot
+skinparam handwritten true
+skinparam componentStyle uml2
+
+title Package - Deployment
+
+node "Raspberry" as Raspi{
+	node "Docker" as Docker{
+	} 
+}
+
+cloud Wlan{
+}
+
+node "[[xref:06_runtime_view.adoc# Awendung]]" as Anw{
+}
+
+actor User
+
+User -down-> Wlan 
+Wlan -down-> Docker
+Anw -up-> Docker : .jar
+
+@enduml
