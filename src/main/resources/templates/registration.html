@@ -4,64 +4,67 @@
 <div th:replace="fragments/headerHead :: head">...</div>
 
 <div th:replace="fragments/headerNavBar :: header">...</div>
+
+
 <body class="bg-light text-black bgsecond">
-  
-  <form id="frame"  style=" width:400px; margin:auto;">
-  
-  
-             
-                 <div id="box" class="card border-primary rounded-0">
-                            <div class="card-header p-0">
-                                <div class="bg-info text-white text-center py-3">
-                                    <h3>Sign Up</h3>
-                                </div>
-                            </div>
+	<section id="cover">
+		<div id="cover-caption">
+			<div id="container" class="container">
+				<div class="row text-black">
+					<div class="col-sm-6 offset-sm-3 text-center">
+						<div class="card-header p-0">
+							<div class="bg-info text-center py-3">
 
-                                <!--Body-->
-                                <div class="form-group">
-                                    <div class="input-group mb-2">
-                                        <div class="input-group-prepend">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="input-group mb-2">
-                                        <div class="input-group-prepend">
-                                        </div>
-                                        <label for="username" th:text="#{label.form.loginEmail}"></label>
-			<input type="text" placeholder="Enter Email" name="username" required>
-			<br /> 
-                                        
-                                    </div>
-                                </div>
+								<h3>Sign in</h3>
+							</div>
+						</div>
 
-                                <div class="form-group">
-                                    <div class="input-group mb-2">
-                                        <div class="input-group-prepend">
-                                       
-                                        </div>
-                                         <label for="email" th:text="Username"></label>
-			<input type="text" placeholder="Enter Username" name="username" required>
-			<br /> 
-                                    </div>
-                                </div>
- 							<div class="form-group">
-                                    <div class="input-group mb-2">
-                                        <div class="input-group-prepend">
-                                       
-                                        </div>
+						<div class="form-group">
+							<div class="input-group mb-2">
+								<div class="input-group-prepend"></div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="input-group mb-2">
+								<div class="input-group-prepend"></div>
+								<label for="username" th:text="#{label.form.loginEmail}"></label>
+								<input type="text" placeholder="Enter Email" name="username"
+									required> <br />
 
-<label for="password" th:text="#{label.form.loginPass}"></label> 
-			<input type="password" placeholder="Enter Password" name="password" required>
-			<br />
-</div> 
-</div>
- 
-                                 <div class="clearfix">
-                                  <button id="logInButton" type="submit" style="width: 360px;" th:text="#{label.form.submit}">Login</button>
-      <p><a  id="cancelButton" th:href="@{/login}">Cancel</a></p>
-    </div>
-                        </div>
-                    </form>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<div class="input-group mb-2">
+								<div class="input-group-prepend"></div>
+								<label for="email" th:text="Username"></label> <input
+									type="text" placeholder="Enter Username" name="username"
+									required> <br />
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="input-group mb-2">
+								<div class="input-group-prepend"></div>
+
+								<label for="password" th:text="#{label.form.loginPass}"></label>
+								<input type="password" placeholder="Enter Password"
+									name="password" required> <br />
+							</div>
+						</div>
+
+						<div class="clearfix">
+							<button id="logInButton" type="submit" style="width: 360px;"
+								th:text="#{label.form.submit}">Sign in</button>
+							<p>
+								<a id="cancelButton" th:href="@{/login}">Cancel</a>
+							</p>
+						</div>
+					</div>
+					</form>
+				</div>
+				<br>
+			</div>
+		</div>
+	</section>
 </body>
 </html>
