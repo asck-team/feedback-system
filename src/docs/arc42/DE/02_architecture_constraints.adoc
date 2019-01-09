@@ -1,4 +1,15 @@
 [[section-architecture-constraints]]
 == Randbedingungen
 
+=== Technische Randbedingungen
 
+=== Organisatorische Randbedingungen
+
+=== Konventionen
+
+[cols="1,2" options="header"]
+|===
+| Konvention | Erläuterung, Hintergrund
+|Architekturdokumentation | Terminologie und Gliederung auf Basis des arc42-Template
+|Architektturrichtlinien  | gemäß Architekturdokumentation, geprüft mit ArchUnit
+|===
