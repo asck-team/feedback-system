@@ -178,11 +178,12 @@ label.star:before {
   width: 65px;
 }
 /* logo */
+
+
 /* hide radio button for freetext */
 .hide-radio {
     display : none;
 } 
-/* hide radio button for freetext */
 
   /* Bordered form */
 #frame{
@@ -241,21 +242,30 @@ button {
 }
 
 /* Change styles for signup button on extra small screens */
-@media screen and (max-width: 200px) {
   .signupbtn {
     width: 100%;
 margin-left:150px;
   }
 }
 
-#box{
-width:400px;
-padding-left: 20px;
-padding-right: 20px;
-padding-top: 10px;
-padding-bottom: 10px;
-}
 
 #cancelButton{
 margin-left: 155px;
+}
+html,
+body{
+ height: 100%;
+}
+
+#cover {
+  background: #c0c0c0urlcenter center no-repeat;
+  background-size: cover;
+  height: 100%;
+  text-align: center;
+  display: flex;
+  align-items: center;
+}
+
+#cover-caption {
+  width: 100%;
 }
