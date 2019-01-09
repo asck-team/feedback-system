@@ -3,7 +3,7 @@
 
 <div th:replace="fragments/headerHead :: head">...</div>
 
-<div th:replace="fragments/headerNavBar :: header">...</div>
+<div th:replace="fragments/headerNavBarNoSearch :: headerNoSearch">...</div>
 
 
 <body class="bg-light text-black bgsecond">
@@ -19,9 +19,10 @@
 							</div>
 						</div>
 
-						<div class="info-form">
-							<form action="" class="form-inlin justify-content-center">
+						<br>
 
+						<div class="info-form">
+							<form th:action="@{/login}" method="post" class="form-inlin justify-content-center">
 
 								<div class="form-group">
 									<div class="input-group mb-2">
@@ -42,15 +43,15 @@
 								</div>
 
 								<div class="text-center">
-									<button id="logInButton" type="submit" style="width: 360px;"
+									<button id="logInButton" type="submit" class="col-md-8"
 										th:text="#{label.form.submit}">Login</button>
 									<p>
 										<a id="CreateAccButton" th:href="@{/signup}">Create
 											Account</a>
 									</p>
 								</div>
+							</form>
 						</div>
-						</form>
 					</div>
 					<br>
 
