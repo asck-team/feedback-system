@@ -3,7 +3,7 @@
 
 <div th:replace="fragments/headerHead :: head">...</div>
 
-<div th:replace="fragments/headerNavBar :: header">...</div>
+<div th:replace="fragments/headerNavBarNoSearch :: headerNoSearch">...</div>
 
 
 <body class="bg-light text-black bgsecond">
@@ -18,6 +18,8 @@
 								<h3>Sign in</h3>
 							</div>
 						</div>
+						
+						<br>
 
 						<div class="form-group">
 							<div class="input-group mb-2">
@@ -53,7 +55,7 @@
 						</div>
 
 						<div class="clearfix">
-							<button id="logInButton" type="submit" style="width: 360px;"
+							<button id="logInButton" type="submit" class="col-md-8"
 								th:text="#{label.form.submit}">Sign in</button>
 							<p>
 								<a id="cancelButton" th:href="@{/login}">Cancel</a>
