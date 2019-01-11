@@ -49,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .httpBasic();
 		} else {
-			http.authorizeRequests().antMatchers("/**").permitAll().and().csrf().disable();
+			http.antMatcher("/").csrf().disable();
 		}
 	}
 

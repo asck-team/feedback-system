@@ -2,17 +2,14 @@ package org.asck;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 
+import javax.persistence.Entity;
+
 import org.springframework.stereotype.Repository;
 
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
 
 public class RepositoryLayerArchitectureTests {
-
-	@ArchTest
-	public static final ArchRule repositoryClassesShouldOnlyBeAccessedByServiceClasses = classes().that()
-			.resideInAPackage("..repository").should().onlyBeAccessed().byAnyPackage(
-					"..service..");
 
 	@ArchTest
 	public static final ArchRule classesThatAnnotatedWithSpringRepositoryAnnotationShouldResideInPackageXRepository = classes()
@@ -28,5 +25,15 @@ public class RepositoryLayerArchitectureTests {
 	public static final ArchRule repositoryClassesShouldBeAnnotatedWithRepository = classes().that()
 			.resideInAPackage("..repository").should()
 			.beAnnotatedWith(Repository.class);
+	
+	@ArchTest
+	public static final ArchRule repositoryModelClassesShouldBeAnnotatedWithEntity = classes().that()
+			.resideInAPackage("..repository.model").and().haveSimpleNameEndingWith("TableModel").should()
+			.beAnnotatedWith(Entity.class);
+
+	@ArchTest
+	public static final ArchRule repositoryModelClassesShouldHaveSimpleNameEndingWith = classes().that()
+			.resideInAPackage("..repository.model").and().areAnnotatedWith(Entity.class).should().haveSimpleNameEndingWith("TableModel");
+	
 
 }
