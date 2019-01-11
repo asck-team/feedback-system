@@ -7,5 +7,9 @@ public class ClientServiceRuntimeException extends RuntimeException {
 	public ClientServiceRuntimeException(String message) {
 		super(message);
 	}
-	
+
+	public ClientServiceRuntimeException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
 }

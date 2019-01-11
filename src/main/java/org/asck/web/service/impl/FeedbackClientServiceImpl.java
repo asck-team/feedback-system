@@ -22,6 +22,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -41,66 +43,71 @@ class FeedbackClientServiceImpl implements IFeedbackClientService {
 	private static final String PATH_ELEMENT_QUESTIONS = "questions";
 
 	private static final String PATH_ELEMENT_EVENTS = "events";
-	
+
 	private static final String PATH_ELEMENT_ANSWERS = "answers";
 
 	private static final Logger LOGGER = LogManager.getLogger(FeedbackClientServiceImpl.class);
 
 	@Value("${service.base.path:http://localhost:8080/v1/feedback}")
 	private String basePath;
-	
-	private final RestTemplate restTemplate; 
+
+	private final RestTemplate restTemplate;
 
 	public FeedbackClientServiceImpl(RestTemplateBuilder restTemplateBuilder) {
 		this.restTemplate = restTemplateBuilder.build();
 	}
-	
 
 	protected String createUrlPath(String... pathElements) {
 		List<String> path = new ArrayList<>();
-		path.add(basePath);
+		path.add(getBasePath());
 		for (String eachPathElement : pathElements) {
 			path.add(eachPathElement);
 		}
 		return path.stream().collect(Collectors.joining("/"));
 	}
-	
+
 	@Override
 	public List<Event> leseAlleEvents() {
-		ResponseEntity<List<Event>> responseEntity = getRestTemplate().exchange(createUrlPath(PATH_ELEMENT_EVENTS),
-				HttpMethod.GET, null, new ParameterizedTypeReference<List<Event>>() {
-				});
-		if (responseEntity.getStatusCode().is2xxSuccessful()) {
+		try {
+			ResponseEntity<List<Event>> responseEntity = getRestTemplate().exchange(createUrlPath(PATH_ELEMENT_EVENTS),
+					HttpMethod.GET, null, new ParameterizedTypeReference<List<Event>>() {
+					});
 			if (responseEntity.getStatusCode().equals(HttpStatus.NO_CONTENT)) {
 				return Collections.emptyList();
 			} else {
 				return responseEntity.getBody();
 			}
+		} catch (HttpClientErrorException | HttpServerErrorException e) {
+			throw new ClientServiceRuntimeException("Error on retrieve events", e);
 		}
-		return responseEntity.getBody();
 	}
 
 	@Override
 	public List<Question> leseAlleFragenZuEvent(Long eventId) {
-		ResponseEntity<List<Question>> response = getRestTemplate().exchange(createUrlPath(PATH_ELEMENT_EVENTS, eventId.toString(), PATH_ELEMENT_QUESTIONS), HttpMethod.GET, null,
-				new ParameterizedTypeReference<List<Question>>() {
-		});
-		if (response.getStatusCode().is2xxSuccessful()) {
+		try {
+			ResponseEntity<List<Question>> response = getRestTemplate().exchange(
+					createUrlPath(PATH_ELEMENT_EVENTS, eventId.toString(), PATH_ELEMENT_QUESTIONS), HttpMethod.GET,
+					null, new ParameterizedTypeReference<List<Question>>() {
+					});
 			if (response.getStatusCode().equals(HttpStatus.NO_CONTENT)) {
 				return Collections.emptyList();
 			} else {
 				return response.getBody();
 			}
-		} else {
-			throw new ClientServiceRuntimeException("Error on retrieve questions to event with id " + eventId);
+		} catch (HttpClientErrorException | HttpServerErrorException e) {
+			throw new ClientServiceRuntimeException("Error on retrieve questions for event with id " + eventId, e);
 		}
+
 	}
 
 	@Override
 	public List<Option> leseAlleOptionenZuEinerFrage(Long eventId, Long questionId) {
-		ResponseEntity<List<Option>> response = getRestTemplate().exchange(createUrlPath(PATH_ELEMENT_EVENTS, eventId.toString(), PATH_ELEMENT_QUESTIONS, questionId.toString(), PATH_ELEMENT_OPTIONS),
-				HttpMethod.GET, null, new ParameterizedTypeReference<List<Option>>() {
-				});
+		ResponseEntity<List<Option>> response = getRestTemplate()
+				.exchange(
+						createUrlPath(PATH_ELEMENT_EVENTS, eventId.toString(), PATH_ELEMENT_QUESTIONS,
+								questionId.toString(), PATH_ELEMENT_OPTIONS),
+						HttpMethod.GET, null, new ParameterizedTypeReference<List<Option>>() {
+						});
 		return response.getBody();
 	}
 
@@ -118,17 +125,24 @@ class FeedbackClientServiceImpl implements IFeedbackClientService {
 
 	@Override
 	public Event getEventById(Long id) {
-		ResponseEntity<Event> response = getRestTemplate().exchange(createUrlPath(PATH_ELEMENT_EVENTS, id.toString()), HttpMethod.GET,
-				null, new ParameterizedTypeReference<Event>() {
-				});
-		return response.getBody();
+		try {
+			ResponseEntity<Event> response = getRestTemplate().exchange(createUrlPath(PATH_ELEMENT_EVENTS, id.toString()),
+					HttpMethod.GET, null, new ParameterizedTypeReference<Event>() {
+					});
+			return response.getBody();
+		} catch (HttpClientErrorException e) {
+			if (e.getStatusCode().equals(HttpStatus.NOT_FOUND)) {
+				return null;
+			}
+			throw new ClientServiceRuntimeException("Error on retrieve event with id " + id);
+		}
 	}
 
 	@Override
 	public Question readQuestion(Long eventId, Long questionId) {
 		ResponseEntity<Question> response = getRestTemplate().exchange(
-				createUrlPath(PATH_ELEMENT_EVENTS, eventId.toString(), PATH_ELEMENT_QUESTIONS, questionId.toString()), HttpMethod.GET, null,
-				new ParameterizedTypeReference<Question>() {
+				createUrlPath(PATH_ELEMENT_EVENTS, eventId.toString(), PATH_ELEMENT_QUESTIONS, questionId.toString()),
+				HttpMethod.GET, null, new ParameterizedTypeReference<Question>() {
 				});
 		return response.getBody();
 	}
@@ -136,11 +150,12 @@ class FeedbackClientServiceImpl implements IFeedbackClientService {
 	@Override
 	public Question saveQuestion(Long eventId, Question question) {
 		if (question.getId() != null) {
-			getRestTemplate().put(createUrlPath(PATH_ELEMENT_EVENTS, eventId.toString(), PATH_ELEMENT_QUESTIONS, question.getId().toString()), question);
+			getRestTemplate().put(createUrlPath(PATH_ELEMENT_EVENTS, eventId.toString(), PATH_ELEMENT_QUESTIONS,
+					question.getId().toString()), question);
 			LOGGER.info("updated Question: {}", question);
 		} else {
-			URI uri4CreatedEvent = getRestTemplate()
-					.postForLocation(createUrlPath(PATH_ELEMENT_EVENTS, eventId.toString(), PATH_ELEMENT_QUESTIONS), question);
+			URI uri4CreatedEvent = getRestTemplate().postForLocation(
+					createUrlPath(PATH_ELEMENT_EVENTS, eventId.toString(), PATH_ELEMENT_QUESTIONS), question);
 			LOGGER.info("created Question: {}", uri4CreatedEvent);
 		}
 		return question;
@@ -150,8 +165,9 @@ class FeedbackClientServiceImpl implements IFeedbackClientService {
 	public List<String> readAllSupportedQuestionTypes() {
 		List<String> allSupportedQuestionTypes = new ArrayList<>();
 		LOGGER.traceEntry();
-		ResponseEntity<List<String>> response = getRestTemplate().exchange(createUrlPath(PATH_ELEMENT_ADMIN,PATH_ELEMENT_QUESTION_TYPES),
-				HttpMethod.GET, null, new ParameterizedTypeReference<List<String>>() {
+		ResponseEntity<List<String>> response = getRestTemplate().exchange(
+				createUrlPath(PATH_ELEMENT_ADMIN, PATH_ELEMENT_QUESTION_TYPES), HttpMethod.GET, null,
+				new ParameterizedTypeReference<List<String>>() {
 				});
 		allSupportedQuestionTypes.addAll(response.getBody());
 		return LOGGER.traceExit(allSupportedQuestionTypes);
@@ -167,40 +183,42 @@ class FeedbackClientServiceImpl implements IFeedbackClientService {
 	@Override
 	public void deleteQuestion(Long eventId, Long questionId) {
 		LOGGER.traceEntry("with Parameters {} and {}", eventId, questionId);
-		getRestTemplate().delete(createUrlPath(PATH_ELEMENT_EVENTS, eventId.toString(), PATH_ELEMENT_QUESTIONS, questionId.toString()));
+		getRestTemplate().delete(
+				createUrlPath(PATH_ELEMENT_EVENTS, eventId.toString(), PATH_ELEMENT_QUESTIONS, questionId.toString()));
 		LOGGER.traceExit();
 	}
 
-
 	@Override
 	public Answer saveAnswer(Answer answer) {
-		URI uri4CreatedAnswer =getRestTemplate().postForLocation(createUrlPath(PATH_ELEMENT_ANSWERS), answer);
+		URI uri4CreatedAnswer = getRestTemplate().postForLocation(createUrlPath(PATH_ELEMENT_ANSWERS), answer);
 		LOGGER.info("created Answer: {}", uri4CreatedAnswer);
 		return answer;
 	}
-	
+
 	protected List<Answer> getAllAnswersToQuestion(Long questionId) {
-		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(createUrlPath(PATH_ELEMENT_ANSWERS)).queryParam("questionId", questionId);
+		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(createUrlPath(PATH_ELEMENT_ANSWERS))
+				.queryParam("questionId", questionId);
 		ResponseEntity<List<Answer>> response = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, null,
 				new ParameterizedTypeReference<List<Answer>>() {
 				});
 		return response.getBody();
 	}
-	
+
 	@Override
 	public Option findOptionById(Long optionId) {
-		ResponseEntity<Option> response = getRestTemplate().exchange(createUrlPath(PATH_ELEMENT_OPTIONS, optionId.toString()), HttpMethod.GET,
-				null, new ParameterizedTypeReference<Option>() {
-		});
+		ResponseEntity<Option> response = getRestTemplate().exchange(
+				createUrlPath(PATH_ELEMENT_OPTIONS, optionId.toString()), HttpMethod.GET, null,
+				new ParameterizedTypeReference<Option>() {
+				});
 		return response.getBody();
 	}
-	
+
 	@Override
 	public List<AnswerReport> getAllAnswersToEventId(Long eventId) {
 		List<AnswerReport> answersReport = new ArrayList<>();
-		
+
 		List<Question> allQuestionsToEvent = leseAlleFragenZuEvent(eventId);
-		
+
 		for (Question question : allQuestionsToEvent) {
 			List<Answer> allAnswersToQuestion = getAllAnswersToQuestion(question.getId());
 			for (Answer answer : allAnswersToQuestion) {
@@ -215,10 +233,4 @@ class FeedbackClientServiceImpl implements IFeedbackClientService {
 		return answersReport;
 	}
 
-
-
-	
-
-
-	
 }
