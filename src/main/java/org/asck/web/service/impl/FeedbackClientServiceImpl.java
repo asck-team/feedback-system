@@ -2,11 +2,13 @@ package org.asck.web.service.impl;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.asck.web.exceptions.ClientServiceRuntimeException;
 import org.asck.web.service.IFeedbackClientService;
 import org.asck.web.service.model.Answer;
 import org.asck.web.service.model.AnswerReport;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -67,6 +70,13 @@ class FeedbackClientServiceImpl implements IFeedbackClientService {
 		ResponseEntity<List<Event>> responseEntity = getRestTemplate().exchange(createUrlPath(PATH_ELEMENT_EVENTS),
 				HttpMethod.GET, null, new ParameterizedTypeReference<List<Event>>() {
 				});
+		if (responseEntity.getStatusCode().is2xxSuccessful()) {
+			if (responseEntity.getStatusCode().equals(HttpStatus.NO_CONTENT)) {
+				return Collections.emptyList();
+			} else {
+				return responseEntity.getBody();
+			}
+		}
 		return responseEntity.getBody();
 	}
 
@@ -74,8 +84,16 @@ class FeedbackClientServiceImpl implements IFeedbackClientService {
 	public List<Question> leseAlleFragenZuEvent(Long eventId) {
 		ResponseEntity<List<Question>> response = getRestTemplate().exchange(createUrlPath(PATH_ELEMENT_EVENTS, eventId.toString(), PATH_ELEMENT_QUESTIONS), HttpMethod.GET, null,
 				new ParameterizedTypeReference<List<Question>>() {
-				});
-		return response.getBody();
+		});
+		if (response.getStatusCode().is2xxSuccessful()) {
+			if (response.getStatusCode().equals(HttpStatus.NO_CONTENT)) {
+				return Collections.emptyList();
+			} else {
+				return response.getBody();
+			}
+		} else {
+			throw new ClientServiceRuntimeException("Error on retrieve questions to event with id " + eventId);
+		}
 	}
 
 	@Override
