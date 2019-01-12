@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="fragments/headerHead :: head">...</div>
+
+<div th:replace="fragments/headerNavBar :: header">...</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
+<body class="bg-light text-black bgsecond">
+    <div class="container text-center">
+        <br/><br>
+        <h1>Chart</h1>
+        <br>
+        <canvas id="bar-chart-grouped" width="800" height="450"></canvas>
+    </div>
+</body>
+
+<script type="text/javascript" th:inline="javascript">
+/*<![CDATA[*/
+new Chart(document.getElementById("bar-chart-grouped"), {
+    type: 'bar',
+    data: {
+      labels: /*[[${labels}]]*/ [],
+      datasets: [
+        {
+          label: /*[[${dataSet1}]]*/,
+          backgroundColor: "black",
+          data: /*[[${data1}]]*/ []
+        }, 
+        {
+            label: /*[[${dataSet2}]]*/,
+            backgroundColor: "#8e5ea2",
+            data: /*[[${data2}]]*/ []
+        },
+        {
+             label: /*[[${dataSet3}]]*/,
+             backgroundColor: "blue",
+             data: /*[[${data3}]]*/ []
+         },
+         {
+               label: /*[[${dataSet4}]]*/,
+               backgroundColor: "red",
+               data: /*[[${data4}]]*/ []
+         },
+         {
+                 label: /*[[${dataSet5}]]*/,
+                 backgroundColor: "green",
+                 data: /*[[${data5}]]*/ []
+         }   
+      ]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Chart Rating Answers'
+      },
+      scales: {
+          yAxes: [{
+              ticks: {
+                  beginAtZero:true
+              }
+          }]
+      }
+    }
+});
+/*]]>*/
+</script>
+
+</html>
