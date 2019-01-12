@@ -1,6 +1,7 @@
 package org.asck.web.service.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class Event {
 
 	private Long id;
-	
+	@JsonProperty(required = true)
 	private String name;
 	
 }

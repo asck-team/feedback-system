@@ -113,21 +113,25 @@ class FeedbackClientServiceImpl implements IFeedbackClientService {
 
 	@Override
 	public Event saveEvent(Event event) {
+		Event newOrUpdatedEvent = event;
 		if (event.getId() != null) {
-			new RestTemplate().put(createUrlPath(PATH_ELEMENT_EVENTS, event.getId().toString()), event);
-			LOGGER.info("updated Event: {}", event);
+			getRestTemplate().put(createUrlPath(PATH_ELEMENT_EVENTS, event.getId().toString()), event);
+			LOGGER.info("updated Event: {}", newOrUpdatedEvent);
 		} else {
-			URI uri4CreatedEvent = getRestTemplate().postForLocation(createUrlPath(PATH_ELEMENT_EVENTS), event);
-			LOGGER.info("created Event: {}", uri4CreatedEvent);
+			URI location = getRestTemplate().postForLocation(createUrlPath(PATH_ELEMENT_EVENTS),
+					Event.builder().id(-1L).name(event.getName()).build());
+			newOrUpdatedEvent = getRestTemplate().getForObject(location, Event.class);
+			LOGGER.info("created Event: {}", newOrUpdatedEvent);
 		}
-		return event;
+		return newOrUpdatedEvent;
 	}
 
 	@Override
 	public Event getEventById(Long id) {
 		try {
-			ResponseEntity<Event> response = getRestTemplate().exchange(createUrlPath(PATH_ELEMENT_EVENTS, id.toString()),
-					HttpMethod.GET, null, new ParameterizedTypeReference<Event>() {
+			ResponseEntity<Event> response = getRestTemplate().exchange(
+					createUrlPath(PATH_ELEMENT_EVENTS, id.toString()), HttpMethod.GET, null,
+					new ParameterizedTypeReference<Event>() {
 					});
 			return response.getBody();
 		} catch (HttpClientErrorException e) {
@@ -149,16 +153,18 @@ class FeedbackClientServiceImpl implements IFeedbackClientService {
 
 	@Override
 	public Question saveQuestion(Long eventId, Question question) {
+		Question newOrUpdatedQuestion = question;
 		if (question.getId() != null) {
 			getRestTemplate().put(createUrlPath(PATH_ELEMENT_EVENTS, eventId.toString(), PATH_ELEMENT_QUESTIONS,
 					question.getId().toString()), question);
-			LOGGER.info("updated Question: {}", question);
+			LOGGER.info("updated Question: {}", newOrUpdatedQuestion);
 		} else {
 			URI uri4CreatedEvent = getRestTemplate().postForLocation(
 					createUrlPath(PATH_ELEMENT_EVENTS, eventId.toString(), PATH_ELEMENT_QUESTIONS), question);
-			LOGGER.info("created Question: {}", uri4CreatedEvent);
+			newOrUpdatedQuestion = getRestTemplate().getForObject(uri4CreatedEvent, Question.class);
+			LOGGER.info("created Question: {}", newOrUpdatedQuestion);
 		}
-		return question;
+		return newOrUpdatedQuestion;
 	}
 
 	@Override

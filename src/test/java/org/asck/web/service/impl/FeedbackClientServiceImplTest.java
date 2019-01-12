@@ -10,6 +10,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.http.HttpMethod.DELETE;
 import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.PUT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
@@ -20,14 +22,17 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
+import java.io.IOException;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.asck.api.service.model.QuestionType;
 import org.asck.web.exceptions.ClientServiceRuntimeException;
 import org.asck.web.service.model.Answer;
+import org.asck.web.service.model.AnswerReport;
 import org.asck.web.service.model.Event;
 import org.asck.web.service.model.Option;
 import org.asck.web.service.model.Question;
@@ -80,7 +85,7 @@ public class FeedbackClientServiceImplTest {
 	JacksonTester<List<org.asck.api.service.model.QuestionType>> jsonQuestionTypeList;
 
 	@Test
-	public void testGetAllAnswersToEventId() throws Exception {
+	public void testSaveAnswer() throws Exception {
 		Answer saveAnswer = new Answer(1L, 2L, "remark", LocalDateTime.now());
 		String jsonString = json.write(saveAnswer).getJson();
 
@@ -180,9 +185,7 @@ public class FeedbackClientServiceImplTest {
 		questions.add(org.asck.api.service.model.Question.builder().id(4L).questionName("Question4")
 				.questionType(QuestionType.YES_NO).order(4).build());
 
-		this.server.expect(requestTo("http://localhost:8080/v1/feedback/events/1/questions"))
-				.andExpect(method(HttpMethod.GET))
-				.andRespond(withSuccess(jsonQuestionList.write(questions).getJson(), MediaType.APPLICATION_JSON_UTF8));
+		expectLeseAlleFragenZuEvent(questions);
 
 		List<Question> questionsClientList = client.leseAlleFragenZuEvent(1L);
 		assertNotNull(questionsClientList);
@@ -196,6 +199,12 @@ public class FeedbackClientServiceImplTest {
 				.order(3).build(), questionsClientList.get(2));
 		assertEquals(Question.builder().id(4L).questionName("Question4").questionType(QuestionType.YES_NO.name())
 				.order(4).build(), questionsClientList.get(3));
+	}
+
+	private void expectLeseAlleFragenZuEvent(List<org.asck.api.service.model.Question> questions) throws IOException {
+		this.server.expect(requestTo("http://localhost:8080/v1/feedback/events/1/questions"))
+				.andExpect(method(HttpMethod.GET))
+				.andRespond(withSuccess(jsonQuestionList.write(questions).getJson(), MediaType.APPLICATION_JSON_UTF8));
 	}
 
 	/**
@@ -340,6 +349,95 @@ public class FeedbackClientServiceImplTest {
 		assertEquals(QuestionType.FREETEXT.name(), responseList.get(1));
 		assertEquals(QuestionType.THREE_SMILEYS.name(), responseList.get(2));
 		assertEquals(QuestionType.YES_NO.name(), responseList.get(3));
+	}
+
+	/**
+	 * Test method for {@link org.asck.web.service.impl.FeedbackClientServiceImpl#saveEvent(org.asck.web.service.model.Event)}.
+	 */
+	@Test
+	public void testSaveEvent_RESTApiReturnsLocationForNewlyCreatedEvent_ReturnsNewEventWithId() throws Exception {
+		
+		String jsonString = jsonEvent.write(org.asck.api.service.model.Event.builder().id(-1L).name("NewEvent").build()).getJson();
+		
+		this.server.expect(requestTo("http://localhost:8080/v1/feedback/events")).andExpect(method(POST)).andExpect(content().json(jsonString)).andRespond(withCreatedEntity(new URI("http://localhost:8080/v1/feedback/events/1")));
+		String createdObjectAsJson = jsonEvent.write(org.asck.api.service.model.Event.builder().id(1L).name("NewEvent").build()).getJson();
+		this.server.expect(requestTo("http://localhost:8080/v1/feedback/events/1")).andExpect(method(GET)).andRespond(withSuccess(createdObjectAsJson, APPLICATION_JSON_UTF8));
+		Event savedEvent = this.client.saveEvent(Event.builder().id(null).name("NewEvent").build());
+		assertNotNull(savedEvent);
+		assertEquals(Event.builder().id(1L).name("NewEvent").build(), savedEvent);
+	}
+	
+	/**
+	 * Test method for {@link org.asck.web.service.impl.FeedbackClientServiceImpl#saveEvent(org.asck.web.service.model.Event)}.
+	 */
+	@Test
+	public void testSaveEvent_RESTApiReturnsNoContent_ReturnsUpdatedEvent() throws Exception {
+		
+		String jsonString = jsonEvent.write(org.asck.api.service.model.Event.builder().id(1L).name("UpdatedEvent").build()).getJson();
+		
+		this.server.expect(requestTo("http://localhost:8080/v1/feedback/events/1")).andExpect(method(PUT)).andExpect(content().json(jsonString)).andRespond(withNoContent());
+		Event savedEvent = this.client.saveEvent(Event.builder().id(1L).name("UpdatedEvent").build());
+		assertNotNull(savedEvent);
+		assertEquals(Event.builder().id(1L).name("UpdatedEvent").build(), savedEvent);
+	}
+
+	/**
+	 * Test method for {@link org.asck.web.service.impl.FeedbackClientServiceImpl#saveQuestion(java.lang.Long, org.asck.web.service.model.Question)}.
+	 */
+	@Test
+	public void testSaveQuestion_RESTApiReturnsLocationForNewlyCreatedQuestion_ReturnsNewQuestionWithId() throws Exception {
+
+		String jsonString = jsonQuestion.write(org.asck.api.service.model.Question.builder().questionName("NewQuestionName").order(1).questionType(QuestionType.FIVE_SMILEYS).build()).getJson();
+		this.server.expect(requestTo("http://localhost:8080/v1/feedback/events/1/questions")).andExpect(method(POST)).andExpect(content().json(jsonString)).andRespond(withCreatedEntity(new URI("http://localhost:8080/v1/feedback/events/1/questions/2")));
+		String jsonCreatedObject = jsonQuestion.write(org.asck.api.service.model.Question.builder().id(2L).questionName("NewQuestionName").order(1).questionType(QuestionType.FIVE_SMILEYS).build()).getJson();
+		this.server.expect(requestTo("http://localhost:8080/v1/feedback/events/1/questions/2")).andExpect(method(GET)).andRespond(withSuccess(jsonCreatedObject, APPLICATION_JSON_UTF8));
+		
+		Question saveQuestion = this.client.saveQuestion(1L, Question.builder().id(null).questionName("NewQuestionName").order(1).questionType(QuestionType.FIVE_SMILEYS.name()).build());	
+		assertNotNull(saveQuestion);
+		assertEquals(Question.builder().id(2L).questionName("NewQuestionName").order(1).questionType(QuestionType.FIVE_SMILEYS.name()).build(), saveQuestion);
+	}
+	
+	/**
+	 * Test method for {@link org.asck.web.service.impl.FeedbackClientServiceImpl#saveQuestion(java.lang.Long, org.asck.web.service.model.Question)}.
+	 */
+	@Test
+	public void testSaveQuestion_RESTApiReturnsNoContent_ReturnsUpdatedQuestion() throws Exception {
+
+		String jsonString = jsonQuestion.write(org.asck.api.service.model.Question.builder().id(2L).questionName("NewQuestionName").order(1).questionType(QuestionType.FIVE_SMILEYS).build()).getJson();
+		this.server.expect(requestTo("http://localhost:8080/v1/feedback/events/1/questions/2")).andExpect(method(PUT)).andExpect(content().json(jsonString)).andRespond(withCreatedEntity(new URI("http://localhost:8080/v1/feedback/events/1/questions/2")));
+		
+		Question saveQuestion = this.client.saveQuestion(1L, Question.builder().id(2L).questionName("NewQuestionName").order(1).questionType(QuestionType.FIVE_SMILEYS.name()).build());	
+		assertNotNull(saveQuestion);
+		assertEquals(Question.builder().id(2L).questionName("NewQuestionName").order(1).questionType(QuestionType.FIVE_SMILEYS.name()).build(), saveQuestion);
+	}
+
+	/**
+	 * Test method for {@link org.asck.web.service.impl.FeedbackClientServiceImpl#getAllAnswersToEventId(java.lang.Long)}.
+	 */
+	@Test
+	public void testGetAllAnswersToEventId_NoQuestionsForEventExists_ReturnsEmptyList() throws Exception {
+		
+		expectLeseAlleFragenZuEvent(Collections.emptyList());
+		
+		List<AnswerReport> report = this.client.getAllAnswersToEventId(1L);
+		assertNotNull(report);
+		assertTrue(report.isEmpty());
+	}
+	
+	/**
+	 * Test method for {@link org.asck.web.service.impl.FeedbackClientServiceImpl#getAllAnswersToEventId(java.lang.Long)}.
+	 */
+	@Test
+	@Ignore
+	public void testGetAllAnswersToEventId_OneQuestionForEventExist_ReturnsList() throws Exception {
+		
+		List<org.asck.api.service.model.Question> questions = new ArrayList<>();
+		questions.add(org.asck.api.service.model.Question.builder().id(2L).order(1).questionName("Question").questionType(QuestionType.YES_NO).build());
+		expectLeseAlleFragenZuEvent(questions);
+		
+		List<AnswerReport> report = this.client.getAllAnswersToEventId(1L);
+		assertNotNull(report);
+		assertTrue(report.isEmpty());
 	}
 
 }
