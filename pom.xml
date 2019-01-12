@@ -260,6 +260,12 @@
 			<version>2.4.0</version>
 		</dependency>
 		<!-- exportData as Excel, csv, pdf -->
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
+		</dependency>
 
 
 	</dependencies>
