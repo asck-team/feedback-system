@@ -18,11 +18,21 @@ addons:
       - graphviz
 
 script:
+ # build app
  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar -Dsonar.projectKey=uniqueck_feedback-system
- - docker build  --build-arg JAR_FILE=./target/asck-survey-*.jar --tag uniqueck/asck-survey .
- - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
- - docker push uniqueck/asck-survey:latest
- 
+ - .
+ # prepare qemu
+ - docker run --rm --privileged multiarch/qemu-user-static:register --reset
+ # build image
+ - docker build --build-arg JAR_FILE=./target/asck-survey*.jar --tag uniqueck/asck-survey-raspberry -f ./docker/arm/Dockerfile .
+ - docker build --build-arg JAR_FILE=./target/asck-survey*.jar --tag uniqueck/asck-survery -f ./docker/x86/Dockerfile .
+ - >
+   if [ "$TRAVIS_BRANCH" == "develop" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
+	echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+	docker push uniqueck/asck-survey
+	docker push uniqueck/asck-survey-raspberry		
+   fi 
+
 cache:
   directories:
     - '$HOME/.m2/repository'
