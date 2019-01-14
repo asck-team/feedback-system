@@ -39,7 +39,7 @@
         },
         yAxis: {
             min: 0,
-            max:100,
+            max:10,
             title: {
                 text: 'Answers count'
             }
@@ -63,30 +63,12 @@
     });
     $(function () {
         var chart = $('#container').highcharts();
-        for (var i=0; i<3; i++){
+        for (var var1 of [[${surveyMap.values()}]]){
+        // Hier muss anstatt Series Data von einen KeySet gesetzt werden
         chart.addSeries({
-            data: [14, 15, 16, 17]
+            data: var1
         });}
     });
-//     $(function () {   
-//     Highcharts.chart('container', {
-//         chart: {
-//             type: 'column'
-//         },
-//         data: {
-//             // enablePolling: true,
-//             csvURL: window.location.origin + '/img/data.csv'
-//         },
-//         title: {
-//             text: 'Fruit Consumption'
-//         },
-//         yAxis: {
-//             title: {
-//                 text: 'Units'
-//             }
-//         }
-//     });
-// });
 </script>
 
 </body>
