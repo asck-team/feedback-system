@@ -19,12 +19,12 @@ addons:
 
 script:
  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar -Dsonar.projectKey=uniqueck_feedback-system
- - docker build  --build-arg JAR_FILE=./target/asck-survey-*.jar --tag uniqueck/asck-survey -f ./docker/x86 .
+ - docker build  --build-arg JAR_FILE=./target/asck-survey-*.jar --tag uniqueck/asck-survey -f ./docker/x86/Dockerfile .
  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
  - docker push uniqueck/asck-survey:latest
  - docker run --rm --privileged multiarch/qemu-user-static:register --reset
- - docker build --build-arg JAR_FILE=./target/asck-survey*.jar --tag uniqueck/asck-survey-raspberry -f ./docker/arm .
- 
+ - docker build --build-arg JAR_FILE=./target/asck-survey*.jar --tag uniqueck/asck-survey-raspberry -f ./docker/arm/Dockerfile .
+ - docker push uniqueck/asck-survey-raspberry:latest 
 cache:
   directories:
     - '$HOME/.m2/repository'

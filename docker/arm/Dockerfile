@@ -1,6 +1,6 @@
-FROM resin/raspberry-pi-openjdk
+FROM hypriot/rpi-alpine-scratch
 MAINTAINER Constantin Krüger (Constantin.Krueger@badenia.de)
-COPY qemu-arm-static /usr/bin/qemu-arm-static
+
 VOLUME /tmp
 ARG JAR_FILE
 ENV QRCODE_HOST 127.0.0.1
