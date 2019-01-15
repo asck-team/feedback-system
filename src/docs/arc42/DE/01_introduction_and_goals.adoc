@@ -33,5 +33,6 @@ Erfüllung der Datensschutz relevante Regularien.
 |Rolle |Kontakt |Erwartungshaltung
 | Architekt, Entwickler | Andrei Sava | Anforderungen stellen und Weiterentwicklung
 | Architekt, Entwickler | Constantin Krüger | Anforderungen stellen und Weiterentwicklung
+| Entwickler | Gamze-Nur Topkac | Anforderungen stellen und Weiterentwicklung
 | Comunity | Comunity | Anforderungen stellen und Weiterentwicklung
 |===

@@ -5,7 +5,7 @@ skinparam componentStyle uml2
 
 title Package - Deployment
 
-node "Raspberry" as Raspi{
+node "Raspberry\nDomain WWW" as Raspi{
 	node "Docker" as Docker{
 	} 
 }
@@ -16,10 +16,10 @@ note right of Docker
 end note
 
 
-cloud Wlan{
+cloud Wlan/Internet as Cloud{
 }
 
-note left of Wlan
+note left of Cloud
     Wlan Netz kann die Anwendung erreichen ohne 
     ins Internet zu gehen
 end note
@@ -38,8 +38,8 @@ note right of User
     Browser auf dem Mobile Gerät oder Desktop
 end note
 
-User -down-> Wlan : Web:Htpp 
-Wlan -down-> Docker : Web:Http
+User -down-> Cloud : Web:Htpp 
+Cloud -down-> Docker : Web:Http
 Anw -up-> Docker : .jar
 
 @enduml
