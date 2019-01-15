@@ -30,12 +30,18 @@ jobs:
     - stage: build and test
       # exclude combination of env with jdk
       env: NONE=NONE
+      jdk:
+      - oraclejdk8
+      - openjdk8
+      - oraclejdk11
+      - openjdk11
       script: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent compile sonar:sonar -Dsonar.projectKey=uniqueck_feedback-system
     - stage: build and deploy to docker hub
       if: branch = develop AND NOT type = pull_request
       jdk: openjdk11
       env: 
-      - NONE=NONE
+      - DOCKER_FILE=/docker/arm/Dockerfile DOCKER_TAG=asck-survey-raspberry
+      - DOCKER_FILE=/docker/x86/Dockerfile DOCKER_TAG=asck-survey
       # login to docker hub
       before_script:
       - docker run --rm --privileged multiarch/qemu-user-static:register --reset
