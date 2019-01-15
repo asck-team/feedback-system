@@ -20,17 +20,19 @@ addons:
 jobs:
   include:
     - stage: build
-      script: mvn clean package -DskipTest=true
+      script: mvn clean compile -DskipTests=true
     - stage: build docker
       # prepare qemu
-      before_script: docker run --rm --privileged multiarch/qemu-user-static:register --reset
+      before_script: 
+      - docker run --rm --privileged multiarch/qemu-user-static:register --reset
+      - mvn clean package -DskipTests=true
       script:
       - docker build --build-arg JAR_FILE=./target/asck-survey*.jar --tag uniqueck/asck-survey-raspberry -f ./docker/arm/Dockerfile .
       - docker build --build-arg JAR_FILE=./target/asck-survey*.jar --tag uniqueck/asck-survery -f ./docker/x86/Dockerfile .
     - stage: unit test
       script: mvn test
     - stage: QS & metrics
-      script: mvn org.jacoco:jacoco-maven-plugin:prepare-agent sonar:sonar -Dsonar.projectKey=uniqueck_feedback-system
+      script: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent sonar:sonar -Dsonar.projectKey=uniqueck_feedback-system
     - stage: deploy to docker hub
       if: branch = develop AND NOT type = pull_request
       # login to docker hub
