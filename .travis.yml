@@ -14,7 +14,7 @@ jdk:
 env:
   - DOCKER_FILE=/docker/arm/Dockerfile DOCKER_TAG=asck-survey-raspberry
   - DOCKER_FILE=/docker/x86/Dockerfile DOCKER_TAG=asck-survey
-  - none
+  - none=none
 
 addons: 
   sonarcloud:
@@ -30,7 +30,7 @@ jobs:
    - stage: build and deploy to docker hub
       if: branch = develop AND NOT type = pull_request
       jdk: openjdk11
-      env: none
+      env: none=none
       # login to docker hub
       before_script:
       - docker run --rm --privileged multiarch/qemu-user-static:register --reset
@@ -44,7 +44,7 @@ jobs:
   include:
     - stage: build and test
       # exclude combination of env with jdk
-      env: none
+      env: none=none
       script: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent compile sonar:sonar -Dsonar.projectKey=uniqueck_feedback-system
 cache:
   directories:
