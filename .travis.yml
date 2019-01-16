@@ -9,7 +9,7 @@ jdk:
   - openjdk11
 
 env:
-  - DOCKER_FILE=/docker/arm/Dockerfile DOCKER_NAME=asck-survey DOCKER_TAG=arm-latest
+  - DOCKER_FILE=./docker/arm/Dockerfile DOCKER_NAME=asck-survey DOCKER_TAG=arm-latest
 
 addons: 
   sonarcloud:
