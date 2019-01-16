@@ -6,14 +6,10 @@ services:
   - docker
 
 jdk:
-  - oraclejdk8
-  - openjdk8
-  - oraclejdk11
   - openjdk11
 
 env:
-  - DOCKER_FILE=/docker/arm/Dockerfile DOCKER_TAG=asck-survey-raspberry
-  - DOCKER_FILE=/docker/x86/Dockerfile DOCKER_TAG=asck-survey
+  - DOCKER_FILE=/docker/arm/Dockerfile DOCKER_NAME=asck-survey DOCKER_TAG=arm-latest
 
 addons: 
   sonarcloud:
@@ -24,23 +20,23 @@ addons:
     packages:
       - graphviz
 
-script: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent compile sonar:sonar -Dsonar.projectKey=uniqueck_feedback-system
 
 jobs:   
-  include:    
-    - stage: build and deploy to docker hub
+  include:   
+    - stage: build and test
+      script: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent compile sonar:sonar -Dsonar.projectKey=uniqueck_feedback-system 
+    - stage: deploy to docker hub
       if: branch = develop AND NOT type = pull_request
-      jdk: openjdk11
       # login to docker hub
       before_script:
       - docker run --rm --privileged multiarch/qemu-user-static:register --reset
       - mvn clean package -DskipTests=true
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
       script:
-      - docker build --build-arg JAR_FILE=./target/asck-survey-*.jar -t $DOCKER_TAG -f $DOCKER_FILE .
+      - docker build --build-arg JAR_FILE=./target/asck-survey-*.jar -t $DOCKER_NAME -f $DOCKER_FILE .
       - docker images
-      - docker tag $DOCKER_TAG $DOCKER_USERNAME/$DOCKER_TAG
-      - docker push $DOCKER_USERNAME/$DOCKER_TAG
+      - docker tag $DOCKER_NAME $DOCKER_USERNAME/$DOCKER_NAME
+      - docker push $DOCKER_USERNAME/$DOCKER_NAME:$DOCKER_TAG
 
 cache:
   directories:

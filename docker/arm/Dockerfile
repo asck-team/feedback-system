@@ -1,4 +1,4 @@
-FROM hypriot/rpi-alpine-scratch
+FROM arm32v7/openjdk:11-slim
 MAINTAINER Constantin Krüger (Constantin.Krueger@badenia.de)
 
 VOLUME /tmp
