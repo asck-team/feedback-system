@@ -36,7 +36,7 @@ jobs:
       script:
       - docker build --build-arg JAR_FILE=./target/asck-survey-*.jar -t $DOCKER_NAME -f $DOCKER_FILE .
       - docker images
-      - docker tag $DOCKER_NAME $DOCKER_USERNAME/$DOCKER_NAME
+      - docker tag $DOCKER_NAME $DOCKER_USERNAME/$DOCKER_NAME:$DOCKER_TAG
       - docker push $DOCKER_USERNAME/$DOCKER_NAME:$DOCKER_TAG
 
 cache:
