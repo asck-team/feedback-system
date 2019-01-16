@@ -31,7 +31,7 @@ jobs:
       # login to docker hub
       before_script:
       - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-      - mvn mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent compile sonar:sonar -Dsonar.projectKey=uniqueck_feedback-system
+      - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent compile sonar:sonar -Dsonar.projectKey=uniqueck_feedback-system
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
       script:
       - docker build --build-arg JAR_FILE=./target/asck-survey-*.jar -t $DOCKER_NAME -f $DOCKER_FILE .
