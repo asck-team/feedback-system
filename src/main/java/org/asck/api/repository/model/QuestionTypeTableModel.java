@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity(name = "Question_Type")
+@Entity(name = "question_type")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
