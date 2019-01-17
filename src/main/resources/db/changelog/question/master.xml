@@ -6,7 +6,7 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
 	<changeSet id="1" author="constantinkrueger">
-		<createTable tableName="Question" remarks="Fragen zu einer Veranstaltung">
+		<createTable tableName="question" remarks="Fragen zu einer Veranstaltung">
 			<column name="id" type="numeric">
 				<constraints nullable="false" primaryKey="true" primaryKeyName="PK_QUESTION"/>
 			</column>
@@ -34,6 +34,6 @@
 	</changeSet>
 	
 	<changeSet  id="3" author="constantinkrueger" context="test-data">
-		<loadData tableName="Question" file="test-data/questions.csv" />
+		<loadData tableName="question" file="test-data/questions.csv" />
 	</changeSet>
 </databaseChangeLog>

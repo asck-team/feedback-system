@@ -1,0 +1,25 @@
+version: '3.1'
+volumes:
+  database_data:
+services:
+  api:
+    build: 
+       context: .
+       dockerfile: ./docker/x86/Dockerfile
+       args:
+         JAR_FILE: ./target/asck-survey-*.jar
+    ports:
+    - 8080:8080
+    links:
+    - db
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+    - 5432:5432
+    volumes:
+    - database_data:/data/docker/postgres_data
