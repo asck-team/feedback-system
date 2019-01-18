@@ -1,6 +1,8 @@
 package org.asck.web.controller;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +10,7 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.asck.web.service.model.AnswerReport;
+import org.asck.web.service.model.Event;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,10 +28,26 @@ public class ChartsController extends AbstractController {
 	@GetMapping("/chart")
 	public String barGraph(@RequestParam("eventId") Long eventId, Model model) {
 		List<AnswerReport> allAnswersToEventId = getFeedbackService().getAllAnswersToEventId(eventId);
+		Event event = getFeedbackService().getEventById(eventId);
+		
 		Map<String, List<Integer>> surveyMap = getSurveyMap(allAnswersToEventId);
+		List<Double> averageData = getAverageData(allAnswersToEventId);
 		
 		model.addAttribute("surveyMap", surveyMap);
+		model.addAttribute("averageData", averageData);
+		model.addAttribute("event", event);
 		return "chart";
+	}
+
+	private List<Double> getAverageData(List<AnswerReport> allAnswersToEventId) {
+		Map<String, List<Integer>> result = getChartData(allAnswersToEventId);
+		List<Double> averageData = new ArrayList<>();
+		for (Iterator<List<Integer>> iterator = result.values().iterator(); iterator.hasNext();) {
+			List<Integer> list = (List<Integer>) iterator.next();
+			double average = list.stream().mapToInt(val -> val).average().orElse(0.0);
+			averageData.add(average);
+		}
+		return averageData;
 	}
 
 	protected Map<String, List<Integer>> getSurveyMap(List<AnswerReport> allAnswersToEventId) {
