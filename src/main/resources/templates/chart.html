@@ -5,66 +5,83 @@
 
 <div th:replace="fragments/headerNavBar :: header">...</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
 
 <body class="bg-light text-black bgsecond">
-    <div class="container text-center">
-        <br/><br>
-        <h1>Chart</h1>
-        <br>
-        <canvas id="bar-chart-grouped" width="800" height="450"></canvas>
-    </div>
-</body>
+	<div class="container">
+		<h2 align="center">Answers Graph</h2>
 
-<script type="text/javascript" th:inline="javascript">
-/*<![CDATA[*/
-new Chart(document.getElementById("bar-chart-grouped"), {
-    type: 'bar',
-    data: {
-      labels: /*[[${labels}]]*/ [],
-      datasets: [
-        {
-          label: /*[[${dataSet1}]]*/,
-          backgroundColor: "black",
-          data: /*[[${data1}]]*/ []
-        }, 
-        {
-            label: /*[[${dataSet2}]]*/,
-            backgroundColor: "#8e5ea2",
-            data: /*[[${data2}]]*/ []
+		<div id="container" style="width: 550px; height: 400px; margin: 0 auto"></div>
+	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+	<script src="https://code.highcharts.com/modules/exporting.js"></script>
+	
+	
+	<script th:inline="javascript">
+    $(function(){
+    Highcharts.chart('container', {
+        chart: {
+            type: 'column'
         },
-        {
-             label: /*[[${dataSet3}]]*/,
-             backgroundColor: "blue",
-             data: /*[[${data3}]]*/ []
-         },
-         {
-               label: /*[[${dataSet4}]]*/,
-               backgroundColor: "red",
-               data: /*[[${data4}]]*/ []
-         },
-         {
-                 label: /*[[${dataSet5}]]*/,
-                 backgroundColor: "green",
-                 data: /*[[${data5}]]*/ []
-         }   
-      ]
-    },
-    options: {
-      title: {
-        display: true,
-        text: 'Chart Rating Answers'
-      },
-      scales: {
-          yAxes: [{
-              ticks: {
-                  beginAtZero:true
-              }
-          }]
-      }
-    }
-});
-/*]]>*/
+        title: {
+            text: 'Answer Statistic'
+        },
+        subtitle: {
+            text: 'Chart to Rating Questions'
+        },
+        xAxis: {
+            categories: [[${surveyMap.keySet()}]],
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            max:50,
+            title: {
+                text: 'Answers count'
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        },
+        series: []
+    },{
+        type: 'spline',
+        name: 'Average',
+        data: [2,4,6,8,7],
+        marker: {
+          lineWidth: 2,
+          lineColor: Highcharts.getOptions().colors[3],
+          fillColor: 'white'
+        }
+      });
+    });
+    $(function () {
+        var chart = $('#container').highcharts();
+        var index = 0;
+        for (var var1 of [[${surveyMap.values()}]]){
+        	index = index + 1
+	        chart.addSeries({
+	            data: var1,
+	            name: 'Rating ' + index
+	        });
+        }
+    });
 </script>
 
+</body>
 </html>
