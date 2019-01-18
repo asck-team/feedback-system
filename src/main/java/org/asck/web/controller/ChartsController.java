@@ -1,8 +1,9 @@
 package org.asck.web.controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,47 +21,104 @@ import lombok.Getter;
 public class ChartsController extends AbstractController {
 	
 	private static final Logger LOGGER = LogManager.getLogger(NewEventController.class);
-
+	
 	@GetMapping("/chart")
-	public String createChart(@RequestParam("eventId") Long eventId, Model model) {
-		
-		List<Integer> data1 = Arrays.asList(1,3,7,3,5);
-		List<Integer> data2 = Arrays.asList(4,8,2,5,7);
-		List<Integer> data3 = Arrays.asList(5,4,3,6,8);
-		List<Integer> data4 = Arrays.asList(3,8,2,5,7);
-		List<Integer> data5 = Arrays.asList(2,6,2,5,7);
+	public String barGraph(@RequestParam("eventId") Long eventId, Model model) {
 		List<AnswerReport> allAnswersToEventId = getFeedbackService().getAllAnswersToEventId(eventId);
+		Map<String, List<Integer>> surveyMap = getSurveyMap(allAnswersToEventId);
 		
-		
-		
-		model.addAttribute("labels", getLabels(allAnswersToEventId));
-		model.addAttribute("data1", data1);
-		model.addAttribute("data2", data2);
-		model.addAttribute("data3", data3);
-		model.addAttribute("data4", data4);
-		model.addAttribute("data5", data5);
-		model.addAttribute("dataSet1", "Rating 1");
-		model.addAttribute("dataSet2", "Rating 2");
-		model.addAttribute("dataSet3", "Rating 3");
-		model.addAttribute("dataSet4", "Rating 4");
-		model.addAttribute("dataSet5", "Rating 5");
+		model.addAttribute("surveyMap", surveyMap);
 		return "chart";
 	}
 
-	private List<String> getLabels(List<AnswerReport> allAnswersToEventId) {
-		List<String> labels = new ArrayList<String>();
-		int i=0;
+	protected Map<String, List<Integer>> getSurveyMap(List<AnswerReport> allAnswersToEventId) {
+		Map<String, List<Integer>> result = getChartData(allAnswersToEventId);
+		
+		Map<String, List<Integer>> newResult = convertValuesFromHorizontalToVertical(result);
+		
+		return newResult;
+	}
+
+	private Map<String, List<Integer>> getChartData(List<AnswerReport> allAnswersToEventId) {
+		Map<String, List<Integer>> result = new LinkedHashMap<>();
+		
 		for (AnswerReport answerReport : allAnswersToEventId) {
 			if (answerReport.getQuestion().getQuestionType().contains("FIVE_SMILEYS")) {
-			i=i+1;	
-//			 labels.add(answerReport.getQuestion().getQuestionName());
-			 labels.add("F" + i);
-			LOGGER.info("Label {}", answerReport.getQuestion().getQuestionName());
-			LOGGER.info("Label {}", answerReport.getQuestion().getQuestionType());
+				String key = "Question" + answerReport.getQuestion().getId();
+				if (!result.containsKey(key)) {
+				result.put(key, getAllAnswersToQuestionId(answerReport.getQuestion().getId(), allAnswersToEventId));
+				}
 			}
 		}
+		return result;
+	}
+
+	private Map<String, List<Integer>> convertValuesFromHorizontalToVertical(Map<String, List<Integer>> result) {
+		Map<String, List<Integer>> newResult = new LinkedHashMap<>();
 		
-		return labels;
+		do {
+		List<Integer> newValues = new ArrayList<>();
+		String key = "";
+		for (Map.Entry<String, List<Integer>> mapEntry : result.entrySet()) {
+			
+			if (key == ""  && !newResult.keySet().contains(mapEntry.getKey())) {
+				key = mapEntry.getKey();
+			}
+			
+			List<Integer> value = mapEntry.getValue();
+			
+			for (Integer intValue : value) {
+				newValues.add(intValue);
+				value.remove(intValue);
+				break;
+				}
+			}
+		newResult.putIfAbsent(key, newValues);	
+		
+		}
+		while (!result.values().iterator().next().isEmpty());
+		return newResult;
+	}
+
+	private List<Integer> getAllAnswersToQuestionId(Long questionId, List<AnswerReport> allAnswersToEventId) {
+		List<Integer> allAnswersToQuestionId = new ArrayList<>();
+		int countRating1 = 0;
+		int countRating2 = 0;
+		int countRating3 = 0;
+		int countRating4 = 0;
+		int countRating5 = 0;
+		for (AnswerReport answerReport : allAnswersToEventId) {
+			if (answerReport.getQuestion().getId() == questionId) {
+				if (answerReport.getOption().getId() == 8) {
+					countRating5 = countRating5 + 1;
+				}
+				if (answerReport.getOption().getId() == 7) {
+					countRating4 = countRating4 + 1;
+				}
+				if (answerReport.getOption().getId() == 6) {
+					countRating3 = countRating3 + 1;
+				}
+				if (answerReport.getOption().getId() == 5) {
+					countRating2 = countRating2 + 1;
+				}
+				if (answerReport.getOption().getId() == 4) {
+					countRating1 = countRating1 + 1;
+				}
+			}
+		}
+		allAnswersToQuestionId.add(countRating1);
+		allAnswersToQuestionId.add(countRating2);
+		allAnswersToQuestionId.add(countRating3);
+		allAnswersToQuestionId.add(countRating4);
+		allAnswersToQuestionId.add(countRating5);
+		return allAnswersToQuestionId;
+	}
+
+	@GetMapping("/displayPieChart")
+	public String pieChart(Model model) {
+		model.addAttribute("pass", 50);
+		model.addAttribute("fail", 50);
+		return "pieChart";
 	}
 
 }
