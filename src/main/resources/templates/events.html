@@ -20,15 +20,30 @@
                             <td class="col-md-1"> <button type="button" class="btn btn-dark float-right" th:onclick="|window.location.href='@{/newEvent(eventId=${event.id})}'|" data-toggle="tooltip" data-placement="bottom" title="edit"><i class="fa fa-edit"></i></button> </td>
                             <td class="col-md-1"> <button type="button" class="btn btn-dark float-right" th:onclick="|window.location.href='@{/deleteEvent(eventId=${event.id})}'|" data-toggle="tooltip" data-placement="bottom" title="delete"><i class="fa fa-trash"></i></button> </td>
                             <td class="col-md-1"> <button type="button" class="btn btn-dark float-right" th:onclick="|window.location.href='@{/qrCode(eventId=${event.id})}'|" data-toggle="tooltip" data-placement="bottom" title="generate qrcode"><i class="fa fa-qrcode"></i></button></td> 
-                            <td class="col-md-1"> <button type="button" class="btn btn-dark float-right" th:onclick="|window.location.href='@{/answer(eventId=${event.id})}'|" data-toggle="tooltip" data-placement="bottom" title="preview"><i class="fa fa-check"></i></button> 
-                            </td>
-                            <td class="col-md-1"> <button type="button" class="btn btn-dark float-right" th:onclick="|window.location.href='@{/download(eventId=${event.id})}'|" data-toggle="tooltip" data-placement="bottom" title="preview"><i class="fa fa-download"></i></button> 
-                            </td>
+                            <td class="col-md-1"> <button type="button" class="btn btn-dark float-right" th:onclick="|window.location.href='@{/answer(eventId=${event.id})}'|" data-toggle="tooltip" data-placement="bottom" title="preview"><i class="fa fa-check"></i></button></td>
+                            <td class="col-md-1"> <button type="button" class="btn btn-dark float-right" th:onclick="|window.location.href='@{/download(eventId=${event.id})}'|" data-toggle="tooltip" data-placement="bottom" title="preview"><i class="fa fa-download"></i></button></td>
+                            <td class="col-md-1"> <button type="button" class="btn btn-dark float-right" th:onclick="|window.location.href='@{/chart(eventId=${event.id})}'|" data-toggle="tooltip" data-placement="bottom" title="chart"><i class="fa fa-bar-chart"></i></button></td>
+<!--                             <td class="col-md-6"> -->
+<!--                             	<div class="dropdown"> -->
+<!-- 									<button class="btn btn-secondary dropdown-toggle" type="button" -->
+<!-- 										id="dropdownMenuButton" data-toggle="dropdown" -->
+<!-- 										aria-haspopup="true" aria-expanded="false">Options ...</button> -->
+<!-- 									<div class="dropdown-menu" aria-labelledby="dropdownMenuButton"> -->
+<!-- 										<a class="dropdown-item" th:onclick="|window.location.href='@{/newEvent(eventId=${event.id})}'|">Edit Event</a>  -->
+<!-- 										<a class="dropdown-item" th:onclick="|window.location.href='@{/qrCode(eventId=${event.id})}'|">QrCode</a>  -->
+<!-- 										<a class="dropdown-item" th:onclick="|window.location.href='@{/answer(eventId=${event.id})}'|">Preview</a> -->
+<!-- 										<a class="dropdown-item" th:onclick="|window.location.href='@{/download(eventId=${event.id})}'|">Downl. Answers</a> -->
+<!-- 										<a class="dropdown-item" th:onclick="|window.location.href='@{/chart(eventId=${event.id})}'|">Chart 1</a> -->
+<!-- 										<a class="dropdown-item" th:onclick="|window.location.href='@{/chart2(eventId=${event.id})}'|">Chart 2</a> -->
+<!-- 										<div class="dropdown-divider"></div> -->
+<!-- 										<a class="dropdown-item" th:onclick="|window.location.href='@{/deleteEvent(eventId=${event.id})}'|">Delete</a> -->
+<!-- 									</div> -->
+<!-- 								</div> -->
+<!-- 							</td> -->
                         </tr>
                 </tbody>
             </table>
         </div>
     </div>
 </body>
-
 </html>
