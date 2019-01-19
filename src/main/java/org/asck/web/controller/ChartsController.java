@@ -42,7 +42,7 @@ public class ChartsController extends AbstractController {
 		Map<String, List<Integer>> result = getChartData(allAnswersToEventId);
 		List<Double> averageData = new ArrayList<>();
 		for (Iterator<List<Integer>> iterator = result.values().iterator(); iterator.hasNext();) {
-			List<Integer> list = (List<Integer>) iterator.next();
+			List<Integer> list = iterator.next();
 			double average = list.stream().mapToInt(val -> val).average().orElse(0.0);
 			averageData.add(average);
 		}
@@ -52,9 +52,7 @@ public class ChartsController extends AbstractController {
 	protected Map<String, List<Integer>> getSurveyMap(List<AnswerReport> allAnswersToEventId) {
 		Map<String, List<Integer>> result = getChartData(allAnswersToEventId);
 		
-		Map<String, List<Integer>> newResult = convertValuesFromHorizontalToVertical(result);
-		
-		return newResult;
+		return convertValuesFromHorizontalToVertical(result);
 	}
 
 	private Map<String, List<Integer>> getChartData(List<AnswerReport> allAnswersToEventId) {
@@ -107,20 +105,24 @@ public class ChartsController extends AbstractController {
 		int countRating5 = 0;
 		for (AnswerReport answerReport : allAnswersToEventId) {
 			if (answerReport.getQuestion().getId() == questionId) {
-				if (answerReport.getOption().getId() == 8) {
+				switch (answerReport.getOption().getId().intValue()) {
+				case 8:
 					countRating5 = countRating5 + 1;
-				}
-				if (answerReport.getOption().getId() == 7) {
+					break;
+				case 7:
 					countRating4 = countRating4 + 1;
-				}
-				if (answerReport.getOption().getId() == 6) {
+					break;
+				case 6:
 					countRating3 = countRating3 + 1;
-				}
-				if (answerReport.getOption().getId() == 5) {
+					break;
+				case 5:
 					countRating2 = countRating2 + 1;
-				}
-				if (answerReport.getOption().getId() == 4) {
+					break;
+				case 4:
 					countRating1 = countRating1 + 1;
+					break;	
+				default:
+					break;
 				}
 			}
 		}
