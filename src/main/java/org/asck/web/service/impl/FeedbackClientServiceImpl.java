@@ -13,6 +13,7 @@ import org.asck.web.service.model.AnswerReport;
 import org.asck.web.service.model.Event;
 import org.asck.web.service.model.Option;
 import org.asck.web.service.model.Question;
+import org.asck.web.service.model.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -46,6 +47,7 @@ class FeedbackClientServiceImpl implements IFeedbackClientService {
 	private String basePath;
 
 	public FeedbackClientServiceImpl() {
+		//Empty Constructor
 	}
 	
 
@@ -191,6 +193,12 @@ class FeedbackClientServiceImpl implements IFeedbackClientService {
 			}
 		}
 		return answersReport;
+	}
+
+
+	@Override
+	public User findByUsername(String name) {
+		return new User(1L, "user", "email", "$2a$04$jTHvw6mdPhR6zKTuNveyxeciYO9SB3JjZ0eCXJp/wmViNWdDQJCeu", "USER");
 	}
 
 

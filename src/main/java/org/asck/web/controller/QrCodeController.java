@@ -54,7 +54,7 @@ public class QrCodeController extends AbstractController {
         } catch (IOException e) {
         	LOGGER.error("Could not generate QR Code, IOException :: " + e.getMessage());
         }
-		return null;
+		return new ByteArrayOutputStream().toByteArray();
 	}
 	
 	private byte[] getQRCodeImage(String text, int width, int height) throws WriterException, IOException {
@@ -64,7 +64,6 @@ public class QrCodeController extends AbstractController {
 	    ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
 	    MatrixToImageConfig config =  new MatrixToImageConfig(MatrixToImageConfig.BLACK, 0xffffff);
 		MatrixToImageWriter.writeToStream(bitMatrix, "PNG", pngOutputStream, config);
-	    byte[] pngData = pngOutputStream.toByteArray(); 
-	    return pngData;
+	    return pngOutputStream.toByteArray();
 	}
 }
