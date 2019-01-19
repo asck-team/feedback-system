@@ -9,7 +9,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import lombok.AccessLevel;
@@ -22,10 +21,11 @@ class CustomUserDetailsServiceImpl implements UserDetailsService {
 	@Autowired private IFeedbackClientService feedbackService;
 	
 	public CustomUserDetailsServiceImpl() {
+		//Empty Constructor
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String username) {
 		User user = getFeedbackService().findByUsername(username);
 
 		if (user == null) {

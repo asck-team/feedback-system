@@ -6,8 +6,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.asck.web.service.model.AnswerReport;
 import org.asck.web.service.model.Event;
 import org.springframework.stereotype.Controller;
@@ -21,8 +19,6 @@ import lombok.Getter;
 @Controller
 @Getter(value = AccessLevel.PROTECTED)
 public class ChartsController extends AbstractController {
-	
-	private static final Logger LOGGER = LogManager.getLogger(NewEventController.class);
 	
 	@GetMapping("/chart")
 	public String barGraph(@RequestParam("eventId") Long eventId, Model model) {

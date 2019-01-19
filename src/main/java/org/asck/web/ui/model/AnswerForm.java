@@ -17,6 +17,6 @@ import lombok.ToString;
 public class AnswerForm {
 	
 	private long eventId;
-	List<UiQuestionTM> questions = new ArrayList<UiQuestionTM>(); 
+	List<UiQuestionTM> questions = new ArrayList<>(); 
 
 }
