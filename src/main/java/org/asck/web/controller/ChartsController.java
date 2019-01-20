@@ -1,6 +1,7 @@
 package org.asck.web.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -37,18 +38,35 @@ public class ChartsController extends AbstractController {
 	private List<Double> getAverageData(List<AnswerReport> allAnswersToEventId) {
 		Map<String, List<Integer>> result = getChartData(allAnswersToEventId);
 		List<Double> averageData = new ArrayList<>();
+		
 		for (Iterator<List<Integer>> iterator = result.values().iterator(); iterator.hasNext();) {
 			List<Integer> list = iterator.next();
-			double average = list.stream().mapToInt(val -> val).average().orElse(0.0);
+			List<Integer> listWithAverageData = new ArrayList<>();
+			int count=0;
+			for (int i = 0; i < list.size(); i++) {
+				listWithAverageData.add(list.get(i) * (i + 1));
+				count = count + list.get(i);
+			}
+			double average = calculateAverage(listWithAverageData, count);
 			averageData.add(average);
 		}
 		return averageData;
 	}
 
+	private double calculateAverage(List<Integer> listWithAverageData, int count) {
+		double sum = listWithAverageData.stream().mapToInt(val -> val).sum();
+		if (sum != 0 && count != 0) {
+			return sum / count;
+		}
+		return 0.0;
+	}
+
 	protected Map<String, List<Integer>> getSurveyMap(List<AnswerReport> allAnswersToEventId) {
 		Map<String, List<Integer>> result = getChartData(allAnswersToEventId);
-		
-		return convertValuesFromHorizontalToVertical(result);
+		if (!result.isEmpty()) {
+			return convertValuesFromHorizontalToVertical(result);
+		}
+		return new HashMap<>();
 	}
 
 	private Map<String, List<Integer>> getChartData(List<AnswerReport> allAnswersToEventId) {
@@ -58,7 +76,7 @@ public class ChartsController extends AbstractController {
 			if (answerReport.getQuestion().getQuestionType().contains("FIVE_SMILEYS")) {
 				String key = "Question" + answerReport.getQuestion().getId();
 				if (!result.containsKey(key)) {
-				result.put(key, getAllAnswersToQuestionId(answerReport.getQuestion().getId(), allAnswersToEventId));
+					result.put(key, getAllAnswersToQuestionId(answerReport.getQuestion().getId(), allAnswersToEventId));
 				}
 			}
 		}
