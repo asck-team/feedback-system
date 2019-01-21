@@ -7,7 +7,7 @@
 
 	<changeSet id="1" author="constantinkrueger">
 		<comment>create answer table</comment>
-		<createTable tableName="Answer">
+		<createTable tableName="answer">
 			<column name="id" type="numeric" remarks="Eindeutiger Schlüssel einer Antowrt">
 				<constraints primaryKey="true" primaryKeyName="PK_ANSWER" nullable="false" />
 			</column>

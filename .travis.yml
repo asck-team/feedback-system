@@ -10,6 +10,7 @@ jdk:
 
 env:
   - DOCKER_FILE=./docker/arm/Dockerfile DOCKER_NAME=asck-survey DOCKER_TAG=arm-latest
+  - DOCKER_FILE=./docker/x86/Dockerfile DOCKER_NAME=asck-survey DOCKER_TAG=x86-latest
 
 addons: 
   sonarcloud:
