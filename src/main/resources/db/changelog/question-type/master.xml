@@ -6,7 +6,7 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
 	<changeSet id="1" author="constantinkrueger">
-		<createTable tableName="Question_Type" remarks="Art einer Frage">
+		<createTable tableName="question_type" remarks="Art einer Frage">
 			<column name="id" type="numeric" remarks="Eindeutiger Schlüssel eines Fragetyps">
 				<constraints nullable="false" primaryKey="true" primaryKeyName="PK_QUESTION_TYPE"/>
 			</column>
@@ -17,19 +17,19 @@
 	</changeSet>
 	
 	<changeSet  id="2" author="constantinkrueger">
-		<insert tableName="Question_Type">
+		<insert tableName="question_type">
 			<column name="id" value="1"></column>
 			<column name="description" value="Freitext"></column>
 		</insert>
-		<insert tableName="Question_Type">
+		<insert tableName="question_type">
 			<column name="id" value="2"></column>
 			<column name="description" value="Drei Smileys"></column>
 		</insert>	
-		<insert tableName="Question_Type">
+		<insert tableName="question_type">
 			<column name="id" value="3"></column>
 			<column name="description" value="5 Smileys"></column>
 		</insert>
-		<insert tableName="Question_Type">
+		<insert tableName="question_type">
 			<column name="id" value="4"></column>
 			<column name="description" value="Ja/Nein"></column>
 		</insert>

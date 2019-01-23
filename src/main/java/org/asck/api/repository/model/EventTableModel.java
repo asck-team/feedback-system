@@ -12,7 +12,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity(name = "Event")
+@Entity(name = "event")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
