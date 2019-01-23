@@ -58,16 +58,11 @@ public class AnswerController extends AbstractController {
 			LOGGER.info("{}", q.getAnswerType());
 			LOGGER.info("{}", q.getAnswerId());
 			LOGGER.info("{}", q.getAnswerFreeText());
-			
-			//TODO AS 18.12.2018 Id auf UI setzen ... geht nicht. Muss weiter untersucht werden
-			if (q.getAnswerFreeText()!=null) {
-				q.setAnswerId(11L);
+			if (q.getAnswerId() != null) {
+				Answer answerToSave = new Answer(q.getId(), q.getAnswerId(), q.getAnswerFreeText(), LocalDateTime.now());
+				LOGGER.info("{}", answerToSave);
+				getFeedbackService().saveAnswer(answerToSave);
 			}
-			
-			Answer answerToSave = new Answer(q.getId(), q.getAnswerId(), q.getAnswerFreeText(), LocalDateTime.now());
-			LOGGER.info("{}", answerToSave);
-			getFeedbackService().saveAnswer(answerToSave);
-			
 		}
 		LOGGER.info("AnswerForm submitted!");
 		return "thanks";

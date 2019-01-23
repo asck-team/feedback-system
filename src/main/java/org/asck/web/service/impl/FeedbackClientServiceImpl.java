@@ -183,13 +183,15 @@ class FeedbackClientServiceImpl implements IFeedbackClientService {
 		
 		for (Question question : allQuestionsToEvent) {
 			List<Answer> allAnswersToQuestion = getAllAnswersToQuestion(question.getId());
-			for (Answer answer : allAnswersToQuestion) {
-				AnswerReport answerReport = new AnswerReport();
-				answerReport.setQuestion(question);
-				answerReport.setOption(findOptionById(answer.getOptionId()));
-				answerReport.setRemark(answer.getRemark());
-				answerReport.setAnsweredAt(answer.getAnsweredAt());
-				answersReport.add(answerReport);
+			if (allAnswersToQuestion != null) {
+				for (Answer answer : allAnswersToQuestion) {
+					AnswerReport answerReport = new AnswerReport();
+					answerReport.setQuestion(question);
+					answerReport.setOption(findOptionById(answer.getOptionId()));
+					answerReport.setRemark(answer.getRemark());
+					answerReport.setAnsweredAt(answer.getAnsweredAt());
+					answersReport.add(answerReport);
+				}
 			}
 		}
 		return answersReport;
