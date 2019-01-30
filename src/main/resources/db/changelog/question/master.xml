@@ -19,6 +19,8 @@
 			<column name="optional_remark" type="varchar(255)" remarks="Zusatzfrage in Freitext">
 				<constraints nullable="true"/>
 			</column>
+			<column name="answer_required" type="boolean" remarks="Ist eine Antwort pflicht?" defaultValue="false">
+			</column>
 			<column name="question_type_id" type="numeric" remarks="Fremschlüssel auf Frageart">
 				<constraints foreignKeyName="PK_QUESTION_TYPE"/>
 			</column>

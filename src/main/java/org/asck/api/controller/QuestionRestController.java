@@ -55,7 +55,7 @@ public class QuestionRestController {
 	public ResponseEntity<Object> createQuestion(@PathVariable("eventId") Long eventId,
 			@Valid @RequestBody Question question) throws EntityNotFoundException {
 		Long questionId = getFeedbackService().saveQuestion(eventId, Question.builder().id(-1L)
-				.questionName(question.getQuestionName()).questionType(question.getQuestionType()).order(question.getOrder()).build());
+				.questionName(question.getQuestionName()).questionType(question.getQuestionType()).order(question.getOrder()).answerRequired(question.isAnswerRequired()).build());
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(questionId).toUri();
 		return ResponseEntity.created(uri).build();
 
@@ -65,7 +65,7 @@ public class QuestionRestController {
 	public ResponseEntity<Object> updateQuestion(@PathVariable("eventId") Long eventId,
 			@PathVariable("questionId") Long questionId, @Valid @RequestBody Question question) throws EntityNotFoundException {
 		getFeedbackService().saveQuestion(eventId, Question.builder().id(questionId).questionName(question.getQuestionName())
-				.questionType(question.getQuestionType()).order(question.getOrder()).build());
+				.questionType(question.getQuestionType()).order(question.getOrder()).answerRequired(question.isAnswerRequired()).build());
 		return ResponseEntity.noContent().build();
 
 	}

@@ -22,4 +22,6 @@ public class Question {
 	
 	private int order;
 	
+	private boolean answerRequired;
+	
 }

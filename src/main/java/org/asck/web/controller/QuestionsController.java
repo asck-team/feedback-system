@@ -35,10 +35,10 @@ public class QuestionsController extends AbstractController {
 	}
 	
 	@GetMapping("/updateOrderQuestion")
-	public String updateOrderQuestion(@RequestParam(MODEL_ATTR_EVENTID) Long eventId, @RequestParam("questionId") Long questionId, @RequestParam("order") int order, @RequestParam("qType") String qType,@RequestParam("qName") String qName, Model model) {
+	public String updateOrderQuestion(@RequestParam(MODEL_ATTR_EVENTID) Long eventId, @RequestParam("questionId") Long questionId, @RequestParam("order") int order, @RequestParam("qType") String qType,@RequestParam("qName") String qName, @RequestParam("aRequired") boolean aRequired, Model model) {
 		LOGGER.info("Order aktualisieren!!!!!!!!");
-		LOGGER.info("Eventid: {}, QuestionID: {}, Order: {}, QuestionType: {}, QuestionName: {}", eventId, questionId, order, qType, qName);
-		Question questionToSave = new Question(questionId, qName, qType, order);
+		LOGGER.info("Eventid: {}, QuestionID: {}, Order: {}, QuestionType: {}, QuestionName: {}, AnswerRequired{}", eventId, questionId, order, qType, qName, aRequired);
+		Question questionToSave = new Question(questionId, qName, qType, order, aRequired);
 		getFeedbackService().saveQuestion(eventId, questionToSave);
 		return "redirect:/questions?" + MODEL_ATTR_EVENTID + "=" + eventId;
 	}
