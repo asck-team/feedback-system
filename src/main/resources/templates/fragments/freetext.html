@@ -7,8 +7,11 @@
 			th:onchange="|check(${question.id})|" 
 			th:onkeyup="|toCount('input-' + ${question.id}, 'remainingC-' + ${question.id}, '{CHAR} characters remaining', 255)|"
 			placeholder="Freetext" 
-			th:maxlength="255" th:field="*{questions[__${stat.index}__].answerFreeText}"/>
+			th:maxlength="255" th:field="*{questions[__${stat.index}__].answerFreeText}"
+			th:required="${question.answerRequired} ? 'required' : 'false'"
+			data-error="Please fill this field"/>
 			<span th:id="'remainingC-' + ${question.id}"></span>
+			<div class="help-block with-errors text-danger" role="alert"></div>
 			<script>
 			function check(id) {
 			  document.getElementById(id).checked = true;
