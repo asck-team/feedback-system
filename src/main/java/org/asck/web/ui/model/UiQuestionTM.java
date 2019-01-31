@@ -31,5 +31,7 @@ public class UiQuestionTM {
 	
 	private int order;
 	
+	private boolean answerRequired;
+	
 	
 }

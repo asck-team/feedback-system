@@ -38,5 +38,8 @@ public class QuestionTableModel {
 	@Column(name = "order_nr")
 	@NotNull
 	private int order;
+	
+	@Column(name = "answer_required")
+	private boolean answerRequired;
 
 }

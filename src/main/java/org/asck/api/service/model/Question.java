@@ -22,8 +22,8 @@ public class Question {
 	@JsonCreator
 	public static Question create(@JsonProperty(required = false, value = "id") Long id,
 			@NotNull @JsonProperty("questionName") String questionName,
-			@JsonProperty("questionType") String questionType) {
-		return builder().id(id).questionName(questionName).questionType(QuestionType.valueOf(questionType)).build();
+			@JsonProperty("questionType") String questionType, @JsonProperty("answerRequired") boolean answerRequired) {
+		return builder().id(id).questionName(questionName).questionType(QuestionType.valueOf(questionType)).answerRequired(answerRequired).build();
 	}
 
 	private Long id;
@@ -39,6 +39,8 @@ public class Question {
 	private List<Option> options;
 	
 	private int order;
+	
+	private boolean answerRequired;
 	
 	@JsonIgnore
 	public boolean isIdSpecified() {

@@ -5,11 +5,15 @@
 
 <div th:replace="fragments/headerNavBarNoSearch :: headerNoSearch">...</div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js"></script>
+
+<!-- <script src="/webjars/bootstrap-validator/dist/validator.min.js"></script> -->
+
 <body class="bg-light text-dark bgsecond">
 		<br> <br>
 		<h1 th:text="${eventName}" style="text-align: center;">Event Formular</h1>
 		
-		<form action="#" th:action="@{/answer}" method="post" id="main" th:object="${answerForm}">
+		<form action="#" th:action="@{/answer}" method="post" id="main" th:object="${answerForm}" data-toggle="validator" novalidate="true">
 			<input class="invisible" th:field="*{eventId}"/>
 			<div th:each="question, stat: ${answerForm.questions}" class="form-group container"> 
 				<label for="${question.getQuestionName()}" th:text="${question.getQuestionName()}">New event:</label>
@@ -41,3 +45,4 @@
 </body>
 
 </html>
+

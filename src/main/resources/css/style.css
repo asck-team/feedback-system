@@ -273,3 +273,8 @@ body{
 #cover-caption {
   width: 100%;
 }
+
+/* error */
+.has-error input[type="text"], .has-error input[type="radio"], .has-error select {
+    border: 2px solid #a94442;
+}

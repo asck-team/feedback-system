@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.asck.api.exceptions.EntityNotFoundException;
 import org.asck.api.repository.AnswerRepository;
@@ -30,6 +31,7 @@ import org.asck.api.service.model.Question;
 import org.asck.api.service.model.QuestionType;
 import org.hamcrest.Matchers;
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -92,11 +94,11 @@ public class FeedbackServiceImplTest {
 
 		when(getQuestionRepository().findAllByEventIdOrderByOrder(1L)).thenReturn(new ArrayList<QuestionTableModel>());
 		QuestionTableModel questionTableModel2Save = QuestionTableModel.builder().id(-1L).eventId(1L).order(1)
-				.questionTitle("questionName").questionTypeId(QuestionType.FIVE_SMILEYS.getDbId()).build();
+				.questionTitle("questionName").questionTypeId(QuestionType.FIVE_SMILEYS.getDbId()).answerRequired(true).build();
 		when(getQuestionRepository().save(questionTableModel2Save))
 				.thenReturn(QuestionTableModel.builder().id(2L).build());
 
-		underTest.saveQuestion(1L, Question.create(-1L, "questionName", QuestionType.FIVE_SMILEYS.name()));
+		underTest.saveQuestion(1L, Question.create(-1L, "questionName", QuestionType.FIVE_SMILEYS.name(), true));
 
 		verify(getQuestionRepository()).findAllByEventIdOrderByOrder(1L);
 		verify(getQuestionRepository()).save(questionTableModel2Save);
@@ -122,9 +124,9 @@ public class FeedbackServiceImplTest {
 	}
 
 	protected QuestionTableModel createQTM(long id, long eventId, String questionTitle, QuestionType questionType,
-			int order) {
+			int order, boolean answerRequired) {
 		return QuestionTableModel.builder().id(id).eventId(eventId).order(order).questionTitle(questionTitle)
-				.questionTypeId(questionType.getDbId()).build();
+				.questionTypeId(questionType.getDbId()).answerRequired(answerRequired).build();
 	}
 
 	/**
@@ -134,7 +136,7 @@ public class FeedbackServiceImplTest {
 	@Test
 	public void testSaveQuestion_OneQuestionsExists_SaveQuestionWithOrder2() throws Exception {
 
-		QuestionTableModel question1 = createQTM(1L, 1L, "questionName", QuestionType.FIVE_SMILEYS, 1);
+		QuestionTableModel question1 = createQTM(1L, 1L, "questionName", QuestionType.FIVE_SMILEYS, 1, true);
 
 		when(questionRepository.findAllByEventIdOrderByOrder(1L)).thenReturn(Arrays.asList(question1));
 		QuestionTableModel questionTableModel2Save = QuestionTableModel.builder().id(-1L).eventId(1L).order(2)
@@ -431,6 +433,23 @@ public class FeedbackServiceImplTest {
 		assertEquals("optionalDescription", option.getOptionalDescription());
 		
 		verify(getQuestionOptionRepository()).findById(1L);
+	}
+	
+	@Ignore
+	@Test
+	public void testFindQuestion() throws Exception {
+		
+		EventTableModel event = EventTableModel.builder().id(1L).name("Event").build();
+		when(getEventRepository().findById(1L)).thenReturn(Optional.of(event));
+
+		Long saveQuestion = underTest.saveQuestion(1L, Question.create(-1L, "questionName", QuestionType.FIVE_SMILEYS.name(), true));
+		
+		Question question = underTest.findQuestion(1L, saveQuestion);
+		
+		assertNotNull(question);
+		assertEquals(true, question.isAnswerRequired());
+		
+		verify(getEventRepository().findById(1L));
 	}
 
 }

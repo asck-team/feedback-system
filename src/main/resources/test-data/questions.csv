@@ -1,10 +1,10 @@
-id,order_nr,question,optional_remark,question_type_id,event_id
-1,1,Wie hat Ihnen heute das Essen geschmeckt?,null,2,1
-2,1,Wie fanden Sie generell den Ablauf des "Free Space" (Freitag "Teamfindung" / Montag "Free Space und Review")?,null,3,2
-3,2,Wie fanden Sie die Information im Vorfeld (E-Mail und Vorstellung in Gruppenrunden)?,null,3,2
-4,3,Wie fanden Sie die Teilveranstaltung "Teamfindung/Organisatorisches" am Freitag?,null,3,2
-5,4,Wie fanden Sie die Teilveranstaltung "Free Space - Let's do it!" am Montag?,null,3,2
-6,5,Wie fanden Sie die Teilveranstaltung "Review" am Montag?,null,3,2
-7,6,Würden Sie an weiteren "Free Space" - Veranstaltungen genau so in diesen Rahmen (Teamfindung; Free Space; Review) teilnehmen?,Wenn nein; was würden Sie verbessern/ändern?,4,2
-8,7,Würden Sie gerne Ihre Ideen in einem anderen Rahmen umsetzen?,Wenn "Ja"; wie würde dieser Rahmen aussehen?,4,2
-9,8,Was fanden Sie gut bzw. was würden Sie verbessern wollen?,null,1,2  
+id,order_nr,question,optional_remark,answer_required,question_type_id,event_id
+1,1,Wie hat Ihnen heute das Essen geschmeckt?,null,true,2,1
+2,1,Wie fanden Sie generell den Ablauf des "Free Space" (Freitag "Teamfindung" / Montag "Free Space und Review")?,null,true,3,2
+3,2,Wie fanden Sie die Information im Vorfeld (E-Mail und Vorstellung in Gruppenrunden)?,null,false,3,2
+4,3,Wie fanden Sie die Teilveranstaltung "Teamfindung/Organisatorisches" am Freitag?,null,false,3,2
+5,4,Wie fanden Sie die Teilveranstaltung "Free Space - Let's do it!" am Montag?,null,true,3,2
+6,5,Wie fanden Sie die Teilveranstaltung "Review" am Montag?,null,false,3,2
+7,6,Würden Sie an weiteren "Free Space" - Veranstaltungen genau so in diesen Rahmen (Teamfindung; Free Space; Review) teilnehmen?,Wenn nein; was würden Sie verbessern/ändern?,true,4,2
+8,7,Würden Sie gerne Ihre Ideen in einem anderen Rahmen umsetzen?,Wenn "Ja"; wie würde dieser Rahmen aussehen?,false,4,2
+9,8,Was fanden Sie gut bzw. was würden Sie verbessern wollen?,null,true,1,2  
