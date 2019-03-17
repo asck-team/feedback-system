@@ -10,6 +10,7 @@ import org.asck.api.service.model.Answer;
 import org.asck.api.service.model.Event;
 import org.asck.api.service.model.Option;
 import org.asck.api.service.model.Question;
+import org.asck.api.service.model.User;
 
 public interface IFeedbackService {
 
@@ -32,5 +33,9 @@ public interface IFeedbackService {
 	List<Answer> getAllAnswersToQuestion(long questionId) throws EntityNotFoundException;
 	
 	Option getOptionById(Long optionID) throws EntityNotFoundException;
+	
+	User getUserByEmail(String email) throws EntityNotFoundException;
+	
+	Long saveUser(@Valid User user);
 
 }

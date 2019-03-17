@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.asck.api.exceptions.EntityNotFoundException;
 import org.asck.api.repository.AnswerRepository;
@@ -19,15 +20,18 @@ import org.asck.api.repository.EventRepository;
 import org.asck.api.repository.QuestionOptionRepository;
 import org.asck.api.repository.QuestionRepository;
 import org.asck.api.repository.QuestionTypeRepository;
+import org.asck.api.repository.UserRepository;
 import org.asck.api.repository.model.AnswerTableModel;
 import org.asck.api.repository.model.EventTableModel;
 import org.asck.api.repository.model.QuestionOptionTableModel;
 import org.asck.api.repository.model.QuestionTableModel;
+import org.asck.api.repository.model.UserTableModel;
 import org.asck.api.service.model.Answer;
 import org.asck.api.service.model.Event;
 import org.asck.api.service.model.Option;
 import org.asck.api.service.model.Question;
 import org.asck.api.service.model.QuestionType;
+import org.asck.api.service.model.User;
 import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Rule;
@@ -70,6 +74,8 @@ public class FeedbackServiceImplTest {
 	private QuestionOptionRepository questionOptionRepository;
 	@MockBean
 	private AnswerRepository answerRepository;
+	@MockBean
+	private UserRepository userRepository;
 
 	@Autowired
 	private FeedbackServiceImpl underTest;
@@ -432,5 +438,64 @@ public class FeedbackServiceImplTest {
 		
 		verify(getQuestionOptionRepository()).findById(1L);
 	}
-
+	
+	/**
+	 * Test method for
+	 * {@link org.asck.service.impl.FeedbackServiceImpl#getUserByEmail()}
+	 */
+	@Test
+	public void testGetUserByEmail() throws Exception {
+		String email = "user@email.de";
+		
+		when(getUserRepository().findByEmail("user@email.de")).thenReturn(Optional.of(UserTableModel.builder().id(1L).email(email).password("pass").build()));
+		
+		User user = underTest.getUserByEmail(email);
+		
+		assertNotNull(user);
+		assertEquals(email, user.getEmail());
+		assertEquals("pass", user.getPassword());
+		
+		verify(getUserRepository()).findByEmail(email);
+	}
+	
+	/**
+	 * Test method for
+	 * {@link org.asck.service.impl.FeedbackServiceImpl#getUserByEmail()}
+	 */
+	@Test
+	public void testGetUserByEmail_ErrorExpected() throws Exception {
+		thrown.expect(EntityNotFoundException.class);
+		thrown.expectMessage(Matchers
+					.equalTo(new EntityNotFoundException(User.class, "Email", "user@email.de").getLocalizedMessage()));
+		String email = "user@email.de";
+		
+		when(getUserRepository().findByEmail("user@email.de3")).thenReturn(Optional.of(UserTableModel.builder().id(1L).email(email).password("pass").build()));
+		
+		User user = underTest.getUserByEmail(email);
+		
+		assertNotNull(user);
+		assertEquals(email, user.getEmail());
+		assertEquals("pass", user.getPassword());
+		
+		verify(getUserRepository()).findByEmail(email);
+	}
+	
+	/**
+	 * Test method for
+	 * {@link org.asck.service.impl.FeedbackServiceImpl#saveUser(org.asck.api.service.model.User)}
+	 */
+	@Test
+	public void testSaveUser() throws Exception {
+		
+		
+		UserTableModel userToSave = UserTableModel.builder().id(-1L).email("user@email.com").password("pass").build();
+		UserTableModel userExpected = UserTableModel.builder().id(1L).email("user@email.com").password("pass").build();
+		
+		when(getUserRepository().save(userToSave)).thenReturn(userExpected);
+		
+		
+		underTest.saveUser(underTest.map(userToSave));
+		verify(getUserRepository()).save(userToSave);
+	}
+	
 }
