@@ -35,5 +35,9 @@ public interface IFeedbackClientService {
 	List<AnswerReport> getAllAnswersToEventId(Long eventId);
 	
 	Option findOptionById(Long optionId);
+	
+	org.asck.web.service.model.User getUserByEmail(String email);
+	
+	org.asck.web.service.model.User saveUser(org.asck.web.service.model.User user);
 
 }
