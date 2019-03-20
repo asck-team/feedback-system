@@ -7,7 +7,7 @@
 
 	<changeSet id="1" author="constantinkrueger">
 		<comment>create event table</comment>
-		<createTable tableName="Event">
+		<createTable tableName="event">
 			<column name="id" type="numeric">
 				<constraints primaryKey="true" primaryKeyName="PK_EVENT"
 					nullable="false" />
@@ -26,7 +26,7 @@
 
 	<changeSet id="3" author="constantinkrueger"
 		context="test-data">
-		<loadData tableName="Event" file="test-data/events.csv" />
+		<loadData tableName="event" file="test-data/events.csv" />
 	</changeSet>
 	
 	<changeSet id="4" author="constantinkrueger">

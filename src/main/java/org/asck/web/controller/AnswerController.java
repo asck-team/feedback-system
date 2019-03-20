@@ -41,7 +41,7 @@ public class AnswerController extends AbstractController {
 		for (Question question : allQuestionsToEvent) {
 			List<Option> options = getFeedbackService().leseAlleOptionenZuEinerFrage(eventId, question.getId());
 			LOGGER.info("{}",options);
-			questionsUi.add(new UiQuestionTM(question.getId(), question.getQuestionName(), eventId, question.getQuestionType(), 0L, null, options, 0));
+			questionsUi.add(new UiQuestionTM(question.getId(), question.getQuestionName(), eventId, question.getQuestionType(), 0L, null, options, 0, question.isAnswerRequired()));
 		}
 		answerForm.setQuestions(questionsUi);
 		model.addAttribute(MODEL_ATTR_ANSWER_FORM, answerForm);
@@ -58,16 +58,11 @@ public class AnswerController extends AbstractController {
 			LOGGER.info("{}", q.getAnswerType());
 			LOGGER.info("{}", q.getAnswerId());
 			LOGGER.info("{}", q.getAnswerFreeText());
-			
-			//FIXME AS 18.12.2018 Id auf UI setzen ... geht nicht. Muss weiter untersucht werden
-			if (q.getAnswerFreeText()!=null) {
-				q.setAnswerId(11L);
+			if (q.getAnswerId() != null) {
+				Answer answerToSave = new Answer(q.getId(), q.getAnswerId(), q.getAnswerFreeText(), LocalDateTime.now());
+				LOGGER.info("{}", answerToSave);
+				getFeedbackService().saveAnswer(answerToSave);
 			}
-			
-			Answer answerToSave = new Answer(q.getId(), q.getAnswerId(), q.getAnswerFreeText(), LocalDateTime.now());
-			LOGGER.info("{}", answerToSave);
-			getFeedbackService().saveAnswer(answerToSave);
-			
 		}
 		LOGGER.info("AnswerForm submitted!");
 		return "thanks";

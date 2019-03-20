@@ -6,6 +6,7 @@ import java.util.Base64;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.asck.web.service.model.Event;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,7 +37,11 @@ public class QrCodeController extends AbstractController {
 	@GetMapping("/qrCode")
 	public String generateQrCode(@RequestParam("eventId") Long eventId, Model model) {
 		byte[] qrCodeContent = createAsByteArray(createURLForQRCode(eventId));
-		String qrCodeString = Base64.getEncoder().encodeToString(qrCodeContent); 
+		String qrCodeString = Base64.getEncoder().encodeToString(qrCodeContent);
+		
+		Event eventById = getFeedbackService().getEventById(eventId);
+		
+		model.addAttribute("eventName", eventById.getName());
 		model.addAttribute("qrCode", qrCodeString);
 		return "qrCode";
 	}
@@ -54,7 +59,7 @@ public class QrCodeController extends AbstractController {
         } catch (IOException e) {
         	LOGGER.error("Could not generate QR Code, IOException :: " + e.getMessage());
         }
-		return null;
+		return new ByteArrayOutputStream().toByteArray();
 	}
 	
 	private byte[] getQRCodeImage(String text, int width, int height) throws WriterException, IOException {
@@ -64,7 +69,6 @@ public class QrCodeController extends AbstractController {
 	    ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
 	    MatrixToImageConfig config =  new MatrixToImageConfig(MatrixToImageConfig.BLACK, 0xffffff);
 		MatrixToImageWriter.writeToStream(bitMatrix, "PNG", pngOutputStream, config);
-	    byte[] pngData = pngOutputStream.toByteArray(); 
-	    return pngData;
+	    return pngOutputStream.toByteArray();
 	}
 }

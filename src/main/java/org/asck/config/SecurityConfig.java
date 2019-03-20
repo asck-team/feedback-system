@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -20,18 +20,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private boolean securityEnabled;
 	
 	@Autowired
+	private UserDetailsService custom;
+	
+	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		if (securityEnabled) {
-			auth.inMemoryAuthentication().withUser(
-					User.withUsername("user").password(encoder().encode("password")).roles("USER").build());
+			auth.userDetailsService(custom).passwordEncoder(encoder());
 		}
 	}
 	
 	@Bean
-	public PasswordEncoder  encoder() {
+	public PasswordEncoder encoder() {
 	    return new BCryptPasswordEncoder();
 	}
-
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {

@@ -13,7 +13,6 @@ import org.asck.web.service.IFeedbackClientService;
 import org.asck.web.service.model.Answer;
 import org.asck.web.service.model.AnswerReport;
 import org.asck.web.service.model.Event;
-import org.asck.web.service.model.User;
 import org.asck.web.service.model.Option;
 import org.asck.web.service.model.Question;
 import org.asck.web.service.model.User;
@@ -231,13 +230,15 @@ class FeedbackClientServiceImpl implements IFeedbackClientService {
 
 		for (Question question : allQuestionsToEvent) {
 			List<Answer> allAnswersToQuestion = getAllAnswersToQuestion(question.getId());
-			for (Answer answer : allAnswersToQuestion) {
-				AnswerReport answerReport = new AnswerReport();
-				answerReport.setQuestion(question);
-				answerReport.setOption(findOptionById(answer.getOptionId()));
-				answerReport.setRemark(answer.getRemark());
-				answerReport.setAnsweredAt(answer.getAnsweredAt());
-				answersReport.add(answerReport);
+			if (allAnswersToQuestion != null) {
+				for (Answer answer : allAnswersToQuestion) {
+					AnswerReport answerReport = new AnswerReport();
+					answerReport.setQuestion(question);
+					answerReport.setOption(findOptionById(answer.getOptionId()));
+					answerReport.setRemark(answer.getRemark());
+					answerReport.setAnsweredAt(answer.getAnsweredAt());
+					answersReport.add(answerReport);
+				}
 			}
 		}
 		return answersReport;
@@ -269,5 +270,4 @@ class FeedbackClientServiceImpl implements IFeedbackClientService {
 		
 		return newUser;
 	}
-
 }

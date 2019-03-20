@@ -1,40 +1,45 @@
 .bg {
-  /* The image used */
+/*   The image used */
   background-image: url("../img/Background4.png");
 
-  /* Full height */
+/*   Full height */
   height: 100%;
 
-  /* Center and scale the image nicely */
+/*   Center and scale the image nicely */
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
 }
 
+
 .bgsecond {
-  /* The image used */
-  background-image: url("../img/Background6.jpeg");
 
-/*   Full height */
-/*   height: 100%; */
+  /* Fallback (could use .jpg/.png alternatively) */
+  background-color: #66ffff;
 
-/* /*   Center and scale the image nicely */ */
-/*   background-position: center; */
-/*   background-repeat: no-repeat; */
-/*   background-size: cover; */
+  /* SVG fallback for IE 9 (could be data URI, or could use filter) */
+  background-image: url("../img/Background6.jpeg"); 
+
+  /* Safari 4, Chrome 1-9, iOS 3.2-4.3, Android 2.1-3.0 */
+  background-image:
+    -webkit-gradient(linear, left top, right top, from(#66ffff), to(#3399ff));
   
-		background-position: center;
-        background-repeat: inherit;
-        background-size: cover;
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
+  /* Safari 5.1, iOS 5.0-6.1, Chrome 10-25, Android 4.0-4.3 */
+  background-image:
+    -webkit-linear-gradient(left, #66ffff, #3399ff);
 
-/* -webkit-background-size: cover; */
-/* -moz-background-size: cover; */
-/* -o-background-size: cover; */
-/* background-size: cover; */
-/* z-index: -1; */
+  /* Firefox 3.6 - 15 */
+  background-image:
+    -moz-linear-gradient(left, #66ffff, #3399ff);
+
+  /* Opera 11.1 - 12 */
+  background-image:
+    -o-linear-gradient(left, #66ffff, #3399ff);
+
+  /* Opera 15+, Chrome 25+, IE 10+, Firefox 16+, Safari 6.1+, iOS 7+, Android 4.4+ */
+  background-image:
+    linear-gradient(to right, #66ffff, #3399ff);
+
 }
 
 body{
@@ -177,11 +182,12 @@ label.star:before {
   width: 65px;
 }
 /* logo */
+
+
 /* hide radio button for freetext */
 .hide-radio {
     display : none;
 } 
-/* hide radio button for freetext */
 
   /* Bordered form */
 #frame{
@@ -203,36 +209,6 @@ button:hover {
   opacity: 0.8;
 }
 
-/* Extra style for the cancel button (red) */
-.cancelbtn {
-  width: auto;
-  padding: 10px 18px;
-  background-color: #f44336;
-}
-
-
-/* Add padding to containers */
-/* .container { */
-/*   padding: 16px; */
-
-/* } */
-
-
-/* Change styles for span and cancel button on extra small screens */
-@media screen and (max-width: 300px) {
-  span.psw {
-    display: block;
-    float: none;
-  }
-  .cancelbtn {
-    width: 100%;
-  }
-} 
-
-
-
-
-
  {box-sizing: border-box}
 
 /* Full-width input fields */
@@ -250,11 +226,6 @@ input[type=text]:focus, input[type=password]:focus {
   outline: none;
 }
 
-hr {
-  border: 1px solid #f1f1f1;
-  margin-bottom: 25px;
-}
-
 /* Set a style for all buttons */
 button {
   padding: 14px 20px;
@@ -263,32 +234,9 @@ button {
   cursor: pointer;
 }
 
-button:hover {
-  opacity:1;
-}
-
-/* Extra styles for the cancel button */
-.cancelbtn {
-  padding: 14px 20px;
-  background-color: #f44336;
-}
-
-/* Float cancel and signup buttons and add an equal width */
-.cancelbtn {
-  float: left;
-  width: 50%;
-  
-}
 .signupbtn{
 	background-color:#00bbbb;
 }
-
-
-/* /* Add padding to container elements */ */
-/* .container { */
-/*   padding: 16px; */
-  
-/* } */
 
 /* Clear floats */
 .clearfix::after {
@@ -297,10 +245,36 @@ button:hover {
   display: table;
 }
 
-/* Change styles for cancel button and signup button on extra small screens */
-@media screen and (max-width: 200px) {
-  .cancelbtn, .signupbtn {
+/* Change styles for signup button on extra small screens */
+  .signupbtn {
     width: 100%;
 margin-left:150px;
   }
+}
+
+
+#cancelButton{
+margin-left: 155px;
+}
+html,
+body{
+ height: 100%;
+}
+
+#cover {
+  background: #c0c0c0urlcenter center no-repeat;
+  background-size: cover;
+  height: 100%;
+  text-align: center;
+  display: flex;
+  align-items: center;
+}
+
+#cover-caption {
+  width: 100%;
+}
+
+/* error */
+.has-error input[type="text"], .has-error input[type="radio"], .has-error select {
+    border: 2px solid #a94442;
 }

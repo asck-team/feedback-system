@@ -13,7 +13,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity(name = "Question")
+@Entity(name = "question")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -38,5 +38,8 @@ public class QuestionTableModel {
 	@Column(name = "order_nr")
 	@NotNull
 	private int order;
+	
+	@Column(name = "answer_required")
+	private boolean answerRequired;
 
 }

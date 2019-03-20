@@ -5,9 +5,12 @@
     <div class="stars" th:id="'star-' + ${question.id}">
     	<th:block th:each="i : ${#numbers.sequence(question.options.size() -1, 0, -1)}" th:with="o=${question.options[i]}" th:id="'star-' + ${i+1}">
 		    <input th:class="'star star-' + ${i+1}" th:id="'star-' + ${i+1} + '-' + ${question.id}"  
-		    type="radio" th:field="*{questions[__${stat.index}__].answerId}" th:value="${o.id}" required="required"/>
+		    type="radio" th:field="*{questions[__${stat.index}__].answerId}" th:value="${o.id}" 
+		    th:required="${question.answerRequired} ? 'required' : 'false'"
+		    data-error="Please choose one option!"/>
 		    <label th:class="'star star-' + ${i+1}" th:for="'star-' + ${i+1} + '-' + ${question.id}"></label>
 	    </th:block>
+	    <div class="help-block with-errors text-danger" role="alert"></div>
     </div>
 </div>
 </html>

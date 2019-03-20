@@ -20,5 +20,6 @@ public class User {
 	private String email;
 	@JsonProperty(required = true)
 	private String password;
+	public static final String ROLE = "USER";
 
 }

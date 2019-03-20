@@ -79,7 +79,7 @@ class FeedbackServiceImpl implements IFeedbackService {
 				.findAllByQuestionTypeId(question.getQuestionTypeId());
 		return Question.builder().id(question.getId()).questionName(question.getQuestionTitle())
 				.questionType(QuestionType.getForDBId(question.getQuestionTypeId())).order(question.getOrder())
-				.options(questionOptions.stream().map(this::map).collect(Collectors.toList())).build();
+				.options(questionOptions.stream().map(this::map).collect(Collectors.toList())).answerRequired(question.isAnswerRequired()).build();
 	}
 
 	protected Option map(QuestionOptionTableModel option) {
@@ -150,6 +150,7 @@ class FeedbackServiceImpl implements IFeedbackService {
 				question2Insert.setOrder(question.getOrder());
 				question2Insert.setQuestionTitle(question.getQuestionName());
 				question2Insert.setQuestionTypeId(question.getQuestionType().getDbId());
+				question2Insert.setAnswerRequired(question.isAnswerRequired());
 				allQuestion.sort((a,b) -> Integer.compare(a.getOrder(), b.getOrder()));
 				for (int i = 0; i < allQuestion.size(); i++) {
 					allQuestion.get(i).setOrder(i + 1);
@@ -163,7 +164,7 @@ class FeedbackServiceImpl implements IFeedbackService {
 			int order = allQuestion.size() + 1;
 			QuestionTableModel question2Insert = QuestionTableModel.builder().id(-1L).eventId(eventId)
 					.questionTitle(question.getQuestionName()).questionTypeId(question.getQuestionType().getDbId())
-					.order(order).build();
+					.order(order).answerRequired(question.isAnswerRequired()).build();
 			id = getQuestionRepository().save(question2Insert).getId();
 		}
 		return LOGGER.traceExit(id);
