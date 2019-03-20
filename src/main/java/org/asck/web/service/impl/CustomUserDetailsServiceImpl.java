@@ -26,8 +26,8 @@ class CustomUserDetailsServiceImpl implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String email) {
+		
 		User user = getFeedbackService().getUserByEmail(email);
-
 		if (user == null) {
 			return null;
 		}
