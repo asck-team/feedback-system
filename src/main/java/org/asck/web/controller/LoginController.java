@@ -4,7 +4,6 @@ import javax.validation.Valid;
 
 import org.asck.web.exceptions.EmailExistsException;
 import org.asck.web.service.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +17,6 @@ import org.springframework.web.context.request.WebRequest;
 @Controller
 public class LoginController extends AbstractController {
 	
-	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@GetMapping("/login")
@@ -36,8 +34,8 @@ public class LoginController extends AbstractController {
 	@PostMapping("/signup")
 	public String signup(@ModelAttribute("user") @Valid User accountDto, 
 			  BindingResult result, WebRequest request, Errors errors) {
-		
-		accountDto.setPassword(bCryptPasswordEncoder.encode(accountDto.getPassword()));
+
+				accountDto.setPassword(bCryptPasswordEncoder.encode(accountDto.getPassword()));
 		
 	    if (!result.hasErrors()) {
 	        try {
@@ -51,7 +49,7 @@ public class LoginController extends AbstractController {
 		return "registration";
 	}
 
-	private User createUserAccount(@Valid User accountDto) throws EmailExistsException {
+	private User createUserAccount(@Valid User accountDto) {
 		User userByEmail = null;
 		
 		try {
