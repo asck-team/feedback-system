@@ -8,9 +8,9 @@ public class LayeredArchitectureTest {
 
 	@ArchTest
 	public static final ArchRule layer_dependencies_are_respected = Architectures.layeredArchitecture()
-			.layer("Controllers").definedBy("org.asck.controller..")
-			.layer("Services").definedBy("org.asck.service..")
-			.layer("Repositories").definedBy("org.asck.repository..")
+			.layer("Controllers").definedBy("..api.controller..")
+			.layer("Services").definedBy("..api.service..")
+			.layer("Repositories").definedBy("..api.repository..")
 			
 			.whereLayer("Controllers").mayNotBeAccessedByAnyLayer()
 			.whereLayer("Services").mayOnlyBeAccessedByLayers("Controllers", "Services")

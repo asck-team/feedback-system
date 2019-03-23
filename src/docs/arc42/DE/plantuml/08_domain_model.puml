@@ -7,9 +7,17 @@ hide methods
 hide stereotypes
 
 ' entities
+Table(User, 'User') {
+	primary_key(id) INTEGER
+	not_null(unique(email)) VARCHAR[40]
+	not_null(password) VARCHAR[50]
+}
+
+
 Table(Event, 'Event') {
 	primary_key(id) INTEGER
 	not_null(unique(name)) VARCHAR[40]
+	not_null(owned_by) INTEGER
 }
 
 Table(Question, 'Question') {
@@ -49,5 +57,5 @@ Question --> Question_Type : "a question is of type"
 Question_Option --> Question_Type : "an option is for a specific question type" 
 Answer --> Question_Option : "an answer is about one option of a question"
 Answer --> Question : "an answer is for one question"
-
+User "1" --> "*" Event : "an user may have events"
 @enduml

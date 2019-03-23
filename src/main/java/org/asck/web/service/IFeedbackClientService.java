@@ -7,7 +7,6 @@ import org.asck.web.service.model.AnswerReport;
 import org.asck.web.service.model.Event;
 import org.asck.web.service.model.Option;
 import org.asck.web.service.model.Question;
-import org.asck.web.service.model.User;
 
 public interface IFeedbackClientService {
 	
@@ -37,6 +36,8 @@ public interface IFeedbackClientService {
 	
 	Option findOptionById(Long optionId);
 	
-	User findByUsername(String name);
+	org.asck.web.service.model.User getUserByEmail(String email);
+	
+	org.asck.web.service.model.User saveUser(org.asck.web.service.model.User user);
 
 }

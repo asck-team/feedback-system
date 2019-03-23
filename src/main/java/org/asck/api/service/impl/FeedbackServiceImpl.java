@@ -19,16 +19,19 @@ import org.asck.api.repository.EventRepository;
 import org.asck.api.repository.QuestionOptionRepository;
 import org.asck.api.repository.QuestionRepository;
 import org.asck.api.repository.QuestionTypeRepository;
+import org.asck.api.repository.UserRepository;
 import org.asck.api.repository.model.AnswerTableModel;
 import org.asck.api.repository.model.EventTableModel;
 import org.asck.api.repository.model.QuestionOptionTableModel;
 import org.asck.api.repository.model.QuestionTableModel;
+import org.asck.api.repository.model.UserTableModel;
 import org.asck.api.service.IFeedbackService;
 import org.asck.api.service.model.Answer;
 import org.asck.api.service.model.Event;
 import org.asck.api.service.model.Option;
 import org.asck.api.service.model.Question;
 import org.asck.api.service.model.QuestionType;
+import org.asck.api.service.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,7 +59,10 @@ class FeedbackServiceImpl implements IFeedbackService {
 
 	@Autowired
 	AnswerRepository answerRepository;
-
+	
+	@Autowired
+	UserRepository userRepository;
+	
 	@Override
 	public List<Event> findEvents() {
 		return getEventRepository().findAll().stream().map(this::loadEvent).collect(Collectors.toList());
@@ -223,5 +229,34 @@ class FeedbackServiceImpl implements IFeedbackService {
 			throw new EntityNotFoundException(Option.class, "id", optionId.toString());
 		}
 	}
+	
+	@Override
+	public User getUserByEmail(String email) throws EntityNotFoundException {
+		Optional<UserTableModel> user = getUserRepository().findByEmail(email);
+		
+		if(user.isPresent()) {
+			return map(user.get());
+		} else {
+			throw new EntityNotFoundException(User.class, "Email", email);
+		}
+	}
+	
+	@Override
+	public  Long saveUser(@Valid User user) {
+		UserTableModel userToSave = UserTableModel.builder().
+				id(user.getId()).
+				email(user.getEmail()).
+				password(user.getPassword()).build();
+		UserTableModel save = getUserRepository().save(userToSave);
+		
+		return save.getId();
+	}
+	
+	protected User map(UserTableModel user) {
+		return User.builder().id(user.getId()).email(user.getEmail())
+				.password(user.getPassword()).build();
+	}
+
+	
 
 }

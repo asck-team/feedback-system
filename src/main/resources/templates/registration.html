@@ -17,47 +17,56 @@
 								<h3>Sign in</h3>
 							</div>
 						</div>
-						
+
 						<br>
-						<form th:action="@{/login}" method="post" class="justify-content-center">
-						<div class="form-group">
-							<div class="input-group mb-2">
-								<div class="input-group-prepend"></div>
-								<label for="username" th:text="#{label.form.loginEmail}"></label>
-								<input type="text" placeholder="Enter Email" name="username"
-									required> <br />
+						<form th:action="@{/signup}" method="post" th:object="${user}"
+							class="justify-content-center">
+							<div class="form-group">
+								<div class="input-group mb-2">
+									<div class="input-group-prepend"></div>
+									<label for="username" th:text="#{label.form.loginEmail}"></label>
+									<input type="text" placeholder="Enter Email" name="username"
+										th:field="*{email}" required> <br />
+									<p th:each="error : ${#fields.errors('email')}"
+										th:text="${error}">Validation error</p>
 
+								</div>
 							</div>
-						</div>
 
-						<div class="form-group">
-							<div class="input-group mb-2">
-								<div class="input-group-prepend"></div>
-								<label for="email" th:text="Username"></label> <input
-									type="text" placeholder="Enter Username" name="username"
-									required> <br />
+							<div class="form-group">
+								<div class="input-group mb-2">
+									<div class="input-group-prepend"></div>
+
+									<label for="password" th:text="#{label.form.loginPass}"></label>
+									<input type="password" placeholder="Enter Password"
+										name="password" th:field="*{password}" required> <br />
+									<p th:each="error : ${#fields.errors()}"
+										th:text="${error}">Validation error</p>	
+								</div>
 							</div>
-						</div>
-						<div class="form-group">
-							<div class="input-group mb-2">
-								<div class="input-group-prepend"></div>
 
-								<label for="password" th:text="#{label.form.loginPass}"></label>
-								<input type="password" placeholder="Enter Password"
-									name="password" required> <br />
+							<div class="form-group">
+								<div class="input-group mb-2">
+									<div class="input-group-prepend"></div>
+
+									<label for="passwordConfirm"
+										th:text="#{label.form.loginPassConfirm}"></label> <input
+										type="password" placeholder="Reenter Password"
+										name="passwordConfirm" th:field="*{passwordConfirm}" required>
+									<br />
+								</div>
 							</div>
-						</div>
 
-						<div class="clearfix">
-							<button id="logInButton" type="submit" class="col-md-8"
-								th:text="#{label.form.submit}">Sign in</button>
-							<p>
-								<a id="cancelButton" th:href="@{/login}">Cancel</a>
-							</p>
-						</div>
+							<div class="clearfix">
+								<button id="logInButton" type="submit" class="col-md-8"
+									th:text="#{label.form.submit}">Sign in</button>
+								<p>
+									<a id="cancelButton" th:href="@{/login}">Cancel</a>
+								</p>
+							</div>
 						</form>
 					</div>
-					
+
 				</div>
 				<br>
 			</div>

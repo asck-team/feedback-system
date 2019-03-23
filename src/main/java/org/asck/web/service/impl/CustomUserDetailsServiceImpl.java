@@ -25,16 +25,16 @@ class CustomUserDetailsServiceImpl implements UserDetailsService {
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String username) {
-		User user = getFeedbackService().findByUsername(username);
-
+	public UserDetails loadUserByUsername(String email) {
+		
+		User user = getFeedbackService().getUserByEmail(email);
 		if (user == null) {
 			return null;
 		}
-		List<GrantedAuthority> auth = AuthorityUtils.commaSeparatedStringToAuthorityList(user.getRole());
+		List<GrantedAuthority> auth = AuthorityUtils.commaSeparatedStringToAuthorityList(User.ROLE);
 
 		String password = user.getPassword();
 
-		return new org.springframework.security.core.userdetails.User(username, password, auth);
+		return new org.springframework.security.core.userdetails.User(email, password, auth);
 	}
 }

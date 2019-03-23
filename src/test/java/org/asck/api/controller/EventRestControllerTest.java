@@ -105,7 +105,7 @@ public class EventRestControllerTest {
 
 	/**
 	 * Test method for
-	 * {@link org.asck.EventRestController.EventController#getEvent(long)}.
+	 * {@link org.asck.EventRestController.EventController#getUser(long)}.
 	 */
 	@Test
 	public void testGetEvent() throws Exception {
