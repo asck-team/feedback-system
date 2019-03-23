@@ -35,7 +35,7 @@ private static final Logger LOGGER = LogManager.getLogger(EventRestController.cl
 	@Autowired
 	private IFeedbackService feedbackService;
 	
-	@GetMapping(path = "/{email:.+}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@GetMapping(path = "/{email:.+}/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<User> getUserByEmail(@PathVariable String email) throws EntityNotFoundException {
 		LOGGER.traceEntry();
 		return ResponseEntity.ok(getFeedbackService().getUserByEmail(email));

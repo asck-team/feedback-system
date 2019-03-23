@@ -248,7 +248,7 @@ class FeedbackClientServiceImpl implements IFeedbackClientService {
 	public User getUserByEmail(String email) {
 		try {
 			ResponseEntity<User> response = getRestTemplate().exchange(
-					createUrlPath(PATH_ELEMENT_USER, email), HttpMethod.GET, null,
+					createUrlPath(PATH_ELEMENT_USER, email , "/"), HttpMethod.GET, null,
 					new ParameterizedTypeReference<User>() {
 					});
 			return response.getBody();
@@ -262,12 +262,10 @@ class FeedbackClientServiceImpl implements IFeedbackClientService {
 
 	@Override
 	public User saveUser(User user) {
-		User newUser = null;
-			URI location = getRestTemplate().postForLocation(createUrlPath(PATH_ELEMENT_EVENTS),
-					User.builder().id(-1L).email(user.getEmail()).password(user.getPassword()).build());
-			newUser = getRestTemplate().getForObject(location, User.class);
-			LOGGER.info("created User: {}", newUser);
 		
-		return newUser;
+		URI uri4CreatedAnswer = getRestTemplate().postForLocation(createUrlPath(PATH_ELEMENT_USER), user);
+		LOGGER.info("created User: {}", uri4CreatedAnswer);
+		LOGGER.info("created UserName: {}", user.getEmail());
+		return user;
 	}
 }
