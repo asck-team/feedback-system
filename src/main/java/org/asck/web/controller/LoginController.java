@@ -34,7 +34,9 @@ public class LoginController extends AbstractController {
 	@PostMapping("/signup")
 	public String signup(@ModelAttribute("user") @Valid User accountDto, 
 			  BindingResult result, WebRequest request, Errors errors) {
-
+				
+				bCryptPasswordEncoder = new BCryptPasswordEncoder();
+		
 				accountDto.setPassword(bCryptPasswordEncoder.encode(accountDto.getPassword()));
 		
 	    if (!result.hasErrors()) {
