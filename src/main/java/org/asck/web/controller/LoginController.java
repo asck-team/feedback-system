@@ -1,7 +1,11 @@
 package org.asck.web.controller;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.asck.web.exceptions.EmailExistsException;
 import org.asck.web.service.model.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,12 +16,13 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.context.request.WebRequest;
 
 @Controller
 public class LoginController extends AbstractController {
 	
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	private static final Logger LOGGER = LogManager.getLogger(LoginController.class);
 	
 	@GetMapping("/login")
 	public String login(Model model) {
@@ -33,16 +38,17 @@ public class LoginController extends AbstractController {
 	
 	@PostMapping("/signup")
 	public String signup(@ModelAttribute("user") @Valid User accountDto, 
-			  BindingResult result, WebRequest request, Errors errors) {
+			  BindingResult result, HttpServletRequest request, Errors errors) {
 				
 				bCryptPasswordEncoder = new BCryptPasswordEncoder();
-		
+				String pass = accountDto.getPassword();
 				accountDto.setPassword(bCryptPasswordEncoder.encode(accountDto.getPassword()));
 		
 	    if (!result.hasErrors()) {
 	        try {
 				createUserAccount(accountDto);
-				return "redirect:/login";
+				authWithHttpServletRequest(request, accountDto.getEmail(), pass);
+				return "redirect:/";
 			} catch (EmailExistsException e) {
 				result.rejectValue("email", e.getMessage());
 			}
@@ -67,5 +73,13 @@ public class LoginController extends AbstractController {
 			throw new EmailExistsException("Email already exists");
 		}
 	}
+	
+	private void authWithHttpServletRequest(HttpServletRequest request, String username, String password) {
+        try {
+            request.login(username, password);
+        } catch (ServletException e) {
+            LOGGER.error("Error while login ", e);
+        }
+    }
 	
 }
