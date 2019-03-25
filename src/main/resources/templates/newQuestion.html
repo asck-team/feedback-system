@@ -14,7 +14,7 @@
             <input type="hidden" th:field="*{order}"/><br/>
             <label for="question">New question:</label>
             <div class="input-group">
-                <input class="form-control" type="text" th:field="*{questionName}" required="required" placeholder="Enter question"/>
+                <input class="form-control" th:field="*{questionName}" required="required" placeholder="Enter question"/>
                 <div class="input-group-append">
                     <select class="custom-select" id="inputGroupSelect01" th:field="*{answerType}" required="required">
                         <option selected value="">Answer type...</option>

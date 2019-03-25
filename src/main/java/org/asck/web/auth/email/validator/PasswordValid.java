@@ -18,7 +18,7 @@ import javax.validation.Payload;
 @Documented
 public @interface PasswordValid {
 
-    String message() default "Password should be min 8 chars";
+    String message() default "Password must be at least 8 characters long";
 
     Class<?>[] groups() default {};
 
