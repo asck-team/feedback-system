@@ -45,6 +45,8 @@ class FeedbackClientServiceImpl implements IFeedbackClientService {
 
 	private static final String PATH_ELEMENT_EVENTS = "events";
 
+	private static final String PATH_ELEMENT_EVENTS_OWNED_BY = "events/ownedBy";
+
 	private static final String PATH_ELEMENT_ANSWERS = "answers";
 	
 	private static final String PATH_ELEMENT_USER = "user";
@@ -70,9 +72,10 @@ class FeedbackClientServiceImpl implements IFeedbackClientService {
 	}
 
 	@Override
-	public List<Event> leseAlleEvents() {
+	public List<Event> leseAlleEvents(Long ownedById) {
 		try {
-			ResponseEntity<List<Event>> responseEntity = getRestTemplate().exchange(createUrlPath(PATH_ELEMENT_EVENTS),
+			ResponseEntity<List<Event>> responseEntity = getRestTemplate().exchange(
+					createUrlPath(PATH_ELEMENT_EVENTS_OWNED_BY, ownedById.toString()),
 					HttpMethod.GET, null, new ParameterizedTypeReference<List<Event>>() {
 					});
 			if (responseEntity.getStatusCode().equals(HttpStatus.NO_CONTENT)) {
@@ -81,7 +84,7 @@ class FeedbackClientServiceImpl implements IFeedbackClientService {
 				return responseEntity.getBody();
 			}
 		} catch (HttpClientErrorException | HttpServerErrorException e) {
-			throw new ClientServiceRuntimeException("Error on retrieve events", e);
+			throw new ClientServiceRuntimeException("Error on retrieve events with user Id " + ownedById, e);
 		}
 	}
 

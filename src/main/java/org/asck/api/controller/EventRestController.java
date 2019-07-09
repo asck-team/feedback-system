@@ -38,10 +38,10 @@ public class EventRestController {
 	@Autowired
 	private IFeedbackService feedbackService;
 
-	@GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<List<Event>> getEvents() {
+	@GetMapping(path = "/ownedBy/{ownedById}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<List<Event>> getEventsOwnedBy(@PathVariable long ownedById) {
 		LOGGER.traceEntry();
-		List<Event> events = getFeedbackService().findEvents();
+		List<Event> events = getFeedbackService().findEventsOwnedBy(ownedById);
 		if (events.isEmpty()) {
 			return ResponseEntity.noContent().build();
 		} else {
@@ -53,6 +53,7 @@ public class EventRestController {
 	public ResponseEntity<Event> getEvent(@PathVariable long id) throws EntityNotFoundException {
 		return ResponseEntity.ok(getFeedbackService().findEventById(id));
 	}
+
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Object> createEvent(@Valid @RequestBody Event event) {

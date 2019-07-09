@@ -16,6 +16,8 @@ public interface IFeedbackService {
 
 	List<Event> findEvents();
 
+	List<Event> findEventsOwnedBy(long ownedById);
+
 	Event findEventById(Long id) throws EntityNotFoundException;
 
 	Question findQuestion(Long eventId, Long questionId) throws EntityNotFoundException;
