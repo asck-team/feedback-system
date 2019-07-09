@@ -118,7 +118,7 @@ class FeedbackServiceImpl implements IFeedbackService {
 
 	@Override
 	public Long saveEvent(@Valid Event event) {
-		return getEventRepository().save(EventTableModel.builder().id(event.getId()).name(event.getName()).build())
+		return getEventRepository().save(EventTableModel.builder().id(event.getId()).name(event.getName()).ownedBy(event.getOwnedBy()).build())
 				.getId();
 	}
 

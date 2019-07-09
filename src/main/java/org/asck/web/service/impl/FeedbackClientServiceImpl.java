@@ -122,7 +122,7 @@ class FeedbackClientServiceImpl implements IFeedbackClientService {
 			LOGGER.info("updated Event: {}", newOrUpdatedEvent);
 		} else {
 			URI location = getRestTemplate().postForLocation(createUrlPath(PATH_ELEMENT_EVENTS),
-					Event.builder().id(-1L).name(event.getName()).build());
+					Event.builder().id(-1L).name(event.getName()).ownedBy(event.getOwnedBy()).build());
 			newOrUpdatedEvent = getRestTemplate().getForObject(location, Event.class);
 			LOGGER.info("created Event: {}", newOrUpdatedEvent);
 		}

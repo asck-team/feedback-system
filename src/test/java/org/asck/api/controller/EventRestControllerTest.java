@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import org.asck.api.exceptions.EntityNotFoundException;
 import org.asck.api.service.IFeedbackService;
 import org.asck.api.service.model.Event;
+import org.asck.api.service.model.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -67,14 +68,14 @@ public class EventRestControllerTest {
 
 	/**
 	 * Test method for
-	 * {@link org.asck.EventRestController.EventController#createEvent(org.asck.service.model.Event)}.
+	 * {@link org.asck.api.controller.EventRestController#createEvent(org.asck.api.service.model.Event)} .
 	 */
 	@Test
 	public void testCreateEvent() throws Exception {
 
-		when(getFeedbackServiceMock().saveEvent(Event.builder().id(-1L).name("Event").build())).thenReturn(20L);
+		when(getFeedbackServiceMock().saveEvent(Event.builder().id(-1L).name("Event").ownedBy(1L).build())).thenReturn(20L);
 
-		String jsonValue = json.write(Event.builder().id(-1L).name("Event").build()).getJson();
+		String jsonValue = json.write(Event.builder().id(-1L).name("Event").ownedBy(1L).build()).getJson();
 		
 		getMockMvc()
 				.perform(post("/v1/feedback/events").contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -82,16 +83,16 @@ public class EventRestControllerTest {
 				.andDo(print()).andExpect(status().isCreated())
 				.andExpect(MockMvcResultMatchers.header().stringValues("location", "http://localhost/v1/feedback/events/20"));
 
-		verify(getFeedbackServiceMock()).saveEvent(Event.builder().id(-1L).name("Event").build());
+		verify(getFeedbackServiceMock()).saveEvent(Event.builder().id(-1L).name("Event").ownedBy(1L).build());
 
 	}
 	
 	@Test
 	public void testCreateEvent_ProvideIdNull_CallServiceWithNegativeId() throws Exception {
 
-		when(getFeedbackServiceMock().saveEvent(Event.builder().id(-1L).name("Event").build())).thenReturn(20L);
+		when(getFeedbackServiceMock().saveEvent(Event.builder().id(-1L).name("Event").ownedBy(1L).build())).thenReturn(20L);
 
-		String jsonValue = json.write(Event.builder().id(null).name("Event").build()).getJson();
+		String jsonValue = json.write(Event.builder().id(null).name("Event").ownedBy(1L).build()).getJson();
 		
 		getMockMvc()
 				.perform(post("/v1/feedback/events").contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -99,13 +100,13 @@ public class EventRestControllerTest {
 				.andDo(print()).andExpect(status().isCreated())
 				.andExpect(MockMvcResultMatchers.header().stringValues("location", "http://localhost/v1/feedback/events/20"));
 
-		verify(getFeedbackServiceMock()).saveEvent(Event.builder().id(-1L).name("Event").build());
+		verify(getFeedbackServiceMock()).saveEvent(Event.builder().id(-1L).name("Event").ownedBy(1L).build());
 
 	}
 
 	/**
 	 * Test method for
-	 * {@link org.asck.EventRestController.EventController#getUser(long)}.
+	 * {@link org.asck.api.controller.EventRestController#getEvent(long)} .
 	 */
 	@Test
 	public void testGetEvent() throws Exception {
@@ -120,24 +121,23 @@ public class EventRestControllerTest {
 	}
 
 	/**
-	 * Test method for {@link org.asck.EventRestController.EventController#updateEvent(java.lang.Long, org.asck.service.model.Event)}.
+	 * Test method for {@link org.asck.api.controller.EventRestController#updateEvent(Long, Event)} .
 	 */
 	@Test
 	public void testUpdateEvent() throws Exception {
-		when(getFeedbackServiceMock().saveEvent(Event.builder().id(20L).name("Event").build())).thenReturn(20L);
+		when(getFeedbackServiceMock().saveEvent(Event.builder().id(20L).name("Event").ownedBy(1L).build())).thenReturn(20L);
 
-		String jsonValue = json.write(Event.builder().id(-1L).name("Event").build()).getJson();
+		String jsonValue = json.write(Event.builder().id(-1L).name("Event").ownedBy(1L).build()).getJson();
 		
 		getMockMvc()
 				.perform(put("/v1/feedback/events/20").contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
 						.content(jsonValue))
 				.andDo(print()).andExpect(status().isNoContent());
-
-		verify(getFeedbackServiceMock()).saveEvent(Event.builder().id(20L).name("Event").build());
+		verify(getFeedbackServiceMock()).saveEvent(Event.builder().id(20L).name("Event").ownedBy(1L).build());
 	}
 
 	/**
-	 * Test method for {@link org.asck.EventRestController.EventController#deleteEvent(java.lang.Long)}.
+	 * Test method for {@link org.asck.api.controller.EventRestController#deleteEvent(Long)}.
 	 */
 	@Test
 	public void testDeleteEvent_EventDoesntExist_ReturnsNotFound() throws Exception {
@@ -151,7 +151,7 @@ public class EventRestControllerTest {
 	}
 	
 	/**
-	 * Test method for {@link org.asck.EventRestController.EventController#deleteEvent(java.lang.Long)}.
+	 * Test method for {@link org.asck.api.controller.EventRestController#deleteEvent(Long)}.
 	 */
 	@Test
 	public void testDeleteEvent_EventExistAndDeleted_ReturnsNoContent() throws Exception {

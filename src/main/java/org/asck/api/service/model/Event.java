@@ -18,14 +18,17 @@ import lombok.Data;
 public class Event {
 
 	@JsonCreator
-	public static Event create(@JsonProperty(required = false, value = "id") Long id, @JsonProperty("name") String name) {
-		return builder().id(id).name(name).build();
+	public static Event create(@JsonProperty(required = false, value = "id") Long id, @JsonProperty("name") String name, @JsonProperty("ownedBy") Long ownedBy) {
+		return builder().id(id).name(name).ownedBy(ownedBy).build();
 	}
 	
 	private Long id;
 	
 	@NotNull
 	private String name;
+
+	@NotNull
+	private Long ownedBy;
 	
 	@JsonIgnore
 	private List<Question> questions;

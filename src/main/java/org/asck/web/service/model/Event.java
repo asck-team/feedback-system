@@ -18,5 +18,7 @@ public class Event {
 	private Long id;
 	@JsonProperty(required = true)
 	private String name;
+
+	private Long ownedBy;
 	
 }

@@ -27,4 +27,7 @@ public class EventTableModel {
 	@Column
 	private String name;
 
+	@Column(name = "owned_by")
+	private Long ownedBy;
+
 }
