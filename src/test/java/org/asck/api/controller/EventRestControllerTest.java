@@ -56,14 +56,14 @@ public class EventRestControllerTest {
 	@Test
 	public void testGetEvents_NoEventsExists_ReturnsHttpStatusNoContent() throws Exception {
 
-		when(getFeedbackServiceMock().findEvents()).thenReturn(new ArrayList<>());
+		when(getFeedbackServiceMock().findEventsOwnedBy(1L)).thenReturn(new ArrayList<>());
 
 		getMockMvc()
-				.perform(MockMvcRequestBuilders.get("/v1/feedback/events")
+				.perform(MockMvcRequestBuilders.get("/v1/feedback/events/ownedBy/1")
 						.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
 				.andExpect(MockMvcResultMatchers.status().isNoContent());
 
-		verify(getFeedbackServiceMock()).findEvents();
+		verify(getFeedbackServiceMock()).findEventsOwnedBy(1L);
 	}
 
 	/**
