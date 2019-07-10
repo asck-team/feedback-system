@@ -45,7 +45,8 @@ public class NewEventController extends AbstractController {
 	public String post(@ModelAttribute UIEventTM eventTM) {
 		LOGGER.info("Save Obj from Ui {}", eventTM);
 		LOGGER.info("Save Event for User {}", getLoggedUser());
-		Event event = new Event(eventTM.getId(), eventTM.getEventName());
+		org.asck.web.service.model.User userByEmail = getFeedbackService().getUserByEmail(getLoggedUser());
+		Event event = new Event(eventTM.getId(), eventTM.getEventName(), userByEmail.getId());
 		getFeedbackService().saveEvent(event);
 		return "redirect:/events";
 	}

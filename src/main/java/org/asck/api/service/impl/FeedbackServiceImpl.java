@@ -68,6 +68,11 @@ class FeedbackServiceImpl implements IFeedbackService {
 		return getEventRepository().findAll().stream().map(this::loadEvent).collect(Collectors.toList());
 	}
 
+	@Override
+	public List<Event> findEventsOwnedBy(long ownedById) {
+		return getEventRepository().findAllByOwnedBy(ownedById).stream().map(this::loadEvent).collect(Collectors.toList());
+	}
+
 	protected Event loadEvent(EventTableModel event) {
 		List<QuestionTableModel> questions = getQuestionRepository().findAllByEventIdOrderByOrder(event.getId());
 		return Event.builder().id(event.getId()).name(event.getName())
@@ -118,7 +123,7 @@ class FeedbackServiceImpl implements IFeedbackService {
 
 	@Override
 	public Long saveEvent(@Valid Event event) {
-		return getEventRepository().save(EventTableModel.builder().id(event.getId()).name(event.getName()).build())
+		return getEventRepository().save(EventTableModel.builder().id(event.getId()).name(event.getName()).ownedBy(event.getOwnedBy()).build())
 				.getId();
 	}
 

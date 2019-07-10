@@ -100,22 +100,22 @@ public class FeedbackClientServiceImplTest {
 
 	/**
 	 * Test method for
-	 * {@link org.asck.web.service.impl.FeedbackClientServiceImpl#leseAlleEvents()}.
+	 * {@link org.asck.web.service.impl.FeedbackClientServiceImpl#leseAlleEvents(Long)}.
 	 */
 	@Test
 	public void testLeseAlleEvents_RESTAPIReturnsStatusNoContent_ReturnEmptyList() throws Exception {
 
-		this.server.expect(requestTo("http://localhost:8080/v1/feedback/events")).andExpect(method(HttpMethod.GET))
+		this.server.expect(requestTo("http://localhost:8080/v1/feedback/events/ownedBy/1")).andExpect(method(HttpMethod.GET))
 				.andRespond(withNoContent());
 
-		List<Event> leseAlleEvents = client.leseAlleEvents();
+		List<Event> leseAlleEvents = client.leseAlleEvents(1L);
 		assertNotNull(leseAlleEvents);
 		assertTrue(leseAlleEvents.isEmpty());
 	}
 
 	/**
 	 * Test method for
-	 * {@link org.asck.web.service.impl.FeedbackClientServiceImpl#leseAlleEvents()}.
+	 * {@link org.asck.web.service.impl.FeedbackClientServiceImpl#leseAlleEvents(Long)}.
 	 */
 	@Test
 	public void testLeseAlleEvents_RESTAPIReturnsStatusOk_ReturnListWithEvents() throws Exception {
@@ -124,11 +124,11 @@ public class FeedbackClientServiceImplTest {
 		events.add(org.asck.api.service.model.Event.builder().id(1L).name("Event1").build());
 		events.add(org.asck.api.service.model.Event.builder().id(2L).name("Event2").build());
 
-		this.server.expect(requestTo("http://localhost:8080/v1/feedback/events")).andExpect(method(HttpMethod.GET))
+		this.server.expect(requestTo("http://localhost:8080/v1/feedback/events/ownedBy/1")).andExpect(method(HttpMethod.GET))
 				.andRespond(withSuccess().contentType(MediaType.APPLICATION_JSON_UTF8)
 						.body(jsonEventList.write(events).getJson()));
 
-		List<Event> leseAlleEvents = client.leseAlleEvents();
+		List<Event> leseAlleEvents = client.leseAlleEvents(1L);
 		assertNotNull(leseAlleEvents);
 		assertFalse(leseAlleEvents.isEmpty());
 		assertEquals(2, leseAlleEvents.size());
@@ -138,19 +138,19 @@ public class FeedbackClientServiceImplTest {
 
 	/**
 	 * Test method for
-	 * {@link org.asck.web.service.impl.FeedbackClientServiceImpl#leseAlleEvents()}.
+	 * {@link org.asck.web.service.impl.FeedbackClientServiceImpl#leseAlleEvents(Long)} .
 	 */
 	@Test
 	public void testLeseAlleEvents_RESTAPIReturnsServerError_ThrowsException() throws Exception {
 
-		this.server.expect(requestTo("http://localhost:8080/v1/feedback/events")).andExpect(method(HttpMethod.GET))
+		this.server.expect(requestTo("http://localhost:8080/v1/feedback/events/ownedBy/1")).andExpect(method(HttpMethod.GET))
 				.andRespond(withServerError());
 
 		thrown.expect(ClientServiceRuntimeException.class);
 		thrown.expectCause(isA(HttpServerErrorException.class));
-		thrown.expectMessage(is("Error on retrieve events"));
+		thrown.expectMessage(is("Error on retrieve events with user Id 1"));
 
-		client.leseAlleEvents();
+		client.leseAlleEvents(1L);
 	}
 
 	/**

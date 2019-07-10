@@ -21,11 +21,16 @@ public class EventRepositoryTest {
 	EventRepository underTest;
 	
 	@Test
-	public void testFindAll() {
-		List<EventTableModel> list = underTest.findAll();
+	public void testFindAllByOwnedBy() {
+		List<EventTableModel> list = underTest.findAllByOwnedBy(1L);
 		assertNotNull(list);
 		assertEquals(2, list.size());
-		assertTrue(list.contains(new EventTableModel(1L, "Tägliche Essen-Umfrage")));
+		assertTrue(list.contains(new EventTableModel(1L, "Tägliche Essen-Umfrage", 1L)));
+
+		List<EventTableModel> list2 = underTest.findAllByOwnedBy(2L);
+		assertNotNull(list2);
+		assertEquals(1, list2.size());
+		assertTrue(list2.contains(new EventTableModel(3L, "Freespace 2019", 2L)));
 	}
 	
 }

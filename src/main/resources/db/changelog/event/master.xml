@@ -24,10 +24,7 @@
 		<createSequence sequenceName="SEQ_EVENT" cycle="false" incrementBy="50" startValue="5"/>
 	</changeSet>
 
-	<changeSet id="3" author="constantinkrueger"
-		context="test-data">
-		<loadData tableName="event" file="test-data/events.csv" />
-	</changeSet>
+
 	
 	<changeSet id="4" author="constantinkrueger">
 		<comment>add new column to link events and user</comment>
@@ -37,5 +34,10 @@
 			</column>
 		</addColumn>
 	</changeSet>
-	
+
+	<changeSet id="5" author="constantinkrueger"
+			   context="test-data">
+		<loadData tableName="event" file="test-data/events.csv" />
+	</changeSet>
+
 </databaseChangeLog>

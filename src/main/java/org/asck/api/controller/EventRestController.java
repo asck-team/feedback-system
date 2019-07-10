@@ -38,10 +38,10 @@ public class EventRestController {
 	@Autowired
 	private IFeedbackService feedbackService;
 
-	@GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<List<Event>> getEvents() {
+	@GetMapping(path = "/ownedBy/{ownedById}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<List<Event>> getEventsOwnedBy(@PathVariable long ownedById) {
 		LOGGER.traceEntry();
-		List<Event> events = getFeedbackService().findEvents();
+		List<Event> events = getFeedbackService().findEventsOwnedBy(ownedById);
 		if (events.isEmpty()) {
 			return ResponseEntity.noContent().build();
 		} else {
@@ -54,17 +54,18 @@ public class EventRestController {
 		return ResponseEntity.ok(getFeedbackService().findEventById(id));
 	}
 
+
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Object> createEvent(@Valid @RequestBody Event event) {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(getFeedbackService().saveEvent(Event.builder().id(-1L).name(event.getName()).build())).toUri();
+				.buildAndExpand(getFeedbackService().saveEvent(Event.builder().id(-1L).name(event.getName()).ownedBy(event.getOwnedBy()).build())).toUri();
 		return ResponseEntity.created(uri).build();
 
 	}
 
 	@PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Object> updateEvent(@PathVariable("id") Long id, @Valid @RequestBody Event event) {
-		getFeedbackService().saveEvent(Event.builder().id(id).name(event.getName()).build());
+		getFeedbackService().saveEvent(Event.builder().id(id).name(event.getName()).ownedBy(event.getOwnedBy()).build());
 		return ResponseEntity.noContent().build();
 	}
 	

@@ -19,7 +19,7 @@ public class Answer {
 	@JsonCreator
 	public static Answer createFromJson(@JsonProperty("questionId") Long questionId,
 			@JsonProperty("optionId") Long optionId, @JsonProperty(required = false, value = "remark") String remark,
-			@JsonProperty("answeredAt") @JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSSZ") LocalDateTime answeredAt) {
+			@JsonProperty("answeredAt") @JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime answeredAt) {
 		return Answer.builder().optionId(optionId).questionId(questionId).remark(remark).answeredAt(answeredAt).build();
 	}
 

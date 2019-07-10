@@ -65,7 +65,7 @@ public class QuestionRestControllerTest {
 
 	@Test
 	public void testReadAll_NoQuestionsFound_ReturnHttpStatusNoContent() throws Exception {
-		when(feedbackServiceMock.findEventById(20L)).thenReturn(new Event(20L, "Question", Collections.emptyList()));
+		when(feedbackServiceMock.findEventById(20L)).thenReturn(new Event(20L, "Question",1L, Collections.emptyList()));
 
 		mockMvc.perform(get("/v1/feedback/events/20/questions")).andDo(print()).andExpect(status().isNoContent())
 				.andExpect(content().string(""));
@@ -75,7 +75,7 @@ public class QuestionRestControllerTest {
 
 	/**
 	 * Test method for
-	 * {@link org.asck.QuestionRestController.QuestionController#createQuestion(java.lang.Long, org.asck.service.model.Question)}.
+	 * {@link org.asck.api.controller.QuestionRestController#createQuestion(Long, Question)} .
 	 */
 	@Test
 	public void testCreateQuestion() throws Exception {
@@ -97,7 +97,7 @@ public class QuestionRestControllerTest {
 
 	/**
 	 * Test method for
-	 * {@link org.asck.QuestionRestController.QuestionController#updateQuestion(java.lang.Long, java.lang.Long, org.asck.service.model.Question)}.
+	 * {@link org.asck.api.controller.QuestionRestController#updateQuestion(Long, Long, Question)} .
 	 */
 	@Test
 	public void testUpdateQuestion() throws Exception {
@@ -119,7 +119,7 @@ public class QuestionRestControllerTest {
 
 	/**
 	 * Test method for
-	 * {@link org.asck.QuestionRestController.QuestionController#deleteQuestion(java.lang.Long, java.lang.Long)}.
+	 * {@link org.asck.api.controller.QuestionRestController#deleteQuestion(java.lang.Long, java.lang.Long)}.
 	 */
 	@Test
 	public void testDeleteQuestion_EventWithIdDoesntExists_ReturnsNotFoundAndApiError() throws Exception {
@@ -138,7 +138,7 @@ public class QuestionRestControllerTest {
 
 	/**
 	 * Test method for
-	 * {@link org.asck.QuestionRestController.QuestionController#deleteQuestion(java.lang.Long, java.lang.Long)}.
+	 * {@link org.asck.api.controller.QuestionRestController#deleteQuestion(java.lang.Long, java.lang.Long)}.
 	 */
 	@Test
 	public void testDeleteQuestion_QuestionWithIdDoesntExists_ReturnsNotFoundAndApiError() throws Exception {
@@ -156,7 +156,7 @@ public class QuestionRestControllerTest {
 	}
 
 	/**
-	 * Test method for {@link org.asck.QuestionRestController.QuestionController#deleteQuestion(java.lang.Long, java.lang.Long)}.
+	 * Test method for {@link org.asck.api.controller.QuestionRestController#deleteQuestion(java.lang.Long, java.lang.Long)}.
 	 */
 	@Test
 	public void testDeleteQuestion_EventWithIdExistAndQuestionWithIdExistsAndDeleted_ReturnsNoContent() throws Exception {

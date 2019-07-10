@@ -10,7 +10,7 @@ import org.asck.web.service.model.Question;
 
 public interface IFeedbackClientService {
 	
-	List<Event> leseAlleEvents();
+	List<Event> leseAlleEvents(Long ownedById);
 	
 	Event saveEvent(Event event);
 	
