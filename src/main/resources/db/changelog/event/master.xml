@@ -35,9 +35,5 @@
 		</addColumn>
 	</changeSet>
 
-	<changeSet id="5" author="constantinkrueger"
-			   context="test-data">
-		<loadData tableName="event" file="test-data/events.csv" />
-	</changeSet>
 
 </databaseChangeLog>
