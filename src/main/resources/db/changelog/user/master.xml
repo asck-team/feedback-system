@@ -27,9 +27,6 @@
 		<createSequence sequenceName="SEQ_USER" cycle="false" incrementBy="50" startValue="5"/>
 	</changeSet>
 	
-	<changeSet id="3" author="andreisava"
-		context="test-data">
-		<loadData tableName="user" file="test-data/users.csv" />
-	</changeSet>
+
 
 </databaseChangeLog>
