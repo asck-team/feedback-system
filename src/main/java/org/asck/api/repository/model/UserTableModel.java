@@ -21,6 +21,7 @@ import lombok.NoArgsConstructor;
 public class UserTableModel {
 	
 	@Id
+	@Column(name = "id", unique = true, nullable = false)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_USER_GEN")
 	private Long id;
 	
