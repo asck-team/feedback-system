@@ -29,7 +29,7 @@
 
 	<changeSet id="3" author="andreisava"
 			   context="test-data">
-		<loadData tableName="User" file="test-data/users.csv" />
+		<loadData tableName="user" file="test-data/users.csv" />
 	</changeSet>
 
 
