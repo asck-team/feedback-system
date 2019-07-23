@@ -48,7 +48,12 @@ public class QrCodeController extends AbstractController {
 
 	protected String createURLForQRCode(Long eventId) {
 		LOGGER.info("Host {} and port {} as content for qr code", ipAdress, port);
-		return String.format("http://%s:%s/answer?eventId=%s", getIpAdress(), getPort(), eventId);
+		if (ipAdress.length() > 20) {
+			return String.format("%s:%s/answer?eventId=%s", getIpAdress(), getPort(), eventId);
+		} else  {
+			return String.format("http://%s:%s/answer?eventId=%s", getIpAdress(), getPort(), eventId);
+		}
+
 	}
 	
 	private byte[] createAsByteArray(String link) {
