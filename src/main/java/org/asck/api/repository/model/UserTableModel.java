@@ -7,13 +7,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity(name = "user")
+@Entity(name = "owner")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @SequenceGenerator(name = "SEQ_USER_GEN", sequenceName = "SEQ_USER")
-@Table(name="user")
 public class UserTableModel {
 	
 	@Id

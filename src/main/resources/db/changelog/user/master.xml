@@ -7,7 +7,7 @@
 
 	<changeSet id="1" author="constantinkrueger">
 		<comment>create user table</comment>
-		<createTable tableName="user">
+		<createTable tableName="owner">
 			<column name="id" type="numeric">
 				<constraints primaryKey="true" primaryKeyName="PK_USER"
 					nullable="false" />
@@ -29,7 +29,7 @@
 
 	<changeSet id="3" author="andreisava"
 			   context="test-data">
-		<loadData tableName="user" file="test-data/users.csv" />
+		<loadData tableName="owner" file="test-data/users.csv" />
 	</changeSet>
 
 
