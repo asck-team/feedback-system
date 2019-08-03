@@ -23,7 +23,7 @@ public class QuestionRepositoryTest {
 	public void testFindAll() {
 		List<QuestionTableModel> list = underTest.findAll();
 		assertNotNull(list);
-		assertEquals(9, list.size());
+		assertEquals(0, list.size());
 	}
 	
 }
