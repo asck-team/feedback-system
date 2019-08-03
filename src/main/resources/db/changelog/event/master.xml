@@ -16,6 +16,9 @@
 				<constraints nullable="false" unique="true"
 					uniqueConstraintName="UC_EVENT_NAME" />
 			</column>
+            <column name="owned_by" remarks="event is created from user" type="numeric">
+                <constraints foreignKeyName="PK_USER"/>
+            </column>
 		</createTable>
 	</changeSet>
 
@@ -25,19 +28,5 @@
 	</changeSet>
 
 
-	
-	<changeSet id="4" author="constantinkrueger">
-		<comment>add new column to link events and user</comment>
-		<addColumn tableName="Event">
-			<column name="owned_by" remarks="event is created from user" type="numeric">
-				<constraints foreignKeyName="PK_USER"/>
-			</column>
-		</addColumn>
-	</changeSet>
-
-	<changeSet id="5" author="constantinkrueger"
-			   context="test-data">
-		<loadData tableName="event" file="test-data/events.csv" />
-	</changeSet>
 
 </databaseChangeLog>

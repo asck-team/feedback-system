@@ -34,8 +34,5 @@
 		<comment>create sequence for question table</comment>
 		<createSequence sequenceName="SEQ_QUESTION" cycle="false" incrementBy="50" startValue="50"/>
 	</changeSet>
-	
-	<changeSet  id="3" author="constantinkrueger" context="test-data">
-		<loadData tableName="question" file="test-data/questions.csv" />
-	</changeSet>
+
 </databaseChangeLog>

@@ -1,18 +1,13 @@
 package org.asck.api.repository.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity(name = "User")
+@Entity(name = "owner")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,6 +16,7 @@ import lombok.NoArgsConstructor;
 public class UserTableModel {
 	
 	@Id
+	@Column(name = "id", unique = true, nullable = false)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_USER_GEN")
 	private Long id;
 	

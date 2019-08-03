@@ -7,7 +7,7 @@
 
 	<changeSet id="1" author="constantinkrueger">
 		<comment>create user table</comment>
-		<createTable tableName="User">
+		<createTable tableName="owner">
 			<column name="id" type="numeric">
 				<constraints primaryKey="true" primaryKeyName="PK_USER"
 					nullable="false" />
@@ -26,10 +26,11 @@
 		<comment>create sequence for event table</comment>
 		<createSequence sequenceName="SEQ_USER" cycle="false" incrementBy="50" startValue="5"/>
 	</changeSet>
-	
+
 	<changeSet id="3" author="andreisava"
-		context="test-data">
-		<loadData tableName="user" file="test-data/users.csv" />
+			   context="test-data">
+		<loadData tableName="owner" file="test-data/users.csv" />
 	</changeSet>
+
 
 </databaseChangeLog>
