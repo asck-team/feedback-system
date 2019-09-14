@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="fragments/headerHead :: head">...</div>
+
+<div th:replace="fragments/headerNavBar :: header">...</div>
+
+<body class="bg-light text-black bgsecond">
+	<div class="container text-center">
+		<br />
+		<br>
+		<h1 th:text="#{label.welcome}">Welcome</h1>
+	</div>
+</body>
+</html>

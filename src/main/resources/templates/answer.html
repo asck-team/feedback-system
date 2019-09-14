@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="fragments/headerHead :: head">...</div>
+
+<div th:replace="fragments/headerNavBarNoSearch :: headerNoSearch">...</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js"></script>
+
+<!-- <script src="/webjars/bootstrap-validator/dist/validator.min.js"></script> -->
+
+<body class="bg-light text-dark bgsecond">
+		<br> <br>
+		<h1 th:text="${eventName}" style="text-align: center;">Event Formular</h1>
+		
+		<form action="#" th:action="@{/answer}" method="post" id="main" th:object="${answerForm}" data-toggle="validator" novalidate="true">
+			<input class="invisible" th:field="*{eventId}"/>
+			<div th:each="question, stat: ${answerForm.questions}" class="form-group container"> 
+				<label for="${question.getQuestionName()}" th:text="${question.getQuestionName()}">New event:</label>
+				<div th:switch="${question.getAnswerType()}"> 
+					<div th:case="'FIVE_SMILEYS'">
+						<div th:replace="fragments/stars :: stars" th:id="'star-' + ${question.getId()}">...</div>
+					</div>
+					<div th:case="'THREE_SMILEYS'">
+						<div th:replace="fragments/stars :: stars" th:id="'star-' + ${question.getId()}">...</div>
+					</div>
+					<div th:case="'YES_NO'">
+						<div th:replace="fragments/yes_no :: yesno">...</div>
+					</div>	
+					<div th:case="'FREETEXT'"> 
+						<div th:replace="fragments/freetext :: freetext">...</div>
+					</div>
+				</div>
+				<input type="hidden" th:field="*{questions[__${stat.index}__].questionName}" th:value="${question.getQuestionName()}"/>
+				<input type="hidden" th:field="*{questions[__${stat.index}__].id}" th:value="${question.getId()}"/>
+				<input type="hidden" th:field="*{questions[__${stat.index}__].eventId}" th:value="${question.getEventId()}"/>
+				<input type="hidden" th:field="*{questions[__${stat.index}__].answerType}" th:value="${question.getAnswerType()}"/>
+			</div>
+			<br>
+			<div class="form-group container">
+            	<p><input type="submit" value="Submit" class="btn btn-dark btn-lg btn-block"/></p>
+        	</div>
+		
+		</form>
+</body>
+
+</html>
+

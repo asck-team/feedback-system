@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+	<changeSet id="1" author="constantinkrueger">
+		<createTable tableName="question_option" remarks="Optionen zu einer Frage">
+			<column name="id" type="numeric" remarks="Eindeutiger Schlüssel einer Option zu einer Frage">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="PK_question_option"/>
+			</column>
+			<column name="optionial_description" type="varchar(100)">
+				<constraints nullable="true"/>
+			</column>
+			<column name="order" type="numeric" remarks="Reihenfolge der Optionen">
+				<constraints nullable="false"/>
+			</column>
+			<column name="icon_path" type="varchar(250)" remarks="Pfad zum Icon (optional)">
+				<constraints nullable="true"/>
+			</column>
+			<column name="question_type_id" type="numeric" remarks="Fremdschlüssel auf den Frage Typ">
+				<constraints foreignKeyName="PK_QUESTION_TYPE"/>
+			</column>
+		</createTable>
+	</changeSet>
+	
+	<changeSet  id="insertOptions4QuestionType3Smileys" author="constantinkrueger">
+		<insert tableName="question_option">
+			<column name="id" value="1" />
+			<column name="order" value="1" />
+			<column name="icon_path" value="smileys/smileyGruen.png" />
+			<column name="question_type_id" value="2" />
+		</insert>
+		<insert tableName="question_option">
+			<column name="id" value="2" />
+			<column name="order" value="2" />
+			<column name="icon_path" value="smileys/smileyGelb.png" />
+			<column name="question_type_id" value="2" />
+		</insert>
+		<insert tableName="question_option">
+			<column name="id" value="3" />
+			<column name="order" value="3" />
+			<column name="icon_path" value="smileys/smileyRot.png" />
+			<column name="question_type_id" value="2" />
+		</insert>
+	</changeSet>
+
+	<changeSet  id="insertOptions4QuestionType5Smileys" author="constantinkrueger">
+		<insert tableName="question_option">
+			<column name="id" value="4" />
+			<column name="order" value="1" />
+			<column name="icon_path" value="smileys/smileyGruen.png" />
+			<column name="question_type_id" value="3" />
+		</insert>
+		<insert tableName="question_option">
+			<column name="id" value="5" />
+			<column name="order" value="2" />
+			<column name="icon_path" value="smileys/smileyGelbGruen.png" />
+			<column name="question_type_id" value="3" />
+		</insert>
+		<insert tableName="question_option">
+			<column name="id" value="6" />
+			<column name="order" value="3" />
+			<column name="icon_path" value="smileys/smileyGelb.png" />
+			<column name="question_type_id" value="3" />
+		</insert>
+		<insert tableName="question_option">
+			<column name="id" value="7" />
+			<column name="order" value="4" />
+			<column name="icon_path" value="smileys/smileyOrange.png" />
+			<column name="question_type_id" value="3" />
+		</insert>
+		<insert tableName="question_option">
+			<column name="id" value="8" />
+			<column name="order" value="5" />
+			<column name="icon_path" value="smileys/smileyRot.png" />
+			<column name="question_type_id" value="3" />
+		</insert>
+	</changeSet>
+	
+	<changeSet  id="insertOptions4QuestionTypeYesNo" author="constantinkrueger">
+		<insert tableName="question_option">
+			<column name="id" value="9" />
+			<column name="order" value="1" />
+			<column name="optionial_description" value="Ja" />
+			<column name="question_type_id" value="4" />
+		</insert>
+		<insert tableName="question_option">
+			<column name="id" value="10" />
+			<column name="order" value="2" />
+			<column name="optionial_description" value="Nein" />
+			<column name="question_type_id" value="4" />
+		</insert>
+	</changeSet>
+	
+	<changeSet  id="insertOptions4QuestionTypeFreeText" author="constantinkrueger">
+		<insert tableName="question_option">
+			<column name="id" value="11" />
+			<column name="order" value="1" />
+			<column name="optionial_description" value="" />
+			<column name="question_type_id" value="1" />
+		</insert>
+	</changeSet>
+
+</databaseChangeLog>

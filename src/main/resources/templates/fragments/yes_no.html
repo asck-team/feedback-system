@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="yesno">
+	  	<div class="form-group custom-control custom-radio custom-control-inline" th:each="i : ${#numbers.sequence(0,question.options.size() -1, 1)}" th:with="o=${question.options[i]}">
+		  <label>
+ 			<input type="radio" class="option-input radio" 
+ 			th:name="'customRadioInline'+ ${i+1} + '-' + ${question.id}" 
+ 			th:field="*{questions[__${stat.index}__].answerId}" th:value="${o.id}" 
+ 			th:text="${o.optionalDescription}" th:required="${question.answerRequired} ? 'required' : 'false'"
+ 			data-error="Please choose one option!"/>
+		  </label>
+		</div>
+</div>
+</html>

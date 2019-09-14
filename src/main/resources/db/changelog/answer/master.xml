@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+	<changeSet id="1" author="constantinkrueger">
+		<comment>create answer table</comment>
+		<createTable tableName="answer">
+			<column name="id" type="numeric" remarks="Eindeutiger Schlüssel einer Antowrt">
+				<constraints primaryKey="true" primaryKeyName="PK_ANSWER" nullable="false" />
+			</column>
+			<column name="answered_at" type="date" remarks="Antwort abgegeben um">
+				<constraints nullable="false" />
+			</column>
+			<column name="question_option_id" type="numeric" remarks="Fremdschlüssel auf die Option einer Frage">
+				<constraints foreignKeyName="PK_QUESTION_OPTION" nullable="false"/>
+			</column>
+			<column name="remark" type="varchar(255)" remarks="Antwort in Freitextform">
+				<constraints nullable="true"/>
+			</column>
+			<column name="question_id" type="numeric" remarks="Fremschlüssel auf die Frage">
+				<constraints foreignKeyName="PK_QUESTION"/>
+			</column>
+		</createTable>		
+	</changeSet>
+	
+	<changeSet id="2" author="constantinkrueger">
+		<comment>create sequence for answer table</comment>
+		<createSequence sequenceName="SEQ_ANSWER" cycle="false" incrementBy="50" startValue="1"/>
+	</changeSet>
+
+	<!-- 
+	<changeSet id="2" author="constantinkrueger" context="test-data">
+		<loadData tableName="Event" file="test-data/events.csv" />
+	</changeSet>
+	 -->
+</databaseChangeLog>
