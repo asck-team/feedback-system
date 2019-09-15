@@ -6,14 +6,24 @@ jobs:
     steps:
       - checkout
       - run:
-	  name: Install Graphiz
-	  command: sudo apt-get install graphviz
+          name: Install Graphiz
+          command: sudo apt-get install graphviz
       - run: |
           if [[ "$CIRCLE_TAG" != "" ]]; then
             VERSION="$(echo "$CIRCLE_TAG" | grep -Po '\d+\.\d+\.\d+')"
             mvn versions:set -DnewVersion=${VERSION} versions:commit
           fi
-      - run: mvn package sonar:sonar -Dsonar.organization=asck-team -Dsonar.projectKey=asck-team_asck-survey -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${SONAR_TOKEN}
+      - run:
+          name: Build and Test
+          command: mvn package
+      - run:
+          name: Analyze for SonarQube
+          command: |
+            mvn sonar:sonar \
+            -Dsonar.organization=asck-team \
+            -Dsonar.projectKey=asck-team_asck-survey \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=${SONAR_TOKEN}
       - run:
           name: Save test results
           command: |
