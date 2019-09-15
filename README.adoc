@@ -1,6 +1,6 @@
 = image:./asck-logo.png[asck] a little survey system 
 
-image:https://travis-ci.org/asck-team/asck-survey.svg?branch=develop[link="https://travis-ci.org/asck-team/asck-survey"]
+image:https://circleci.com/gh/asck-team/asck-survey.svg["CircleCI", link="https://circleci.com/gh/asck-team/asck-survey"]
 image:https://sonarcloud.io/api/project_badges/measure?project=asck-team_asck-survey&metric=alert_status[link="https://sonarcloud.io/dashboard?id=asck-team_asck-survey"]
 image:https://sonarcloud.io/api/project_badges/measure?project=asck-team_asck-survey&metric=bugs[link="https://sonarcloud.io/component_measures?id=asck-team_asck-survey&metric=Reliability"]
 image:https://sonarcloud.io/api/project_badges/measure?project=asck-team_asck-survey&metric=coverage[link="https://sonarcloud.io/component_measures?id=asck-team_asck-survey&metric=Coverage"]
