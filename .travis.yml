@@ -14,7 +14,7 @@ env:
 
 addons: 
   sonarcloud:
-      organization: "uniqueck-github"
+      organization: "asck-team"
       token:
         secure: $SONAR_TOKEN
   apt:
