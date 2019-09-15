@@ -2,15 +2,8 @@ language: java
 sudo: false
 install: true
 
-services:
-  - docker
-
 jdk:
   - openjdk11
-
-env:
-  - DOCKER_FILE=./docker/arm/Dockerfile DOCKER_NAME=asck-survey DOCKER_TAG=arm-latest
-  - DOCKER_FILE=./docker/x86/Dockerfile DOCKER_NAME=asck-survey DOCKER_TAG=x86-latest
 
 addons: 
   sonarcloud:
@@ -27,18 +20,6 @@ jobs:
     - stage: build and test
       if: NOT branch = develop OR type = pull_request 
       script: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar -Dsonar.projectKey=asck-team_asck-survey
-    - stage: build, test and deploy to docker hub
-      if: branch = develop AND NOT type = pull_request
-      # login to docker hub
-      before_script:
-      - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-      - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar -Dsonar.projectKey=asck-team_asck-survey
-      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-      script:
-      - docker build --build-arg JAR_FILE=./target/asck-survey-*.jar -t $DOCKER_NAME -f $DOCKER_FILE .
-      - docker images
-      - docker tag $DOCKER_NAME $DOCKER_USERNAME/$DOCKER_NAME:$DOCKER_TAG
-      - docker push $DOCKER_USERNAME/$DOCKER_NAME:$DOCKER_TAG
 
 cache:
   directories:
