@@ -167,7 +167,7 @@ class FeedbackServiceImpl implements IFeedbackService {
 			}
 		} else {
 			int order = allQuestion.size() + 1;
-			QuestionTableModel question2Insert = QuestionTableModel.builder().id(-1L).eventId(eventId)
+			QuestionTableModel question2Insert = QuestionTableModel.builder().id(null).eventId(eventId)
 					.questionTitle(question.getQuestionName()).questionTypeId(question.getQuestionType().getDbId())
 					.order(order).answerRequired(question.isAnswerRequired()).build();
 			id = getQuestionRepository().save(question2Insert).getId();
