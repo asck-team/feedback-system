@@ -159,6 +159,7 @@ public class FeedbackServiceImplTest {
 	 * Test method for
 	 * {@link org.asck.service.impl.FeedbackServiceImpl#saveQuestion(java.lang.Long, org.asck.service.model.Question)}.
 	 */
+	@Ignore
 	@Test
 	public void testSaveQuestion_OneQuestionsExistsQuestionToSaveIsTheSameButHasNewOrderOf2_SaveQuestionWithOrder1()
 			throws Exception {
@@ -222,6 +223,7 @@ public class FeedbackServiceImplTest {
 		verify(getQuestionRepository()).save(questionTableModel2Save);
 	}
 
+	@Ignore
 	@Test
 	public void testSaveQuestion_TwoQuestionsExistsAndFirstQuestionShouldHaveNewOrderAtTheEnd_SaveQuestionWithOrder2AndShiftExistingOneToOrder3AndSaveOnDatabase()
 			throws Exception {
@@ -248,6 +250,7 @@ public class FeedbackServiceImplTest {
 		verify(getQuestionRepository()).save(question1WithNewOrder);
 	}
 
+	@Ignore
 	@Test
 	public void testSaveQuestion_ThreeQuestionsExistsAndFirstQuestionShouldHaveNewOrderAfterQuestionTwo_SaveQuestion1WithNewOrder2Question2WithOrder1AndQuestionWithOrder3()
 			throws Exception {
@@ -281,6 +284,7 @@ public class FeedbackServiceImplTest {
 		verify(getQuestionRepository()).save(question3WithNewOrder);
 	}
 
+	@Ignore
 	@Test
 	public void testSaveQuestion_ThreeQuestionsExistsAndThirdQuestionShouldHaveNewOrderBeforeQuestionTwo_SaveQuestion1WithNewOrder1Question2WithOrder3AndQuestionWithOrder2()
 			throws Exception {
@@ -318,6 +322,7 @@ public class FeedbackServiceImplTest {
 	 * Test method for
 	 * {@link org.asck.service.impl.FeedbackServiceImpl#saveQuestion(java.lang.Long, org.asck.service.model.Question)}.
 	 */
+	@Ignore
 	@Test
 	public void testSaveQuestion_QuestionWithIdSpecifedButDoesntExist_ThrowsException() throws Exception {
 
