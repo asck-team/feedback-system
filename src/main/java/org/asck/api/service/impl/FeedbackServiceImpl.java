@@ -105,12 +105,16 @@ class FeedbackServiceImpl implements IFeedbackService {
 	@Override
 	public Question findQuestion(Long eventId, Long questionId) throws EntityNotFoundException {
 		Event event = findEventById(eventId);
-		Optional<Question> question = event.getQuestions().stream().filter(q -> q.getId() == questionId).findFirst();
-		if (question.isPresent()) {
-			return question.get();
-		} else {
-			throw new EntityNotFoundException(Question.class, "id", questionId.toString());
+
+		for (Question q : event.getQuestions()) {
+			if (q.getId().equals(questionId)){
+				return q;
+			}
+			else {
+				throw new EntityNotFoundException(Question.class, "id", questionId.toString());
+			}
 		}
+		return null;
 	}
 
 	@Override
