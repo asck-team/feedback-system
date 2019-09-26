@@ -251,7 +251,7 @@ class FeedbackClientServiceImpl implements IFeedbackClientService {
 	public User getUserByEmail(String email) {
 		try {
 			ResponseEntity<User> response = getRestTemplate().exchange(
-					createUrlPath(PATH_ELEMENT_USER, email , "/"), HttpMethod.GET, null,
+					createUrlPath(PATH_ELEMENT_USER, email), HttpMethod.GET, null,
 					new ParameterizedTypeReference<User>() {
 					});
 			return response.getBody();
