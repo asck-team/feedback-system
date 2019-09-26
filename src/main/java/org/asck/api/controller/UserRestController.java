@@ -30,12 +30,12 @@ import lombok.Getter;
 @Getter(AccessLevel.PROTECTED)
 public class UserRestController {
 	
-private static final Logger LOGGER = LogManager.getLogger(EventRestController.class);
+private static final Logger LOGGER = LogManager.getLogger(UserRestController.class);
 	
 	@Autowired
 	private IFeedbackService feedbackService;
 	
-	@GetMapping(path = "/{email:.+}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@GetMapping(path = "/{email:.+}/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<User> getUserByEmail(@PathVariable String email) throws EntityNotFoundException {
 		LOGGER.traceEntry();
 		return ResponseEntity.ok(getFeedbackService().getUserByEmail(email));
