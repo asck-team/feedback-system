@@ -75,7 +75,7 @@ class FeedbackServiceImpl implements IFeedbackService {
 
 	protected Event loadEvent(EventTableModel event) {
 		List<QuestionTableModel> questions = getQuestionRepository().findAllByEventIdOrderByOrder(event.getId());
-		return Event.builder().id(event.getId()).name(event.getName())
+		return Event.builder().id(event.getId()).name(event.getName()).ownedBy(event.getOwnedBy())
 				.questions(questions.stream().map(this::map).collect(Collectors.toList())).build();
 	}
 
