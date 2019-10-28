@@ -159,7 +159,6 @@ class FeedbackServiceImpl implements IFeedbackService {
 				allQuestion.sort((a,b) -> Integer.compare(a.getOrder(), b.getOrder()));
 				for (int i = 0; i < allQuestion.size(); i++) {
 					allQuestion.get(i).setOrder(i + 1);
-
 				}
 				
 				allQuestion.forEach(this::updateQuestionOnDatabase);
