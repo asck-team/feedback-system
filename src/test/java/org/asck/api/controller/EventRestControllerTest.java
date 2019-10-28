@@ -31,6 +31,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
@@ -62,6 +63,22 @@ public class EventRestControllerTest {
 				.perform(MockMvcRequestBuilders.get("/v1/feedback/events/ownedBy/1")
 						.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
 				.andExpect(MockMvcResultMatchers.status().isNoContent());
+
+		verify(getFeedbackServiceMock()).findEventsOwnedBy(1L);
+	}
+
+	@Test
+	public void testGetEvents_OneEventsExists_ReturnEvent() throws Exception {
+		ArrayList<Event> events = new ArrayList<>();
+		events.add(new Event(1L, "Event1", 1L, null));
+
+		when(getFeedbackServiceMock().findEventsOwnedBy(1L)).thenReturn(events);
+
+		ResultActions resultActions = getMockMvc()
+				.perform(get("/v1/feedback/events/ownedBy/1")
+						.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)).andDo(print())
+				.andExpect(status().isOk());
+
 
 		verify(getFeedbackServiceMock()).findEventsOwnedBy(1L);
 	}

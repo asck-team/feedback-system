@@ -1,8 +1,8 @@
 = image:./asck-logo.png[asck] a little survey system 
 
-image:https://travis-ci.org/uniqueck/feedback-system.svg?branch=develop[link="https://travis-ci.org/uniqueck/feedback-system"]
-image:https://sonarcloud.io/api/project_badges/measure?project=uniqueck_feedback-system&metric=alert_status[link="https://sonarcloud.io/dashboard?id=uniqueck_feedback-system"]
-image:https://sonarcloud.io/api/project_badges/measure?project=uniqueck_feedback-system&metric=bugs[link="https://sonarcloud.io/component_measures?id=uniqueck_feedback-system&metric=Reliability"]
-image:https://sonarcloud.io/api/project_badges/measure?project=uniqueck_feedback-system&metric=coverage[link="https://sonarcloud.io/component_measures?id=uniqueck_feedback-system&metric=Coverage"]
+image:https://circleci.com/gh/asck-team/asck-survey.svg["CircleCI", link="https://circleci.com/gh/asck-team/asck-survey"]
+image:https://sonarcloud.io/api/project_badges/measure?project=asck-team_asck-survey&metric=alert_status[link="https://sonarcloud.io/dashboard?id=asck-team_asck-survey"]
+image:https://sonarcloud.io/api/project_badges/measure?project=asck-team_asck-survey&metric=bugs[link="https://sonarcloud.io/component_measures?id=asck-team_asck-survey&metric=Reliability"]
+image:https://sonarcloud.io/api/project_badges/measure?project=asck-team_asck-survey&metric=coverage[link="https://sonarcloud.io/component_measures?id=asck-team_asck-survey&metric=Coverage"]
 image:https://img.shields.io/badge/Telegram-Group-blue.svg?logo=Telegram&logoColor=white[link="https://telegram.me/asckreleases"]
 image:https://img.shields.io/badge/dynamic/json.svg?label=open&url=https%3A%2F%2Fapi.trello.com%2F1%2Flists%2F5be880487ada1e753858446c%2Fcards%3Ffields%3Did&query=%24.length&colorB=red&logo=Trello&logoColor=white[link="https://trello.com/b/C35pjHaq/asck-a-little-survey-system"]

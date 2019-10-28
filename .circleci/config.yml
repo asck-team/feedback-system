@@ -1,0 +1,46 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/openjdk:11-jdk
+    steps:
+      - checkout
+      - run:
+          name: Install Graphiz
+          command: sudo apt-get install graphviz
+      - run: |
+          if [[ "$CIRCLE_TAG" != "" ]]; then
+            VERSION="$(echo "$CIRCLE_TAG" | grep -Po '\d+\.\d+\.\d+')"
+            mvn versions:set -DnewVersion=${VERSION} versions:commit
+          fi
+      - run:
+          name: Build and Test
+          command: mvn package
+      - run:
+          name: Analyze for SonarQube
+          command: |
+            mvn sonar:sonar \
+            -Dsonar.organization=asck-team \
+            -Dsonar.projectKey=asck-team_asck-survey \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=${SONAR_TOKEN}
+      - run:
+          name: Save test results
+          command: |
+            mkdir -p ~/test-results/junit/
+            find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/test-results/junit/ \;
+            find . -type f -regex ".*/target/test-results/htmlSanityCheck/.*xml" -exec cp {} ~/test-results/junit/ \;
+          when: always
+      - store_test_results:
+          path: ~/test-results
+      - store_artifacts:
+          path: ~/test-results/junit
+
+workflows:
+  version: 2
+  build-n-deploy:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /.*/
