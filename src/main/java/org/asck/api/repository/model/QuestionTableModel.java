@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@SequenceGenerator(sequenceName = "SEQ_QUESTION", name = "SEQ_QUESTION_GEN", allocationSize = 50, initialValue = 50)
+@SequenceGenerator(sequenceName = "SEQ_QUESTION", name = "SEQ_QUESTION_GEN", allocationSize = 1)
 public class QuestionTableModel {
 
 	@Id

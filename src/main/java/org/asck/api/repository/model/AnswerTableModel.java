@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@SequenceGenerator(name = "SEQ_ANSWER_GEN", sequenceName = "SEQ_ANSWER")
+@SequenceGenerator(name = "SEQ_ANSWER_GEN", sequenceName = "SEQ_ANSWER", allocationSize = 1)
 public class AnswerTableModel {
 
 	@Id

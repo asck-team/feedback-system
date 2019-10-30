@@ -1,7 +1,7 @@
 package org.asck.uiTests;
 
 import liquibase.integration.spring.SpringLiquibase;
-import org.asck.api.repository.EventRepository;
+import org.asck.api.repository.*;
 import org.hibernate.cfg.AvailableSettings;
 import org.junit.ClassRule;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,7 +26,7 @@ import static java.lang.String.format;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackageClasses = {EventRepository.class})
+@EnableJpaRepositories(basePackageClasses = {EventRepository.class, AnswerRepository.class, QuestionOptionRepository.class, QuestionRepository.class, QuestionTypeRepository.class, UserRepository.class})
 @Profile("DaoTest")
 public class DbConfigPostgresContainers {
 
