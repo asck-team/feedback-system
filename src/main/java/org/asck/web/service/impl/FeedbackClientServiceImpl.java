@@ -50,9 +50,9 @@ class FeedbackClientServiceImpl implements IFeedbackClientService {
 		try {
 			event = getFeedbackService().findEventById(eventId);
 		} catch (EntityNotFoundException e) {
-			throw new ClientServiceRuntimeException("Error on retrieve questions for event with id " + eventId, e);
+			throw new ClientServiceRuntimeException("Error on retrieve questions for event with id " + eventId);
 		}
-		if (!event.getQuestions().isEmpty()) {
+		if (event != null && !event.getQuestions().isEmpty()) {
 			questions = event.getQuestions().stream().map(this::map).collect(Collectors.toList());
 		}
 		return questions;
@@ -67,7 +67,7 @@ class FeedbackClientServiceImpl implements IFeedbackClientService {
 		} catch (EntityNotFoundException e) {
 			throw new ClientServiceRuntimeException("Error on retrieve question for event with id: " + eventId + "and question with id: " + questionId, e);
 		}
-		return question.getOptions().stream().map(this::map).collect(Collectors.toList());
+		return question == null ? null : question.getOptions().stream().map(this::map).collect(Collectors.toList());
 	}
 
 	@Override
@@ -86,7 +86,9 @@ class FeedbackClientServiceImpl implements IFeedbackClientService {
 	@Override
 	public Event getEventById(Long id) {
 		try {
-			return map(getFeedbackService().findEventById(id));
+
+			org.asck.api.service.model.Event eventById = getFeedbackService().findEventById(id);
+			return eventById == null ? null : map(eventById);
 		} catch (EntityNotFoundException e) {
 			throw new ClientServiceRuntimeException("Error on retrieve event with id " + id);
 		}
@@ -95,7 +97,8 @@ class FeedbackClientServiceImpl implements IFeedbackClientService {
 	@Override
 	public Question readQuestion(Long eventId, Long questionId) {
 		try {
-			return map(getFeedbackService().findQuestion(eventId, questionId));
+			org.asck.api.service.model.Question question = getFeedbackService().findQuestion(eventId, questionId);
+			return question == null ? null : map(question);
 		} catch (EntityNotFoundException e) {
 			throw new ClientServiceRuntimeException("Error on retrieve question with eventId " + eventId + " and question id " + questionId);
 		}
@@ -181,7 +184,8 @@ class FeedbackClientServiceImpl implements IFeedbackClientService {
 	@Override
 	public Option findOptionById(Long optionId) {
 		try {
-			return map(getFeedbackService().getOptionById(optionId));
+			org.asck.api.service.model.Option option = getFeedbackService().getOptionById(optionId);
+			return option == null ? null : map(option);
 		} catch (EntityNotFoundException e) {
 			throw new ClientServiceRuntimeException("Error on get option with id " + optionId);
 		}
@@ -225,39 +229,39 @@ class FeedbackClientServiceImpl implements IFeedbackClientService {
 		return user;
 	}
 
-	private Event map(org.asck.api.service.model.Event event){
+	protected Event map(org.asck.api.service.model.Event event){
 		return Event.builder().id(event.getId()).name(event.getName()).ownedBy(event.getOwnedBy()).build();
 	}
 
-	private org.asck.api.service.model.Event map(Event event){
+	protected org.asck.api.service.model.Event map(Event event){
 		return org.asck.api.service.model.Event.builder().id(event.getId()).name(event.getName()).ownedBy(event.getOwnedBy()).build();
 	}
 
-	private User map(org.asck.api.service.model.User user) {
+	protected User map(org.asck.api.service.model.User user) {
 		return User.builder().id(user.getId()).email(user.getEmail()).password(user.getPassword()).build();
 	}
 
-	private org.asck.api.service.model.User map(User user) {
+	protected org.asck.api.service.model.User map(User user) {
 		return org.asck.api.service.model.User.builder().id(user.getId()).email(user.getEmail()).password(user.getPassword()).build();
 	}
 
-	private org.asck.api.service.model.Answer map(Answer answer) {
+	protected org.asck.api.service.model.Answer map(Answer answer) {
 		return org.asck.api.service.model.Answer.builder().optionId(answer.getOptionId()).questionId(answer.getQuestionId()).answeredAt(answer.getAnsweredAt()).remark(answer.getRemark()).build();
 	}
 
-	private Answer map(org.asck.api.service.model.Answer answer) {
+	protected Answer map(org.asck.api.service.model.Answer answer) {
 		return Answer.builder().optionId(answer.getOptionId()).questionId(answer.getQuestionId()).answeredAt(LocalDateTime.now()).remark(answer.getRemark()).build();
 	}
 
-	private Option map(org.asck.api.service.model.Option option){
+	protected Option map(org.asck.api.service.model.Option option){
 		return Option.builder().id(option.getId()).iconPath(option.getIconPath()).optionalDescription(option.getOptionalDescription()).build();
 	}
 
-	private Question map(org.asck.api.service.model.Question question) {
+	protected Question map(org.asck.api.service.model.Question question) {
 		return Question.builder().id(question.getId()).order(question.getOrder()).questionName(question.getQuestionName()).questionType(question.getQuestionType().name()).answerRequired(question.isAnswerRequired()).build();
 	}
 
-	private org.asck.api.service.model.Question map(Question question) {
+	protected org.asck.api.service.model.Question map(Question question) {
 		return org.asck.api.service.model.Question.builder().id(question.getId()).order(question.getOrder()).questionName(question.getQuestionName()).questionType(QuestionType.valueOf(question.getQuestionType())).answerRequired(question.isAnswerRequired()).build();
 	}
 }

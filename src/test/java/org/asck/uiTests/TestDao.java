@@ -4,6 +4,7 @@ import org.asck.api.repository.EventRepository;
 import org.asck.api.repository.UserRepository;
 import org.asck.api.repository.model.EventTableModel;
 import org.asck.api.repository.model.UserTableModel;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import static org.junit.Assert.assertTrue;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {DbConfigPostgresContainers.class})
 @ActiveProfiles("DaoTest")
+@Ignore
 public class TestDao {
 
 
