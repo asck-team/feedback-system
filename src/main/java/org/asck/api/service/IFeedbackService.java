@@ -11,6 +11,7 @@ import org.asck.api.service.model.Event;
 import org.asck.api.service.model.Option;
 import org.asck.api.service.model.Question;
 import org.asck.api.service.model.User;
+import org.springframework.stereotype.Component;
 
 public interface IFeedbackService {
 

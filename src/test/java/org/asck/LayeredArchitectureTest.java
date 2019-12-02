@@ -10,10 +10,11 @@ public class LayeredArchitectureTest {
 	public static final ArchRule layer_dependencies_are_respected = Architectures.layeredArchitecture()
 			.layer("Controllers").definedBy("..api.controller..")
 			.layer("Services").definedBy("..api.service..")
+			.layer("ServicesWeb").definedBy("..web.service..")
 			.layer("Repositories").definedBy("..api.repository..")
 			
 			.whereLayer("Controllers").mayNotBeAccessedByAnyLayer()
-			.whereLayer("Services").mayOnlyBeAccessedByLayers("Controllers", "Services")
+			.whereLayer("Services").mayOnlyBeAccessedByLayers("Controllers", "Services", "ServicesWeb")
 			.whereLayer("Repositories").mayOnlyBeAccessedByLayers("Services");
 	
 
