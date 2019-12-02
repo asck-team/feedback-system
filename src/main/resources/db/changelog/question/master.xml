@@ -32,7 +32,7 @@
 	
 	<changeSet id="2" author="constantinkrueger">
 		<comment>create sequence for question table</comment>
-		<createSequence sequenceName="SEQ_QUESTION" cycle="false" incrementBy="50" startValue="50"/>
+		<createSequence sequenceName="SEQ_QUESTION" cycle="false" incrementBy="1" startValue="5"/>
 	</changeSet>
 
 </databaseChangeLog>

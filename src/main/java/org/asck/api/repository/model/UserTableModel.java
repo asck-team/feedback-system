@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@SequenceGenerator(name = "SEQ_USER_GEN", sequenceName = "SEQ_USER")
+@SequenceGenerator(name = "SEQ_USER_GEN", sequenceName = "SEQ_USER", allocationSize = 1, initialValue = 5)
 public class UserTableModel {
 	
 	@Id

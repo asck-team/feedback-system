@@ -48,7 +48,7 @@ public class UserRestControllerTest {
 		when(getFeedbackServiceMock().getUserByEmail(email)).thenReturn(new User(1L, email, "pass"));
 
 		getMockMvc()
-				.perform(MockMvcRequestBuilders.get("/v1/feedback/user/" + email)
+				.perform(MockMvcRequestBuilders.get("/v1/feedback/user/" + email + "/")
 						.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
 				.andExpect(MockMvcResultMatchers.status().isOk());
 

@@ -1,132 +1,83 @@
 package org.asck.web.service.impl;
 
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.asck.web.exceptions.ClientServiceRuntimeException;
-import org.asck.web.service.IFeedbackClientService;
-import org.asck.web.service.model.Answer;
-import org.asck.web.service.model.AnswerReport;
-import org.asck.web.service.model.Event;
-import org.asck.web.service.model.Option;
-import org.asck.web.service.model.Question;
-import org.asck.web.service.model.User;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
-
 import lombok.AccessLevel;
 import lombok.Getter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.asck.api.exceptions.EntityNotFoundException;
+import org.asck.api.service.IFeedbackService;
+import org.asck.api.service.model.QuestionType;
+import org.asck.web.exceptions.ClientServiceRuntimeException;
+import org.asck.web.service.IFeedbackClientService;
+import org.asck.web.service.model.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Getter(AccessLevel.PROTECTED)
 class FeedbackClientServiceImpl implements IFeedbackClientService {
 
-	private static final String PATH_ELEMENT_ADMIN = "admin";
-
-	private static final String PATH_ELEMENT_QUESTION_TYPES = "questionTypes";
-
-	private static final String PATH_ELEMENT_OPTIONS = "options";
-
-	private static final String PATH_ELEMENT_QUESTIONS = "questions";
-
-	private static final String PATH_ELEMENT_EVENTS = "events";
-
-	private static final String PATH_ELEMENT_EVENTS_OWNED_BY = "events/ownedBy";
-
-	private static final String PATH_ELEMENT_ANSWERS = "answers";
-	
-	private static final String PATH_ELEMENT_USER = "user";
-
 	private static final Logger LOGGER = LogManager.getLogger(FeedbackClientServiceImpl.class);
 
-	@Value("${service.base.path:http://localhost:8080/v1/feedback}")
-	private String basePath;
 
-	private final RestTemplate restTemplate;
+	@Autowired
+	IFeedbackService feedbackService;
 
-	public FeedbackClientServiceImpl(RestTemplateBuilder restTemplateBuilder) {
-		this.restTemplate = restTemplateBuilder.build();
-	}
-
-	protected String createUrlPath(String... pathElements) {
-		List<String> path = new ArrayList<>();
-		path.add(getBasePath());
-		for (String eachPathElement : pathElements) {
-			path.add(eachPathElement);
-		}
-		return path.stream().collect(Collectors.joining("/"));
+	public FeedbackClientServiceImpl (IFeedbackService feedbackService){
+		this.feedbackService = feedbackService;
 	}
 
 	@Override
 	public List<Event> leseAlleEvents(Long ownedById) {
-		try {
-			ResponseEntity<List<Event>> responseEntity = getRestTemplate().exchange(
-					createUrlPath(PATH_ELEMENT_EVENTS_OWNED_BY, ownedById.toString()),
-					HttpMethod.GET, null, new ParameterizedTypeReference<List<Event>>() {
-					});
-			if (responseEntity.getStatusCode().equals(HttpStatus.NO_CONTENT)) {
-				return Collections.emptyList();
-			} else {
-				return responseEntity.getBody();
-			}
-		} catch (HttpClientErrorException | HttpServerErrorException e) {
-			throw new ClientServiceRuntimeException("Error on retrieve events with user Id " + ownedById, e);
+		List<org.asck.api.service.model.Event> eventsOwnedBy = new ArrayList<org.asck.api.service.model.Event>();
+		eventsOwnedBy = getFeedbackService().findEventsOwnedBy(ownedById);
+		if (eventsOwnedBy == null || eventsOwnedBy.isEmpty()) {
+			return new ArrayList<Event>();
 		}
+		return eventsOwnedBy.stream().map(this::map).collect(Collectors.toList());
 	}
 
 	@Override
 	public List<Question> leseAlleFragenZuEvent(Long eventId) {
+		List<Question> questions = new ArrayList<>();
+		org.asck.api.service.model.Event event = null;
 		try {
-			ResponseEntity<List<Question>> response = getRestTemplate().exchange(
-					createUrlPath(PATH_ELEMENT_EVENTS, eventId.toString(), PATH_ELEMENT_QUESTIONS), HttpMethod.GET,
-					null, new ParameterizedTypeReference<List<Question>>() {
-					});
-			if (response.getStatusCode().equals(HttpStatus.NO_CONTENT)) {
-				return Collections.emptyList();
-			} else {
-				return response.getBody();
-			}
-		} catch (HttpClientErrorException | HttpServerErrorException e) {
-			throw new ClientServiceRuntimeException("Error on retrieve questions for event with id " + eventId, e);
+			event = getFeedbackService().findEventById(eventId);
+		} catch (EntityNotFoundException e) {
+			throw new ClientServiceRuntimeException("Error on retrieve questions for event with id " + eventId);
 		}
+		if (event != null && !event.getQuestions().isEmpty()) {
+			questions = event.getQuestions().stream().map(this::map).collect(Collectors.toList());
+		}
+		return questions;
 
 	}
 
 	@Override
 	public List<Option> leseAlleOptionenZuEinerFrage(Long eventId, Long questionId) {
-		ResponseEntity<List<Option>> response = getRestTemplate()
-				.exchange(
-						createUrlPath(PATH_ELEMENT_EVENTS, eventId.toString(), PATH_ELEMENT_QUESTIONS,
-								questionId.toString(), PATH_ELEMENT_OPTIONS),
-						HttpMethod.GET, null, new ParameterizedTypeReference<List<Option>>() {
-						});
-		return response.getBody();
+		org.asck.api.service.model.Question question = null;
+		try {
+			question = getFeedbackService().findQuestion(eventId, questionId);
+		} catch (EntityNotFoundException e) {
+			throw new ClientServiceRuntimeException("Error on retrieve question for event with id: " + eventId + "and question with id: " + questionId, e);
+		}
+		return question == null ? null : question.getOptions().stream().map(this::map).collect(Collectors.toList());
 	}
 
 	@Override
 	public Event saveEvent(Event event) {
 		Event newOrUpdatedEvent = event;
+		Long newEventId = getFeedbackService().saveEvent(map(newOrUpdatedEvent));
 		if (event.getId() != null) {
-			getRestTemplate().put(createUrlPath(PATH_ELEMENT_EVENTS, event.getId().toString()), event);
 			LOGGER.info("updated Event: {}", newOrUpdatedEvent);
 		} else {
-			URI location = getRestTemplate().postForLocation(createUrlPath(PATH_ELEMENT_EVENTS),
-					Event.builder().id(-1L).name(event.getName()).ownedBy(event.getOwnedBy()).build());
-			newOrUpdatedEvent = getRestTemplate().getForObject(location, Event.class);
+			newOrUpdatedEvent.setId(newEventId);
 			LOGGER.info("created Event: {}", newOrUpdatedEvent);
 		}
 		return newOrUpdatedEvent;
@@ -135,39 +86,38 @@ class FeedbackClientServiceImpl implements IFeedbackClientService {
 	@Override
 	public Event getEventById(Long id) {
 		try {
-			ResponseEntity<Event> response = getRestTemplate().exchange(
-					createUrlPath(PATH_ELEMENT_EVENTS, id.toString()), HttpMethod.GET, null,
-					new ParameterizedTypeReference<Event>() {
-					});
-			return response.getBody();
-		} catch (HttpClientErrorException e) {
-			if (e.getStatusCode().equals(HttpStatus.NOT_FOUND)) {
-				return null;
-			}
+
+			org.asck.api.service.model.Event eventById = getFeedbackService().findEventById(id);
+			return eventById == null ? null : map(eventById);
+		} catch (EntityNotFoundException e) {
 			throw new ClientServiceRuntimeException("Error on retrieve event with id " + id);
 		}
 	}
 
 	@Override
 	public Question readQuestion(Long eventId, Long questionId) {
-		ResponseEntity<Question> response = getRestTemplate().exchange(
-				createUrlPath(PATH_ELEMENT_EVENTS, eventId.toString(), PATH_ELEMENT_QUESTIONS, questionId.toString()),
-				HttpMethod.GET, null, new ParameterizedTypeReference<Question>() {
-				});
-		return response.getBody();
+		try {
+			org.asck.api.service.model.Question question = getFeedbackService().findQuestion(eventId, questionId);
+			return question == null ? null : map(question);
+		} catch (EntityNotFoundException e) {
+			throw new ClientServiceRuntimeException("Error on retrieve question with eventId " + eventId + " and question id " + questionId);
+		}
 	}
 
 	@Override
 	public Question saveQuestion(Long eventId, Question question) {
 		Question newOrUpdatedQuestion = question;
+		Long newQuestionId;
+		try {
+			newQuestionId = getFeedbackService().saveQuestion(eventId, map(question));
+		} catch (EntityNotFoundException e) {
+			throw new ClientServiceRuntimeException("Error on retrieve question with eventId " + eventId + " and question " + question.toString());
+		}
+
 		if (question.getId() != null) {
-			getRestTemplate().put(createUrlPath(PATH_ELEMENT_EVENTS, eventId.toString(), PATH_ELEMENT_QUESTIONS,
-					question.getId().toString()), question);
 			LOGGER.info("updated Question: {}", newOrUpdatedQuestion);
 		} else {
-			URI uri4CreatedEvent = getRestTemplate().postForLocation(
-					createUrlPath(PATH_ELEMENT_EVENTS, eventId.toString(), PATH_ELEMENT_QUESTIONS), question);
-			newOrUpdatedQuestion = getRestTemplate().getForObject(uri4CreatedEvent, Question.class);
+			newOrUpdatedQuestion.setId(newQuestionId);
 			LOGGER.info("created Question: {}", newOrUpdatedQuestion);
 		}
 		return newOrUpdatedQuestion;
@@ -177,52 +127,68 @@ class FeedbackClientServiceImpl implements IFeedbackClientService {
 	public List<String> readAllSupportedQuestionTypes() {
 		List<String> allSupportedQuestionTypes = new ArrayList<>();
 		LOGGER.traceEntry();
-		ResponseEntity<List<String>> response = getRestTemplate().exchange(
-				createUrlPath(PATH_ELEMENT_ADMIN, PATH_ELEMENT_QUESTION_TYPES), HttpMethod.GET, null,
-				new ParameterizedTypeReference<List<String>>() {
-				});
-		allSupportedQuestionTypes.addAll(response.getBody());
+		allSupportedQuestionTypes.addAll(Arrays.asList(QuestionType.values()).stream().map(QuestionType::name).collect(Collectors.toList()));
 		return LOGGER.traceExit(allSupportedQuestionTypes);
 	}
 
 	@Override
 	public void deleteEvent(Long eventId) {
 		LOGGER.traceEntry("with Parameters {}", eventId);
-		getRestTemplate().delete(createUrlPath(PATH_ELEMENT_EVENTS, eventId.toString()));
+
+		try {
+			getFeedbackService().deleteEvent(eventId);
+		} catch (EntityNotFoundException e) {
+			throw new ClientServiceRuntimeException("Error on delete event with eventId " + eventId);
+		}
+
 		LOGGER.traceExit();
 	}
 
 	@Override
 	public void deleteQuestion(Long eventId, Long questionId) {
 		LOGGER.traceEntry("with Parameters {} and {}", eventId, questionId);
-		getRestTemplate().delete(
-				createUrlPath(PATH_ELEMENT_EVENTS, eventId.toString(), PATH_ELEMENT_QUESTIONS, questionId.toString()));
+
+		try {
+			getFeedbackService().deleteQuestion(eventId,questionId);
+		} catch (EntityNotFoundException e) {
+			throw new ClientServiceRuntimeException("Error on delete question with eventId " + eventId + " and questionId " + questionId);
+		}
+
 		LOGGER.traceExit();
 	}
 
 	@Override
 	public Answer saveAnswer(Answer answer) {
-		URI uri4CreatedAnswer = getRestTemplate().postForLocation(createUrlPath(PATH_ELEMENT_ANSWERS), answer);
-		LOGGER.info("created Answer: {}", uri4CreatedAnswer);
+		Long answerId;
+		try {
+			 answerId = getFeedbackService().saveAnswer(map(answer));
+		} catch (EntityNotFoundException e) {
+			throw new ClientServiceRuntimeException("Error on save answer for question with id " + answer.getQuestionId());
+		}
+		LOGGER.info("created Answer with id: {}", answerId);
 		return answer;
 	}
 
 	protected List<Answer> getAllAnswersToQuestion(Long questionId) {
-		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(createUrlPath(PATH_ELEMENT_ANSWERS))
-				.queryParam("questionId", questionId);
-		ResponseEntity<List<Answer>> response = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, null,
-				new ParameterizedTypeReference<List<Answer>>() {
-				});
-		return response.getBody();
+		List<Answer> allAnswersToQuestion = new ArrayList<>();
+		try {
+			List<org.asck.api.service.model.Answer> allAnswersResult = getFeedbackService().getAllAnswersToQuestion(questionId);
+			allAnswersToQuestion = allAnswersResult.stream().map(this::map).collect(Collectors.toList());
+		} catch (EntityNotFoundException e) {
+			throw new ClientServiceRuntimeException("Error on get answers for question with id " + questionId);
+		}
+
+		return allAnswersToQuestion;
 	}
 
 	@Override
 	public Option findOptionById(Long optionId) {
-		ResponseEntity<Option> response = getRestTemplate().exchange(
-				createUrlPath(PATH_ELEMENT_OPTIONS, optionId.toString()), HttpMethod.GET, null,
-				new ParameterizedTypeReference<Option>() {
-				});
-		return response.getBody();
+		try {
+			org.asck.api.service.model.Option option = getFeedbackService().getOptionById(optionId);
+			return option == null ? null : map(option);
+		} catch (EntityNotFoundException e) {
+			throw new ClientServiceRuntimeException("Error on get option with id " + optionId);
+		}
 	}
 
 	@Override
@@ -250,25 +216,52 @@ class FeedbackClientServiceImpl implements IFeedbackClientService {
 	@Override
 	public User getUserByEmail(String email) {
 		try {
-			ResponseEntity<User> response = getRestTemplate().exchange(
-					createUrlPath(PATH_ELEMENT_USER, email, "/"), HttpMethod.GET, null,
-					new ParameterizedTypeReference<User>() {
-					});
-			return response.getBody();
-		} catch (HttpClientErrorException e) {
-			if (e.getStatusCode().equals(HttpStatus.NOT_FOUND)) {
-				return null;
-			}
+			return map(getFeedbackService().getUserByEmail(email));
+		} catch (EntityNotFoundException e) {
 			throw new ClientServiceRuntimeException("Error on retrieve User with email " + email);
 		}
 	}
 
 	@Override
 	public User saveUser(User user) {
-		
-		URI uri4CreatedAnswer = getRestTemplate().postForLocation(createUrlPath(PATH_ELEMENT_USER), user);
-		LOGGER.info("created User: {}", uri4CreatedAnswer);
+		getFeedbackService().saveUser(map(user));
 		LOGGER.info("created UserName: {}", user.getEmail());
 		return user;
+	}
+
+	protected Event map(org.asck.api.service.model.Event event){
+		return Event.builder().id(event.getId()).name(event.getName()).ownedBy(event.getOwnedBy()).build();
+	}
+
+	protected org.asck.api.service.model.Event map(Event event){
+		return org.asck.api.service.model.Event.builder().id(event.getId()).name(event.getName()).ownedBy(event.getOwnedBy()).build();
+	}
+
+	protected User map(org.asck.api.service.model.User user) {
+		return User.builder().id(user.getId()).email(user.getEmail()).password(user.getPassword()).build();
+	}
+
+	protected org.asck.api.service.model.User map(User user) {
+		return org.asck.api.service.model.User.builder().id(user.getId()).email(user.getEmail()).password(user.getPassword()).build();
+	}
+
+	protected org.asck.api.service.model.Answer map(Answer answer) {
+		return org.asck.api.service.model.Answer.builder().optionId(answer.getOptionId()).questionId(answer.getQuestionId()).answeredAt(answer.getAnsweredAt()).remark(answer.getRemark()).build();
+	}
+
+	protected Answer map(org.asck.api.service.model.Answer answer) {
+		return Answer.builder().optionId(answer.getOptionId()).questionId(answer.getQuestionId()).answeredAt(LocalDateTime.now()).remark(answer.getRemark()).build();
+	}
+
+	protected Option map(org.asck.api.service.model.Option option){
+		return Option.builder().id(option.getId()).iconPath(option.getIconPath()).optionalDescription(option.getOptionalDescription()).build();
+	}
+
+	protected Question map(org.asck.api.service.model.Question question) {
+		return Question.builder().id(question.getId()).order(question.getOrder()).questionName(question.getQuestionName()).questionType(question.getQuestionType().name()).answerRequired(question.isAnswerRequired()).build();
+	}
+
+	protected org.asck.api.service.model.Question map(Question question) {
+		return org.asck.api.service.model.Question.builder().id(question.getId()).order(question.getOrder()).questionName(question.getQuestionName()).questionType(QuestionType.valueOf(question.getQuestionType())).answerRequired(question.isAnswerRequired()).build();
 	}
 }

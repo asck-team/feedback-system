@@ -92,7 +92,7 @@ public class FeedbackServiceImplTest {
 
 	/**
 	 * Test method for
-	 * {@link org.asck.service.impl.FeedbackServiceImpl#saveQuestion(java.lang.Long, org.asck.service.model.Question)}.
+	 * {@link org.asck.api.service.impl.FeedbackServiceImpl#saveQuestion(Long, Question)} (java.lang.Long, org.asck.service.model.Question)}.
 	 */
 	@Test
 	public void testSaveQuestion_NoQuestionsExists_SaveQuestionWithOrder1() throws Exception {
@@ -111,7 +111,7 @@ public class FeedbackServiceImplTest {
 
 	/**
 	 * Test method for
-	 * {@link org.asck.service.impl.FeedbackServiceImpl#saveQuestion(java.lang.Long, org.asck.service.model.Question)}.
+	 * {@link org.asck.api.service.impl.FeedbackServiceImpl#saveQuestion(Long, Question)} (java.lang.Long, org.asck.service.model.Question)}.
 	 */
 	@Test
 	public void testSaveQuestion_NoQuestionsExistsQuestionWithOrder2Defined_SaveQuestionWithOrder1() throws Exception {
@@ -136,7 +136,7 @@ public class FeedbackServiceImplTest {
 
 	/**
 	 * Test method for
-	 * {@link org.asck.service.impl.FeedbackServiceImpl#saveQuestion(java.lang.Long, org.asck.service.model.Question)}.
+	 * {@link org.asck.api.service.impl.FeedbackServiceImpl#saveQuestion(Long, Question)} (java.lang.Long, org.asck.service.model.Question)}.
 	 */
 	@Test
 	public void testSaveQuestion_OneQuestionsExists_SaveQuestionWithOrder2() throws Exception {
@@ -157,7 +157,7 @@ public class FeedbackServiceImplTest {
 
 	/**
 	 * Test method for
-	 * {@link org.asck.service.impl.FeedbackServiceImpl#saveQuestion(java.lang.Long, org.asck.service.model.Question)}.
+	 * {@link org.asck.api.service.impl.FeedbackServiceImpl#saveQuestion(Long, Question)} (java.lang.Long, org.asck.service.model.Question)}.
 	 */
 	@Ignore
 	@Test
@@ -180,7 +180,7 @@ public class FeedbackServiceImplTest {
 
 	/**
 	 * Test method for
-	 * {@link org.asck.service.impl.FeedbackServiceImpl#saveQuestion(java.lang.Long, org.asck.service.model.Question)}.
+	 * {@link org.asck.api.service.impl.FeedbackServiceImpl#saveQuestion(Long, Question)} (java.lang.Long, org.asck.service.model.Question)}.
 	 */
 	@Test
 	public void testSaveQuestion_OneQuestionsExistsQuestionToSaveHaveOrderLowerThenZero_SaveQuestionWithOrder2()
@@ -203,7 +203,7 @@ public class FeedbackServiceImplTest {
 
 	/**
 	 * Test method for
-	 * {@link org.asck.service.impl.FeedbackServiceImpl#saveQuestion(java.lang.Long, org.asck.service.model.Question)}.
+	 * {@link org.asck.api.service.impl.FeedbackServiceImpl#saveQuestion(Long, Question)} (java.lang.Long, org.asck.service.model.Question)}.
 	 */
 	@Test
 	public void testSaveQuestion_OneQuestionsExistsQuestionToSaveHaveOrderGreaterThenMaxQuestionSize_SaveQuestionWithOrder2()
@@ -320,7 +320,7 @@ public class FeedbackServiceImplTest {
 
 	/**
 	 * Test method for
-	 * {@link org.asck.service.impl.FeedbackServiceImpl#saveQuestion(java.lang.Long, org.asck.service.model.Question)}.
+	 * {@link org.asck.api.service.impl.FeedbackServiceImpl#saveQuestion(Long, Question)} (java.lang.Long, org.asck.service.model.Question)}.
 	 */
 	@Ignore
 	@Test
@@ -344,7 +344,7 @@ public class FeedbackServiceImplTest {
 
 	/**
 	 * Test method for
-	 * {@link org.asck.service.impl.FeedbackServiceImpl#findEvents()}.
+	 * {@link org.asck.api.service.impl.FeedbackServiceImpl#findEvents()}.
 	 */
 	@Test
 	public void testFindEvents_NoEvents_ReturnsEmptyList() throws Exception {
@@ -356,7 +356,7 @@ public class FeedbackServiceImplTest {
 
 	/**
 	 * Test method for
-	 * {@link org.asck.service.impl.FeedbackServiceImpl#findEvents()}.
+	 * {@link org.asck.api.service.impl.FeedbackServiceImpl#findEvents()}.
 	 */
 	@Test
 	public void testFindEvents_OneEventsWithoutQuestions_ReturnsListWithOneEvent() throws Exception {
@@ -375,7 +375,7 @@ public class FeedbackServiceImplTest {
 
 	/**
 	 * Test method for
-	 * {@link org.asck.service.impl.FeedbackServiceImpl#saveEvent(org.asck.service.model.Event)}.
+	 * {@link org.asck.api.service.impl.FeedbackServiceImpl#saveEvent(Event)} (org.asck.service.model.Event)}.
 	 */
 	@Test
 	public void testSaveEvent() throws Exception {
@@ -387,7 +387,7 @@ public class FeedbackServiceImplTest {
 
 	/**
 	 * Test method for
-	 * {@link org.asck.service.impl.FeedbackServiceImpl#getAllAnswersToQuestion(long)}.
+	 * {@link org.asck.api.service.impl.FeedbackServiceImpl#getAllAnswersToQuestion(long)}.
 	 */
 	@Test
 	public void testGetAllAnswersToQuestion_QuestionWithIdDoesntExist_ThrowsException() throws Exception {
@@ -405,7 +405,7 @@ public class FeedbackServiceImplTest {
 
 	/**
 	 * Test method for
-	 * {@link org.asck.service.impl.FeedbackServiceImpl#getAllAnswersToQuestion(long)}.
+	 * {@link org.asck.api.service.impl.FeedbackServiceImpl#getAllAnswersToQuestion(long)}.
 	 */
 	@Test
 	public void testGetAllAnswersToQuestion_QuestionWithIdExistAndOneAnswerExist_ReturnListWithOneAnswer()
@@ -429,7 +429,7 @@ public class FeedbackServiceImplTest {
 
 	/**
 	 * Test method for
-	 * {@link org.asck.service.impl.FeedbackServiceImpl#getOptionById()}.
+	 * {@link org.asck.api.service.impl.FeedbackServiceImpl#getOptionById(Long)}.
 	 */
 	@Test
 	public void testGetOptionById() throws Exception {
@@ -447,7 +447,7 @@ public class FeedbackServiceImplTest {
 	
 	/**
 	 * Test method for
-	 * {@link org.asck.service.impl.FeedbackServiceImpl#getUserByEmail()}
+	 * {@link org.asck.api.service.impl.FeedbackServiceImpl#getUserByEmail(String)}
 	 */
 	@Test
 	public void testGetUserByEmail() throws Exception {
@@ -466,7 +466,7 @@ public class FeedbackServiceImplTest {
 	
 	/**
 	 * Test method for
-	 * {@link org.asck.service.impl.FeedbackServiceImpl#getUserByEmail()}
+	 * {@link org.asck.api.service.impl.FeedbackServiceImpl#getUserByEmail(String)}
 	 */
 	@Test
 	public void testGetUserByEmail_ErrorExpected() throws Exception {
@@ -488,7 +488,7 @@ public class FeedbackServiceImplTest {
 	
 	/**
 	 * Test method for
-	 * {@link org.asck.service.impl.FeedbackServiceImpl#saveUser(org.asck.api.service.model.User)}
+	 * {@link org.asck.api.service.impl.FeedbackServiceImpl#saveUser(org.asck.api.service.model.User)}
 	 */
 	@Test
 	public void testSaveUser() throws Exception {

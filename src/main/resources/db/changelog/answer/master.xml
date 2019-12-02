@@ -28,7 +28,7 @@
 	
 	<changeSet id="2" author="constantinkrueger">
 		<comment>create sequence for answer table</comment>
-		<createSequence sequenceName="SEQ_ANSWER" cycle="false" incrementBy="50" startValue="1"/>
+		<createSequence sequenceName="SEQ_ANSWER" cycle="false" incrementBy="1" startValue="5"/>
 	</changeSet>
 
 	<!-- 
